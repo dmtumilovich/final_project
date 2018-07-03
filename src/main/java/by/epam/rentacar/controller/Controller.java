@@ -1,0 +1,33 @@
+package by.epam.rentacar.controller;
+
+
+import by.epam.rentacar.controller.command.Command;
+import by.epam.rentacar.controller.command.factory.CommandFactory;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+public class Controller extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        CommandFactory commandFactory = new CommandFactory();
+        Command command = commandFactory.getCommand(request);
+
+        String nextPage = command.execute(request);
+        request.getRequestDispatcher(nextPage).forward(request, response);
+
+    }
+}
