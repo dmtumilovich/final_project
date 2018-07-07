@@ -1,5 +1,7 @@
 package by.epam.rentacar.dao;
 
+import by.epam.rentacar.dao.connection.pool.ConnectionPool;
+import by.epam.rentacar.dao.connection.pool.ConnectionPoolException;
 import by.epam.rentacar.entity.User;
 
 import java.sql.Connection;
@@ -11,10 +13,15 @@ public class UserDAO {
 
 
     public User checkUser(String username, String password) {
-        Connection connection = DBHelper.getConnection();
+
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+
         User user = null;
 
         try {
+            connectionPool.initPoolData();
+            Connection connection = connectionPool.takeConnection();
+
             PreparedStatement statement = connection.prepareStatement("SELECT id_user, username, password FROM user_list WHERE username = ?");
             statement.setString(1, username);
 
@@ -33,6 +40,10 @@ public class UserDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            //DAOException
+        } catch (ConnectionPoolException e) {
+            e.printStackTrace();
+            //DAOException
         }
 
         return user;
@@ -40,10 +51,14 @@ public class UserDAO {
 
 
     public boolean signupUser(String username, String password, String email) {
-        Connection connection = DBHelper.getConnection();
-        User user = null;
 
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        
         try {
+
+            connectionPool.initPoolData();
+            Connection connection = connectionPool.takeConnection();
+
             PreparedStatement statement = connection.prepareStatement("INSERT INTO user_list (username, password, email, id_role) VALUES (?, ?, ?, '2')");
             statement.setString(1, username);
             statement.setString(2, password);
@@ -52,6 +67,10 @@ public class UserDAO {
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            //DAOException
+        } catch (ConnectionPoolException e) {
+            e.printStackTrace();
+            //DAOException
         }
 
         return true;

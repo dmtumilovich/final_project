@@ -2,7 +2,7 @@ package by.epam.rentacar.controller;
 
 
 import by.epam.rentacar.controller.command.Command;
-import by.epam.rentacar.controller.command.factory.CommandFactory;
+import by.epam.rentacar.controller.command.CommandContainer;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,11 +23,9 @@ public class Controller extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        CommandFactory commandFactory = new CommandFactory();
-        Command command = commandFactory.getCommand(request);
-
-        String nextPage = command.execute(request);
-        request.getRequestDispatcher(nextPage).forward(request, response);
-
+        System.out.println("controller context path" + request.getContextPath());
+        String commandStr = request.getParameter("command");
+        Command command = CommandContainer.get(commandStr);
+        command.execute(request, response);
     }
 }

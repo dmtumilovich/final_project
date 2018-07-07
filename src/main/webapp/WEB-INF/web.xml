@@ -11,10 +11,36 @@
     <servlet-name>Controller</servlet-name>
     <servlet-class>by.epam.rentacar.controller.Controller</servlet-class>
   </servlet>
-
   <servlet-mapping>
     <servlet-name>Controller</servlet-name>
     <url-pattern>/controller</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>MainPage</servlet-name>
+    <jsp-file>/jsp/index.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MainPage</servlet-name>
+    <url-pattern>/main</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>SigninPage</servlet-name>
+    <jsp-file>/jsp/signin.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SigninPage</servlet-name>
+    <url-pattern>/signin</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>SignupPage</servlet-name>
+    <jsp-file>/jsp/signup.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SignupPage</servlet-name>
+    <url-pattern>/signup</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

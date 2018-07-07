@@ -10,17 +10,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ResourceBundle;
 
-public class CommandSignup implements Command {
+public class CommandSignin implements Command {
+
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("context path: " + request.getContextPath());
 
         String username = request.getParameter(RequestParameters.KEY_USERNAME);
         String password = request.getParameter(RequestParameters.KEY_PASSWORD);
-        String email = request.getParameter(RequestParameters.KEY_EMAIL);
 
         UserService service = new UserService();
-        User user = service.signup(username, password, email);
+        User user = service.login(username, password);
 
         if(user != null) {
             HttpSession session = request.getSession();
@@ -29,6 +32,7 @@ public class CommandSignup implements Command {
             return;
         }
 
-        response.sendRedirect(request.getContextPath() + PageParameters.PAGE_SIGNUP);
+        //request.getRequestDispatcher()
+
     }
 }

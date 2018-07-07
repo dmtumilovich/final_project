@@ -3,6 +3,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 
+<c:redirect url = "/main" />
+
 <head>
     <fmt:setLocale value = "${sessionScope.local}" />
     <fmt:setBundle basename = "local" var = "loc" />
@@ -17,13 +19,13 @@
   <form action="controller" method="post">
     <input type="hidden" name="command" value="change_lang">
     <input type="hidden" name="local" value="ru" />
-    <input type="submit" value = "${ru_button}" />
   </form>
 
   <form action="controller" method="post">
     <input type="hidden" name="command" value="change_lang">
     <input type="hidden" name="local" value="en"/>
     <input type="submit" value="${en_button}">
+    <input type="" name="" value="">
   </form>
 
   <c:out value = "${username}" /> <br>
