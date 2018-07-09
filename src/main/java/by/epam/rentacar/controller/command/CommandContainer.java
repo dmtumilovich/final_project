@@ -12,6 +12,7 @@ public class CommandContainer {
         commands.put("signup", new CommandSignup());
         commands.put("logout", new CommandLogout());
         commands.put("change_lang", new CommandLanguage());
+        commands.put("edit_profile", new CommandEditProfile());
     }
 
     public static Command get(String commandStr) {

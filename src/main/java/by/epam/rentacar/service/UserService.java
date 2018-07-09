@@ -12,7 +12,6 @@ public class UserService {
     public User login(String username, String password) {
 
         String hashedPassword = hashPassword(password);
-        System.out.println("Password: " + hashedPassword);
         return userDAO.checkUser(username, hashedPassword);
 
     }
@@ -26,7 +25,10 @@ public class UserService {
         return userDAO.checkUser(username, hashedPassword);
     }
 
-
+    //переделать
+    public boolean editProfile(User user) {
+        return userDAO.updateUser(user);
+    }
 
     private String hashPassword(String password) {
         return Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();

@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <c:if test = "${not empty username}">
-  <c:redirect url = "/jsp/index.jsp" />
+  <c:redirect url = "main" />
 </c:if>
 
 <!doctype html>

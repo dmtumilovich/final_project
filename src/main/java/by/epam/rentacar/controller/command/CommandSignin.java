@@ -17,7 +17,6 @@ public class CommandSignin implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("context path: " + request.getContextPath());
 
         String username = request.getParameter(RequestParameters.KEY_USERNAME);
         String password = request.getParameter(RequestParameters.KEY_PASSWORD);
@@ -27,12 +26,10 @@ public class CommandSignin implements Command {
 
         if(user != null) {
             HttpSession session = request.getSession();
-            session.setAttribute("username", username);
+            session.setAttribute("user", user);
             response.sendRedirect(request.getContextPath() + PageParameters.PAGE_MAIN);
             return;
         }
-
-        //request.getRequestDispatcher()
 
     }
 }

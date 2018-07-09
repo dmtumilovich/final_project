@@ -23,7 +23,6 @@ public class Controller extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        System.out.println("controller context path" + request.getContextPath());
         String commandStr = request.getParameter("command");
         Command command = CommandContainer.get(commandStr);
         command.execute(request, response);

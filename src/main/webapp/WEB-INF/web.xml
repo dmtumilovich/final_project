@@ -43,4 +43,22 @@
     <url-pattern>/signup</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>ProfilePage</servlet-name>
+    <jsp-file>/jsp/profile.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProfilePage</servlet-name>
+    <url-pattern>/profile</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>EditProfilePage</servlet-name>
+    <jsp-file>/jsp/edit_profile.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EditProfilePage</servlet-name>
+    <url-pattern>/edit_profile</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

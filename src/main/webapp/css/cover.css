@@ -99,6 +99,12 @@ body {
   color: #fff;
 }
 
+input.btn {
+  background-color: #696969;
+  border-color: gray;
+}
+
+
 
 /*
  * Footer

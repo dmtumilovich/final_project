@@ -2,13 +2,13 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
+    <c:if test="${empty user}">
+      <c:redirect url = "main" />
+    </c:if>
 
     <!-- <fmt:setLocale value = "${sessionScope.local}" />
     <fmt:setBundle basename = "local" var = "loc" />
@@ -23,12 +23,7 @@
     <fmt:message bundle = "${loc}" key = "local.header.text.nav-profile" var = "nav_profile" />
     <fmt:message bundle = "${loc}" key = "local.header.text.nav-logout" var = "nav_logout" /> -->
 
-    <fmt:message bundle = "${loc}" key = "local.main.text.heading" var = "heading" />
-    <fmt:message bundle = "${loc}" key = "local.main.text.heading-description" var = "heading_description" />
-    <fmt:message bundle = "${loc}" key = "local.main.button.see-all-cars" var = "see_all_cars" />
-
-
-    <title>Rent yourself a car</title>
+    <title>Profile</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -37,14 +32,13 @@
     <link href="../css/cover.css" rel="stylesheet">
   </head>
 
-  <body class="text-center">
-
+  <body>
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
       <header class="masthead mb-auto">
         <div class="inner">
           <h3 class="masthead-brand">${title}</h3>
           <nav class="nav nav-masthead justify-content-center">
-            <a class="nav-link active" href="main">${nav_home}</a>
+            <a class="nav-link" href="main">${nav_home}</a>
             <a class="nav-link" href="#">${nav_cars}</a>
             <a class="nav-link" href="#">${nav_contact}</a>
 
@@ -54,7 +48,7 @@
             </c:if>
 
             <c:if test = "${not empty user}">
-              <a class="nav-link" href="profile">${nav_profile}</a>
+              <a class="nav-link active" href="profile">${nav_profile}</a>
               <a class="nav-link" href="/controller?command=logout">${nav_logout}</a>
             </c:if>
 
@@ -67,15 +61,65 @@
 
       <jsp:include page = "/jsp/header.jsp"></jsp:include>
 
+      <!--profile-->
       <main role="main" class="inner cover">
-        <h1 class="cover-heading">${heading}</h1>
-        <p class="lead">${heading_description}</p>
-        <p class="lead">
-          <a href="#" class="btn btn-lg btn-secondary">${see_all_cars}</a>
-        </p>
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title text-center">Profile information</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+
+              <div class="col-md-3 col-lg-3" align="center">
+                <img src="../img/no_avatar.png" alt="Photo" class="img-circle" width="150px" height="150px">
+              </div>
+
+              <div class="col-md-9 col-lg-9">
+                <table class="table table-user-information">
+                  <tbody>
+                    <tr>
+                      <td>Username:</td>
+                      <td>@${user.username}</td>
+                    </tr>
+                    <tr>
+                      <td>Email:</td>
+                      <td>${user.email}</td>
+                    </tr>
+                    <tr>
+                      <td>Name:</td>
+                      <td>${user.name}</td>
+                    </tr>
+                    <tr>
+                      <td>Surname:</td>
+                      <td>${user.surname}</td>
+                    </tr>
+                    <tr>
+                      <td>Phone number:</td>
+                      <td>${user.phone}</td>
+                    </tr>
+                    <tr>
+                      <td>Passport:</td>
+                      <td>${user.passport}</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </div>
+
+            </div>
+
+            <div class="panel-footer">
+              <div class = "text-center">
+                <a href="edit_profile" class="btn btn-lg btn-secondary btn-block">Edit profile</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
       </main>
 
-      <footer class="mastfoot mt-auto">
+
+      <footer class="mastfoot mt-auto text-center">
         <div class="inner">
           <p>&copy;einott lab</p>
         </div>

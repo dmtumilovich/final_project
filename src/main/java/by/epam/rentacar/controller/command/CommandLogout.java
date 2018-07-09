@@ -11,8 +11,7 @@ public class CommandLogout implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        session.setAttribute("username", "");
-        session.invalidate();
+        session.setAttribute("user", null);
 
         response.sendRedirect(request.getContextPath() + PageParameters.PAGE_MAIN);
     }
