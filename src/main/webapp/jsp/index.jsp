@@ -45,7 +45,7 @@
           <h3 class="masthead-brand">${title}</h3>
           <nav class="nav nav-masthead justify-content-center">
             <a class="nav-link active" href="main">${nav_home}</a>
-            <a class="nav-link" href="#">${nav_cars}</a>
+            <a class="nav-link" href="/controller?command=show_cars">${nav_cars}</a>
             <a class="nav-link" href="#">${nav_contact}</a>
 
             <c:if test = "${empty user}">
@@ -71,7 +71,7 @@
         <h1 class="cover-heading">${heading}</h1>
         <p class="lead">${heading_description}</p>
         <p class="lead">
-          <a href="#" class="btn btn-lg btn-secondary">${see_all_cars}</a>
+          <a href="/controller?command=show_cars" class="btn btn-lg btn-secondary">${see_all_cars}</a>
         </p>
       </main>
 

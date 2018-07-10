@@ -60,5 +60,23 @@
     <servlet-name>EditProfilePage</servlet-name>
     <url-pattern>/edit_profile</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>CarsPage</servlet-name>
+    <jsp-file>/jsp/cars.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CarsPage</servlet-name>
+    <url-pattern>/cars</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>CarPage</servlet-name>
+    <jsp-file>/jsp/car.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CarPage</servlet-name>
+    <url-pattern>/car</url-pattern>
+  </servlet-mapping>
   
 </web-app>

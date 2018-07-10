@@ -13,6 +13,8 @@ public class CommandContainer {
         commands.put("logout", new CommandLogout());
         commands.put("change_lang", new CommandLanguage());
         commands.put("edit_profile", new CommandEditProfile());
+        commands.put("show_cars", new CommandShowCars());
+        commands.put("show_selected_car", new CommandShowSelectedCar());
     }
 
     public static Command get(String commandStr) {

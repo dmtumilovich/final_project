@@ -39,7 +39,7 @@
           <h3 class="masthead-brand">${title}</h3>
           <nav class="nav nav-masthead justify-content-center">
             <a class="nav-link" href="main">${nav_home}</a>
-            <a class="nav-link" href="#">${nav_cars}</a>
+            <a class="nav-link" href="/controller?command=show_cars">${nav_cars}</a>
             <a class="nav-link" href="#">${nav_contact}</a>
 
             <c:if test = "${empty user}">
@@ -96,7 +96,7 @@
                           </tr>
                           <tr>
                             <td>Phone number:</td>
-                            <td> <input type="text" name="edit_phone" class="form-control" /> </td>
+                            <td> <input type="text" name="edit_phone" value="${user.phone}" class="form-control" /> </td>
                           </tr>
                           <tr>
                             <td>Passport:</td>

@@ -24,7 +24,7 @@ public class CommandSignup implements Command {
 
         if(user != null) {
             HttpSession session = request.getSession();
-            session.setAttribute("username", username);
+            session.setAttribute("user", user);
             response.sendRedirect(request.getContextPath() + PageParameters.PAGE_MAIN);
             return;
         }

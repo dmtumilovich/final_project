@@ -3,6 +3,7 @@ package by.epam.rentacar.controller;
 
 import by.epam.rentacar.controller.command.Command;
 import by.epam.rentacar.controller.command.CommandContainer;
+import by.epam.rentacar.util.constant.RequestParameters;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,7 +24,7 @@ public class Controller extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String commandStr = request.getParameter("command");
+        String commandStr = request.getParameter(RequestParameters.KEY_COMMAND);
         Command command = CommandContainer.get(commandStr);
         command.execute(request, response);
     }

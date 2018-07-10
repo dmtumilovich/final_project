@@ -3,6 +3,8 @@ package by.epam.rentacar.dao;
 import by.epam.rentacar.dao.connection.pool.ConnectionPool;
 import by.epam.rentacar.dao.connection.pool.ConnectionPoolException;
 import by.epam.rentacar.entity.User;
+import by.epam.rentacar.util.ResultSetParser;
+import by.epam.rentacar.util.constant.DBQueries;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,7 +23,7 @@ public class UserDAO {
             connectionPool.initPoolData();
             Connection connection = connectionPool.takeConnection();
 
-            PreparedStatement statement = connection.prepareStatement("SELECT id_user, username, password, email, name, surname, passport, id_role FROM user_list WHERE username = ?");
+            PreparedStatement statement = connection.prepareStatement(DBQueries.FIND_USER_BY_USERNAME);
             statement.setString(1, username);
 
             ResultSet resultSet = statement.executeQuery();
@@ -32,13 +34,7 @@ public class UserDAO {
                 return null;
             }
 
-            user = new User();
-            user.setId(resultSet.getInt(1));
-            user.setUsername(resultSet.getString(2));
-            user.setEmail(resultSet.getString(4));
-            user.setName(resultSet.getString(5));
-            user.setSurname(resultSet.getString(6));
-            user.setPassport(resultSet.getString(7));
+            user = ResultSetParser.createUser(resultSet);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,7 +57,7 @@ public class UserDAO {
             connectionPool.initPoolData();
             Connection connection = connectionPool.takeConnection();
 
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO user_list (username, password, email, id_role) VALUES (?, ?, ?, '2')");
+            PreparedStatement statement = connection.prepareStatement(DBQueries.ADD_USER);
             statement.setString(1, username);
             statement.setString(2, password);
             statement.setString(3, email);
@@ -86,7 +82,7 @@ public class UserDAO {
             connectionPool.initPoolData();
             Connection connection = connectionPool.takeConnection();
 
-            PreparedStatement statement = connection.prepareStatement("UPDATE user_list SET name = ?, surname = ?, phone_number = ?, passport = ? WHERE id_user = ?");
+            PreparedStatement statement = connection.prepareStatement(DBQueries.UPDATE_USER_INFO    );
             statement.setString(1,  user.getName());
             statement.setString(2, user.getSurname());
             statement.setString(3, user.getPhone());
