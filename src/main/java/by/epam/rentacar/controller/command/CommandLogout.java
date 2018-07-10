@@ -1,6 +1,7 @@
 package by.epam.rentacar.controller.command;
 
 import by.epam.rentacar.util.constant.PageParameters;
+import by.epam.rentacar.util.constant.SessionAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,7 +12,7 @@ public class CommandLogout implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        session.setAttribute("user", null);
+        session.setAttribute(SessionAttributes.KEY_USER, null);
 
         response.sendRedirect(request.getContextPath() + PageParameters.PAGE_MAIN);
     }

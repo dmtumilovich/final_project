@@ -9,6 +9,7 @@ public class DBQueries {
 
     //car queries
     public static final String FIND_ALL_CARS = "SELECT id_car, brand, model , class, year_of_issue, number_of_seats, color, engine_volume, is_available, price FROM car_list";
+    public static final String FIND_CAR_BY_ID = "SELECT id_car, brand, model , class, year_of_issue, number_of_seats, color, engine_volume, is_available, price FROM car_list WHERE id_car = ?";
 
     private DBQueries() {
 

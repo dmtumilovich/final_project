@@ -1,20 +1,13 @@
 package by.epam.rentacar.service;
 
-import by.epam.rentacar.dao.CarDAO;
 import by.epam.rentacar.entity.Car;
+import by.epam.rentacar.service.exception.ServiceException;
 
-import java.util.Collections;
 import java.util.List;
 
-public class CarService {
-    private static final CarDAO carDAO = new CarDAO();
+public interface CarService {
 
-    public List<Car> getAllCars() {
-        return carDAO.getAllCars();
-    }
-
-    public Car getSelectedCar(int carID) {
-        return carDAO.getCarByID(carID);
-    }
+    List<Car> getAllCars() throws ServiceException;
+    Car getSelectedCar(int carID) throws ServiceException;
 
 }

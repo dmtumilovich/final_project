@@ -1,9 +1,13 @@
 package by.epam.rentacar.controller.command;
 
 import by.epam.rentacar.entity.User;
+import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.UserService;
+import by.epam.rentacar.service.exception.ServiceException;
+import by.epam.rentacar.service.impl.UserServiceImpl;
 import by.epam.rentacar.util.constant.PageParameters;
 import by.epam.rentacar.util.constant.RequestParameters;
+import by.epam.rentacar.util.constant.SessionAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +19,7 @@ public class CommandEditProfile implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute(SessionAttributes.KEY_USER);
 
         String editName = request.getParameter(RequestParameters.KEY_EDIT_NAME);
         String editSurname = request.getParameter(RequestParameters.KEY_EDIT_SURNAME);
@@ -27,10 +31,17 @@ public class CommandEditProfile implements Command {
         user.setPassport(editPassport);
         user.setPhone(editPhone);
 
-        UserService service = new UserService();
-        if(service.editProfile(user)) {
-            session.setAttribute("user", user);
-            response.sendRedirect(request.getContextPath() + PageParameters.PAGE_PROFILE);
+        UserService userService = ServiceFactory.getInstance().getUserService();
+
+        try {
+
+            if(userService.editProfile(user)) {
+                session.setAttribute(SessionAttributes.KEY_USER, user);
+                response.sendRedirect(request.getContextPath() + PageParameters.PAGE_PROFILE);
+            }
+
+        } catch (ServiceException e) {
+            e.printStackTrace();
         }
     }
 }

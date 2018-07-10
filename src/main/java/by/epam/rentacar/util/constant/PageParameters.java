@@ -7,6 +7,7 @@ public class PageParameters {
     public static String PAGE_SIGNUP = "/signup";
     public static String PAGE_PROFILE = "/profile";
     public static String PAGE_CARS = "/cars";
+    public static String PAGE_CAR = "/car";
 
     private PageParameters() {
 
