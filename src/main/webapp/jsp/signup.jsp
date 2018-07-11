@@ -52,7 +52,14 @@
       </div> -->
 
       <button class="btn btn-lg btn-primary btn-block" type="submit">${button_signup}</button>
-      <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
     </form>
+
+    <!--Позже сделать -->
+    <%-- <c:if test = "${signup_error eq true}">
+      <div class="alert alert-danger text-center">
+        <strong>Error!</strong> Verify that the data entered is correct!
+      </div>
+    </c:if> --%>
+
   </body>
 </html>

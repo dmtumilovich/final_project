@@ -6,7 +6,8 @@
           xmlns="http://java.sun.com/xml/ns/javaee"
           xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
           version="2.5">
-
+  
+  
   <servlet>
     <servlet-name>Controller</servlet-name>
     <servlet-class>by.epam.rentacar.controller.Controller</servlet-class>
@@ -79,4 +80,19 @@
     <url-pattern>/car</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>ErrorPage</servlet-name>
+    <jsp-file>/jsp/error/error.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ErrorPage</servlet-name>
+    <url-pattern>/error</url-pattern>
+  </servlet-mapping>
+
+  <error-page>
+    <error-code>404</error-code>
+    <location>/error</location>
+  </error-page>
+
+
 </web-app>

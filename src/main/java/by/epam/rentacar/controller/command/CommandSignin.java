@@ -5,9 +5,11 @@ import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.UserService;
 import by.epam.rentacar.service.exception.ServiceException;
 import by.epam.rentacar.util.constant.PageParameters;
+import by.epam.rentacar.util.constant.RequestAttributes;
 import by.epam.rentacar.util.constant.RequestParameters;
 import by.epam.rentacar.util.constant.SessionAttributes;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,7 +19,7 @@ public class CommandSignin implements Command {
 
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         String username = request.getParameter(RequestParameters.KEY_USERNAME);
         String password = request.getParameter(RequestParameters.KEY_PASSWORD);
@@ -33,7 +35,8 @@ public class CommandSignin implements Command {
                 session.setAttribute(SessionAttributes.KEY_USER, user);
                 response.sendRedirect(request.getContextPath() + PageParameters.PAGE_MAIN);
             } else {
-                response.sendRedirect(request.getContextPath() + PageParameters.PAGE_SIGNIN);
+                request.setAttribute(RequestAttributes.KEY_INCORRECT_DATA, true);
+                request.getRequestDispatcher(PageParameters.PAGE_SIGNIN).forward(request, response);
             }
         } catch (ServiceException e) {
             e.printStackTrace();

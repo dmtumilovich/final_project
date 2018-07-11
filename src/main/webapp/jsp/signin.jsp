@@ -21,6 +21,8 @@
     <fmt:message bundle = "${loc}" key = "local.signin.text.username" var = "hint_username" />
     <fmt:message bundle = "${loc}" key = "local.signin.text.password" var = "hint_password" />
     <fmt:message bundle = "${loc}" key = "local.signin.button.signin" var = "button_signin" />
+    <fmt:message bundle = "${loc}" key = "local.signin.text.error" var = "message_error" />
+    <fmt:message bundle = "${loc}" key = "local.signin.text.incorrect" var = "message_incorrect" />
 
     <title>rent-a-car signin</title>
 
@@ -31,10 +33,9 @@
     <link href="../css/signin.css" rel="stylesheet">
   </head
 
-  <body class="text-center">
+  <body>
     <form class="form-signin" method="post" action="/controller">
-      <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-      <h1 class="h3 mb-3 font-weight-normal">${signin_header}</h1>
+      <h1 class="h3 mb-3 font-weight-normal text-center">${signin_header}</h1>
       <input type="hidden" name="command" value="signin">
 
       <label for="inputLogin" class="sr-only">${hint_username}</label>
@@ -50,8 +51,15 @@
       </div> -->
 
       <button class="btn btn-lg btn-primary btn-block" type="submit">${button_signin}</button>
-      <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+
+      <c:if test = "${incorrect_data eq true}">
+        <div class="alert alert-danger text-center">
+          <strong>${message_error}</strong> ${message_incorrect}
+        </div>
+      </c:if>
+
     </form>
+
 
   </body>
 </html>

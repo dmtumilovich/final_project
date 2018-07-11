@@ -10,7 +10,6 @@
       <c:redirect url = "main" />
     </c:if>
 
-    <title>Edit profile</title>
 
     <fmt:setLocale value = "${sessionScope.local}" />
     <fmt:setBundle basename = "local" var = "loc" />
@@ -24,6 +23,18 @@
     <fmt:message bundle = "${loc}" key = "local.header.text.nav-signup" var = "nav_signup" />
     <fmt:message bundle = "${loc}" key = "local.header.text.nav-profile" var = "nav_profile" />
     <fmt:message bundle = "${loc}" key = "local.header.text.nav-logout" var = "nav_logout" />
+
+    <fmt:message bundle = "${loc}" key = "local.edit-profile.text.title" var = "page_title" />
+    <fmt:message bundle = "${loc}" key = "local.edit-profile.text.panel-title" var = "panel_title" />
+    <fmt:message bundle = "${loc}" key = "local.edit-profile.text.panel-username" var = "panel_username" />
+    <fmt:message bundle = "${loc}" key = "local.edit-profile.text.panel-email" var = "panel_email" />
+    <fmt:message bundle = "${loc}" key = "local.edit-profile.text.panel-name" var = "panel_name" />
+    <fmt:message bundle = "${loc}" key = "local.edit-profile.text.panel-surname" var = "panel_surname" />
+    <fmt:message bundle = "${loc}" key = "local.edit-profile.text.panel-phone" var = "panel_phone" />
+    <fmt:message bundle = "${loc}" key = "local.edit-profile.text.panel-passport" var = "panel_passport" />
+    <fmt:message bundle = "${loc}" key = "local.edit-profile.button.save" var = "button_save" />
+
+    <title>${page_title}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -59,11 +70,12 @@
         </div>
       </header>
 
+      <jsp:include page = "/jsp/header.jsp" />
 
       <main role="main" class="inner cover">
         <div class="panel panel-info">
           <div class="panel-heading">
-            <h3 class="panel-title text-center">Profile information</h3>
+            <h3 class="panel-title text-center">${panel_title}</h3>
           </div>
           <div class="panel-body">
             <form method="post" action="/controller">
@@ -79,27 +91,27 @@
                       <table class="table table-user-information">
                         <tbody>
                           <tr>
-                            <td>Username:</td>
+                            <td>${panel_username}:</td>
                             <td>@${user.username}</td>
                           </tr>
                           <tr>
-                            <td>Email:</td>
+                            <td>${panel_email}:</td>
                             <td>${user.email}</td>
                           </tr>
                           <tr>
-                            <td>Name:</td>
+                            <td>${panel_name}:</td>
                             <td> <input type="text" name="edit_name" value="${user.name}" class="form-control" /> </td>
                           </tr>
                           <tr>
-                            <td>Surname:</td>
+                            <td>${panel_surname}:</td>
                             <td> <input type="text" name="edit_surname" value="${user.surname}" class="form-control" /> </td>
                           </tr>
                           <tr>
-                            <td>Phone number:</td>
+                            <td>${panel_phone}:</td>
                             <td> <input type="text" name="edit_phone" value="${user.phone}" class="form-control" /> </td>
                           </tr>
                           <tr>
-                            <td>Passport:</td>
+                            <td>${panel_passport}:</td>
                             <td> <input type="text" name="edit_passport" value="${user.passport}" class="form-control" /> </td>
                           </tr>
                         </tbody>
@@ -110,7 +122,7 @@
                 </div>
 
                 <div class="panel-footer text-center">
-                    <button class="btn btn-lg btn-secondary btn-block" type="submit">Save changes</button>
+                    <button class="btn btn-lg btn-secondary btn-block" type="submit">${button_save}</button>
                 </div>
               </form>
             </div>

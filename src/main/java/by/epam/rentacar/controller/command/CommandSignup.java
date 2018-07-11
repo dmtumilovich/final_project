@@ -6,9 +6,11 @@ import by.epam.rentacar.service.UserService;
 import by.epam.rentacar.service.exception.ServiceException;
 import by.epam.rentacar.service.impl.UserServiceImpl;
 import by.epam.rentacar.util.constant.PageParameters;
+import by.epam.rentacar.util.constant.RequestAttributes;
 import by.epam.rentacar.util.constant.RequestParameters;
 import by.epam.rentacar.util.constant.SessionAttributes;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -16,7 +18,7 @@ import java.io.IOException;
 
 public class CommandSignup implements Command {
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         String username = request.getParameter(RequestParameters.KEY_USERNAME);
         String password = request.getParameter(RequestParameters.KEY_PASSWORD);
@@ -33,11 +35,15 @@ public class CommandSignup implements Command {
                 session.setAttribute(SessionAttributes.KEY_USER, user);
                 response.sendRedirect(request.getContextPath() + PageParameters.PAGE_MAIN);
                 return;
+            }else {
+                //Позже сделать валидацию паролей и проверку на существование юзера и емайла
+                //request.setAttribute(RequestAttributes.KEY_SIGNUP_ERROR, true);
+                //request.getRequestDispatcher(PageParameters.PAGE_SIGNUP).forward(request, response);
             }
-            response.sendRedirect(request.getContextPath() + PageParameters.PAGE_SIGNUP);
 
         } catch (ServiceException e) {
             e.printStackTrace();
+            response.sendRedirect(PageParameters.PAGE_ERROR);
         }
 
 

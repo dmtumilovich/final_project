@@ -5,7 +5,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Available cars</title>
 
     <fmt:setLocale value = "${sessionScope.local}" />
     <fmt:setBundle basename = "local" var = "loc" />
@@ -19,6 +18,13 @@
     <fmt:message bundle = "${loc}" key = "local.header.text.nav-signup" var = "nav_signup" />
     <fmt:message bundle = "${loc}" key = "local.header.text.nav-profile" var = "nav_profile" />
     <fmt:message bundle = "${loc}" key = "local.header.text.nav-logout" var = "nav_logout" />
+
+    <fmt:message bundle = "${loc}" key = "local.cars.text.title" var = "page_title" />
+    <fmt:message bundle = "${loc}" key = "local.cars.text.panel-year" var = "panel_year" />
+    <fmt:message bundle = "${loc}" key = "local.cars.text.panel-volume" var = "panel_volume" />
+    <fmt:message bundle = "${loc}" key = "local.cars.text.panel-price" var = "panel_price" />
+
+    <title>${page_title}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -103,15 +109,15 @@
                   <table class="table table-user-information car-list-text">
                     <tbody>
                       <tr>
-                        <td>Year of issue:</td>
+                        <td>${panel_year}:</td>
                         <td>${car.yearOfIssue}</td>
                       </tr>
                       <tr>
-                        <td>Engine volume:</td>
+                        <td>${panel_volume}:</td>
                         <td>${car.engineVolume}</td>
                       </tr>
                       <tr>
-                        <td>Price:</td>
+                        <td>${panel_price}:</td>
                         <td>${car.price}</td>
                       </tr>
                     </tbody>

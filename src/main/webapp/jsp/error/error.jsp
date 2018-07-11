@@ -1,14 +1,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page isErrorPage="true" contentType="text/html;charset=UTF-8" language="java" %>
 
-
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <title>Car</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-    <fmt:setLocale value = "${sessionScope.local}" />
+
+    <!-- <fmt:setLocale value = "${sessionScope.local}" />
     <fmt:setBundle basename = "local" var = "loc" />
     <fmt:message bundle = "${loc}" key = "local.header.button.en" var = "en_button" />
     <fmt:message bundle = "${loc}" key = "local.header.button.ru" var = "ru_button" />
@@ -19,16 +21,14 @@
     <fmt:message bundle = "${loc}" key = "local.header.text.nav-signin" var = "nav_signin" />
     <fmt:message bundle = "${loc}" key = "local.header.text.nav-signup" var = "nav_signup" />
     <fmt:message bundle = "${loc}" key = "local.header.text.nav-profile" var = "nav_profile" />
-    <fmt:message bundle = "${loc}" key = "local.header.text.nav-logout" var = "nav_logout" />
+    <fmt:message bundle = "${loc}" key = "local.header.text.nav-logout" var = "nav_logout" /> -->
 
-    <fmt:message bundle = "${loc}" key = "local.car.text.title" var = "page_title" />
-    <fmt:message bundle = "${loc}" key = "local.car.text.panel-class" var = "panel_class" />
-    <fmt:message bundle = "${loc}" key = "local.car.text.panel-color" var = "panel_color" />
-    <fmt:message bundle = "${loc}" key = "local.car.text.panel-year" var = "panel_year" />
-    <fmt:message bundle = "${loc}" key = "local.car.text.panel-seats" var = "panel_seats" />
-    <fmt:message bundle = "${loc}" key = "local.car.text.panel_volume" var = "panel_volume" />
-    <fmt:message bundle = "${loc}" key = "local.car.text.panel-daily-price" var = "panel_daily_price" />
-    <fmt:message bundle = "${loc}" key = "local.car.button.order" var = "button_order" />
+    <fmt:message bundle = "${loc}" key = "local.main.text.heading" var = "heading" />
+    <fmt:message bundle = "${loc}" key = "local.main.text.heading-description" var = "heading_description" />
+    <fmt:message bundle = "${loc}" key = "local.main.button.see-all-cars" var = "see_all_cars" />
+
+
+    <title>Rent yourself a car</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -36,15 +36,15 @@
     <link href="../css/cover.css" rel="stylesheet">
   </head>
 
-  <body>
+  <body class="text-center">
 
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
       <header class="masthead mb-auto">
         <div class="inner">
           <h3 class="masthead-brand">${title}</h3>
           <nav class="nav nav-masthead justify-content-center">
-            <a class="nav-link" href="main">${nav_home}</a>
-            <a class="nav-link active" href="/controller?command=show_cars">${nav_cars}</a>
+            <a class="nav-link active" href="main">${nav_home}</a>
+            <a class="nav-link" href="/controller?command=show_cars">${nav_cars}</a>
             <a class="nav-link" href="#">${nav_contact}</a>
 
             <c:if test = "${empty user}">
@@ -67,67 +67,32 @@
       <jsp:include page = "/jsp/header.jsp"></jsp:include>
 
       <main role="main" class="inner cover">
-        <div class="panel panel-info">
-          <div class="panel-heading">
-            <h3 class="panel-title text-center">${car.brand} ${car.model}</h3>
-          </div>
-          <div class="panel-body">
-            <div class="row">
-
-              <div class="col-md-3 col-lg-3" align="center">
-                <img src="../img/no_avatar_car.png" alt="Photo" class="img-circle" width="150px" height="150px">
-              </div>
-
-              <div class="col-md-9 col-lg-9">
-                <table class="table table-striped table-user-information">
-                  <tbody>
-                    <tr>
-                      <td>Class:</td>
-                      <td>${car.carClass}</td>
-                    </tr>
-                    <tr>
-                      <td>Сolor:</td>
-                      <td>${car.color}</td>
-                    </tr>
-                    <tr>
-                      <td>Year:</td>
-                      <td>${car.yearOfIssue}</td>
-                    </tr>
-                      <td>Seats:</td>
-                      <td>${car.numberOfSeats}</td>
-                    </tr>
-                    <tr>
-                      <td>Engine volume:</td>
-                      <td>${car.engineVolume}</td>
-                    </tr>
-                    <tr>
-                      <td>Price per day:</td>
-                      <td>${car.price}</td>
-                    </tr>
-                  </tbody>
-                </table>
-
-              </div>
-
-            </div>
-
-            <div class="panel-footer">
-              <div class = "text-center">
-                <a href="#" class="btn btn-lg btn-secondary btn-block">Order</a>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="error-template">
+                <h1>Oops!</h1>
+                <h2>An error has occured!</h2>
+                <div class="error-actions">
+                    <a href="/main" class="btn btn-secondary btn-lg">
+                      <span class="octicon octicon-home"></span>Take Me Home
+                      </a>
+                      <a href="#" class="btn btn-secondary btn-lg">
+                        <span class="glyphicon glyphicon-envelope"></span> Contact Support
+                      </a>
+                </div>
               </div>
             </div>
-
           </div>
         </div>
       </main>
 
-      <footer class="mastfoot mt-auto text-center">
+      <footer class="mastfoot mt-auto">
         <div class="inner">
           <p>&copy;einott lab</p>
         </div>
       </footer>
     </div>
-
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

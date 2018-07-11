@@ -47,4 +47,9 @@ body {
 button.btn {
   background-color: #696969;
   border-color: gray;
+  /* margin-bottom: 10px; */
+}
+
+.alert {
+  margin-top: 10px;
 }

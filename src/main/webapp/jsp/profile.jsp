@@ -23,7 +23,17 @@
     <fmt:message bundle = "${loc}" key = "local.header.text.nav-profile" var = "nav_profile" />
     <fmt:message bundle = "${loc}" key = "local.header.text.nav-logout" var = "nav_logout" /> -->
 
-    <title>Profile</title>
+    <fmt:message bundle = "${loc}" key = "local.profile.text.title" var = "page_title" />
+    <fmt:message bundle = "${loc}" key = "local.profile.text.panel-title" var = "panel_title" />
+    <fmt:message bundle = "${loc}" key = "local.profile.text.panel-username" var = "panel_username" />
+    <fmt:message bundle = "${loc}" key = "local.profile.text.panel-email" var = "panel_email" />
+    <fmt:message bundle = "${loc}" key = "local.profile.text.panel-name" var = "panel_name" />
+    <fmt:message bundle = "${loc}" key = "local.profile.text.panel-surname" var = "panel_surname" />
+    <fmt:message bundle = "${loc}" key = "local.profile.text.panel-phone" var = "panel_phone" />
+    <fmt:message bundle = "${loc}" key = "local.profile.text.panel-passport" var = "panel_passport" />
+    <fmt:message bundle = "${loc}" key = "local.profile.button.edit" var = "button_edit" />
+
+    <title>${page_title}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -65,7 +75,7 @@
       <main role="main" class="inner cover">
         <div class="panel panel-info">
           <div class="panel-heading">
-            <h3 class="panel-title text-center">Profile information</h3>
+            <h3 class="panel-title text-center">${panel_title}</h3>
           </div>
           <div class="panel-body">
             <div class="row">
@@ -78,27 +88,27 @@
                 <table class="table table-striped table-user-information">
                   <tbody>
                     <tr>
-                      <td>Username:</td>
+                      <td>${panel_username}:</td>
                       <td>@${user.username}</td>
                     </tr>
                     <tr>
-                      <td>Email:</td>
+                      <td>${panel_email}:</td>
                       <td>${user.email}</td>
                     </tr>
                     <tr>
-                      <td>Name:</td>
+                      <td>${panel_name}:</td>
                       <td>${user.name}</td>
                     </tr>
                     <tr>
-                      <td>Surname:</td>
+                      <td>${panel_surname}:</td>
                       <td>${user.surname}</td>
                     </tr>
                     <tr>
-                      <td>Phone number:</td>
+                      <td>${panel_phone}:</td>
                       <td>${user.phone}</td>
                     </tr>
                     <tr>
-                      <td>Passport:</td>
+                      <td>${panel_passport}:</td>
                       <td>${user.passport}</td>
                     </tr>
                   </tbody>
@@ -110,7 +120,7 @@
 
             <div class="panel-footer">
               <div class = "text-center">
-                <a href="edit_profile" class="btn btn-lg btn-secondary btn-block">Edit profile</a>
+                <a href="edit_profile" class="btn btn-lg btn-secondary btn-block">${button_edit}</a>
               </div>
             </div>
 

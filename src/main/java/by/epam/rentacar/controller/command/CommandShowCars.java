@@ -3,9 +3,7 @@ package by.epam.rentacar.controller.command;
 import by.epam.rentacar.entity.Car;
 import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.ServiceFactory;
-import by.epam.rentacar.service.UserService;
 import by.epam.rentacar.service.exception.ServiceException;
-import by.epam.rentacar.service.impl.CarServiceImpl;
 import by.epam.rentacar.util.constant.PageParameters;
 import by.epam.rentacar.util.constant.RequestAttributes;
 
