@@ -59,7 +59,7 @@
             </c:if>
 
             <c:if test = "${not empty user}">
-              <a class="nav-link active" href="profile">${nav_profile}</a>
+              <a class="nav-link active" href="/user/profile">${nav_profile}</a>
               <a class="nav-link" href="/controller?command=logout">${nav_logout}</a>
             </c:if>
 

@@ -15,6 +15,7 @@ public class CommandContainer {
         commands.put("edit_profile", new CommandEditProfile());
         commands.put("show_cars", new CommandShowCars());
         commands.put("show_selected_car", new CommandShowSelectedCar());
+        commands.put("find_cars", new CommandFindCars());
     }
 
     public static Command get(String commandStr) {

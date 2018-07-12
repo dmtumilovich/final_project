@@ -47,7 +47,7 @@
             </c:if>
 
             <c:if test = "${not empty user}">
-              <a class="nav-link" href="profile">${nav_profile}</a>
+              <a class="nav-link" href="/user/profile">${nav_profile}</a>
               <a class="nav-link" href="/controller?command=logout">${nav_logout}</a>
             </c:if>
 
@@ -63,33 +63,101 @@
       <!--profile-->
       <main role="main" class="inner cover">
 
-        <%-- <div class="container col-lg-12 search-form">
-          <form>
+        <div class="container col-lg-12 search-form">
+          <form action="/controller" method="get">
+            <input type="hidden" name="command" value="find_cars">
             <div class="row">
-              <div class="col-lg-6">
+
+              <div class="btn-group btn-group-toggle" data-toggle="buttons" role="group">
+                <label class="btn btn-secondary active">
+                  <input type="radio" name="class" value="all" id="option1" autocomplete="off" checked> All
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="class" value="economy" id="option2" autocomplete="off"> Economy
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="class" value="standart" id="option3" autocomplete="off"> Standart
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="radio" name="class" value="premium" id="option4" autocomplete="off"> Premium
+                </label>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col">
                 <select name="brand" class="form-control form-control-sm">
-                  <option value="">Choose brand</option>
-                  <option value="">BMW</option>
-                  <option value="">Hyndai</option>
-                  <option value="">Mercedes</option>
-                  <option value="">Porsche</option>
+                  <option value="none">Choose brand</option>
+                  <option value="bmw">BMW</option>
+                  <option value="hyndai">Hyndai</option>
+                  <option value="mercedes">Mercedes</option>
+                  <option value="porsche">Porsche</option>
                 </select>
               </div>
-              <div class="row">
-                <div class="col-lg3">
-                  <input type="text" name="from" value="" class="form-control form-control-sm" placeholder="Volume from:">
-                </div>
-                <div class="col-lg3">
-                  <input type="text" name="to" value="" class="form-control form-control-sm" placeholder="to:">
+              <div class="col">
+                <div class="row">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><small>Year</small></span>
+                    </div>
+                    <input type="text" name="year_from" value="" class="form-control form-control-sm" placeholder="from:">
+                    <input type="text" name="year_to" value="" class="form-control form-control-sm" placeholder="to:">
+                  </div>
                 </div>
               </div>
             </div>
+
+            <div class="row">
+              <div class="col">
+                <select name="model" class="form-control form-control-sm">
+                  <option value="none">Choose model</option>
+                  <option value="520i">520i</option>
+                  <option value="solaris">Solaris</option>
+                  <option value="benz">Benz</option>
+                  <option value="911">911</option>
+                </select>
+              </div>
+              <div class="col">
+                <div class="row">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><small>Vol.&nbsp;</small></span>
+                    </div>
+                    <input type="text" name="volume_from" value="" class="form-control form-control-sm" placeholder="from:">
+                    <input type="text" name="volume_to" value="" class="form-control form-control-sm" placeholder="to:">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <select name="color" class="form-control form-control-sm">
+                  <option value="none">Choose color</option>
+                  <option value="white">White</option>
+                  <option value="blue">Blue</option>
+                  <option value="black">Black</option>
+                  <option value="gray">Gray</option>
+                </select>
+              </div>
+              <div class="col">
+                <div class="row">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><small>Price</small></span>
+                    </div>
+                    <input type="text" name="price_from" value="" class="form-control form-control-sm" placeholder="from:">
+                    <input type="text" name="price_to" value="" class="form-control form-control-sm" placeholder="to:">
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="row" id="search-button">
               <button type="submit" class="btn btn-block btn-primary">Search</button>
             </div>
           </form>
-        </div> --%>
-
+        </div>
 
 
         <c:forEach items="${requestScope.car_list}" var = "car" varStatus="loop">

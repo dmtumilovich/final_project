@@ -6,9 +6,9 @@
 <html>
   <head>
 
-    <c:if test="${empty user}">
+    <%-- <c:if test="${empty user}">
       <c:redirect url = "main" />
-    </c:if>
+    </c:if> --%>
 
     <!-- <fmt:setLocale value = "${sessionScope.local}" />
     <fmt:setBundle basename = "local" var = "loc" />
@@ -58,7 +58,7 @@
             </c:if>
 
             <c:if test = "${not empty user}">
-              <a class="nav-link active" href="profile">${nav_profile}</a>
+              <a class="nav-link active" href="/user/profile">${nav_profile}</a>
               <a class="nav-link" href="/controller?command=logout">${nav_logout}</a>
             </c:if>
 
@@ -120,7 +120,7 @@
 
             <div class="panel-footer">
               <div class = "text-center">
-                <a href="edit_profile" class="btn btn-lg btn-secondary btn-block">${button_edit}</a>
+                <a href="/user/edit_profile" class="btn btn-lg btn-secondary btn-block">${button_edit}</a>
               </div>
             </div>
 

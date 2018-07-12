@@ -41,7 +41,7 @@ body {
 }
 
 .cover-container {
-  max-width: 60em;
+  max-width: 70em;
 }
 
 
@@ -137,6 +137,22 @@ button.btn-primary:hover {
 #search-button {
   margin-top: 0.8rem;
 }
+
+div.search-form .row {
+  margin-bottom: 0.2rem;
+}
+
+div.btn-group-toggle {
+  border-style: solid;
+  border-color: #c0c0c0;
+  border-width: 0.5px;
+  border-radius: 5px;
+
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0.2rem;
+}
+
 
 /* error */
 .error-template {padding: 40px 15px;text-align: center;}

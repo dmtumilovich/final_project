@@ -5,6 +5,7 @@ import by.epam.rentacar.dao.DAOFactory;
 import by.epam.rentacar.dao.UserDAO;
 import by.epam.rentacar.dao.exception.DAOException;
 import by.epam.rentacar.dao.impl.CarDAOImpl;
+import by.epam.rentacar.dto.CarSearchDTO;
 import by.epam.rentacar.entity.Car;
 import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.exception.ServiceException;
@@ -43,6 +44,20 @@ public class CarServiceImpl implements CarService {
         }
 
         return car;
+    }
+
+    @Override
+    public List<Car> getCarsByFilter(CarSearchDTO carSearchDTO) throws ServiceException {
+        List<Car> carList = new ArrayList<>();
+
+        try {
+            carList = carDAO.getCarsByFilter(carSearchDTO);
+        } catch (DAOException e) {
+            e.printStackTrace();
+            throw new ServiceException("Could not find cars by filter");
+        }
+
+        return carList;
     }
 
 }
