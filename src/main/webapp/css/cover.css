@@ -153,6 +153,51 @@ div.btn-group-toggle {
   margin-bottom: 0.2rem;
 }
 
+/* убрать */
+/* button.btn-sm {
+  width: 150px;
+  margin-top: 0.3rem;
+} */
+
+.user_name{
+    font-size:14px;
+    font-weight: bold;
+}
+.comments-list .media{
+    border-bottom: 1px dotted #ccc;
+}
+
+.media {
+  margin-top: 0.9rem;
+}
+
+.media-left {
+  margin-right: 0.9rem;
+}
+
+.comments-container {
+  margin-top: 3rem;
+}
+
+.page-header {
+  border-bottom: 1px dotted #ccc;
+}
+
+.btn-send {
+  border-width: 2px;
+  border-style: solid;
+  border-color: #696969;
+}
+
+.btn-send:hover {
+  background-color: #696969;
+  color: #fff;
+}
+
+.btn.btn-reset {
+  background-color: #696969;
+  color: #fff;
+}
 
 /* error */
 .error-template {padding: 40px 15px;text-align: center;}

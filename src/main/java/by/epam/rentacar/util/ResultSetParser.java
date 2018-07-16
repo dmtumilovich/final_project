@@ -3,10 +3,12 @@ package by.epam.rentacar.util;
 import static by.epam.rentacar.util.constant.DBSchema.*;
 
 import by.epam.rentacar.entity.Car;
+import by.epam.rentacar.entity.Review;
 import by.epam.rentacar.entity.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 public class ResultSetParser {
 
@@ -62,6 +64,28 @@ public class ResultSetParser {
         car.setPrice(price);
 
         return car;
+    }
+
+    //?????
+    public static Review createReview(ResultSet rs) throws SQLException {
+        int reviewID = rs.getInt(CarReviewTable.ID_REVIEW);
+        if (reviewID == 0) {
+            return null;
+        }
+        System.out.println("reviewID " + reviewID);
+        int userID = rs.getInt(CarReviewTable.ID_USER);
+        String username = rs.getString(UserListTable.USERNAME);
+        String reviewText = rs.getString(CarReviewTable.REVIEW_TEXT);
+        Date date = rs.getDate(CarReviewTable.DATE);
+
+        Review review = new Review();
+        review.setId(reviewID);
+        review.setUsername(username);
+        review.setUserID(userID);
+        review.setReviewText(reviewText);
+        review.setReviewDate(date);
+
+        return review;
     }
 
     private ResultSetParser() {

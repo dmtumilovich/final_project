@@ -56,12 +56,14 @@
 
           </nav>
         </div>
+
       </header>
 
       <jsp:include page = "/jsp/header.jsp"></jsp:include>
 
       <!--profile-->
-      <main role="main" class="inner cover">
+      <main role="main" class="inner cover sticky-top">
+
 
         <div class="container col-lg-12 search-form">
           <form action="/controller" method="get">
@@ -158,7 +160,6 @@
             </div>
           </form>
         </div>
-
 
         <c:forEach items="${requestScope.car_list}" var = "car" varStatus="loop">
           <div class="panel panel-info">

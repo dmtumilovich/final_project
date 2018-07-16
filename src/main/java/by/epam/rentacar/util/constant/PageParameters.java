@@ -9,6 +9,7 @@ public class PageParameters {
     public static String PAGE_CARS = "/cars";
     public static String PAGE_CAR = "/car";
     public static String PAGE_ERROR = "/error";
+    public static String PAGE_CONTROLLER = "/controller";
 
     private PageParameters() {
 

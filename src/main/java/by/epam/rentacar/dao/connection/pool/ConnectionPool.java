@@ -77,34 +77,34 @@ public class ConnectionPool {
     }
 
     public void closeConnection(Connection connection, Statement st, ResultSet rs) {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            //logger
-        }
-
-        try {
-            st.close();
-        } catch (SQLException e) {
-            //logger
-        }
 
         try {
             rs.close();
         } catch (SQLException e) {
             //logger
         }
-    }
-
-    public void closeConnection(Connection connection, Statement st) {
         try {
-            connection.close();
+            st.close();
         } catch (SQLException e) {
             //logger
         }
 
         try {
+            connection.close();
+        } catch (SQLException e) {
+            //logger
+        }
+    }
+
+    public void closeConnection(Connection connection, Statement st) {
+
+        try {
             st.close();
+        } catch (SQLException e) {
+            //logger
+        }
+        try {
+            connection.close();
         } catch (SQLException e) {
             //logger
         }

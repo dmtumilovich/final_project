@@ -6,6 +6,7 @@ import by.epam.rentacar.dao.connection.pool.ConnectionPoolException;
 import by.epam.rentacar.dao.exception.DAOException;
 import by.epam.rentacar.dto.CarSearchDTO;
 import by.epam.rentacar.entity.Car;
+import by.epam.rentacar.entity.Review;
 import by.epam.rentacar.util.ResultSetParser;
 import by.epam.rentacar.util.constant.DBQueries;
 
@@ -62,12 +63,20 @@ public class CarDAOImpl implements CarDAO {
             connectionPool.initPoolData();
             connection = connectionPool.takeConnection();
 
-            statement = connection.prepareStatement(DBQueries.FIND_CAR_BY_ID);
+            statement = connection.prepareStatement(DBQueries.FIND_CAR_WITH_REVIEWS_BY_ID);
             statement.setInt(1, carID);
             resultSet = statement.executeQuery();
 
             if(resultSet.next()) {
                 car = ResultSetParser.createCar(resultSet);
+                Review review;
+                if ((review = ResultSetParser.createReview(resultSet)) != null)  {
+                    car.addReview(review);
+                }
+            }
+
+            while (resultSet.next()) {
+                car.addReview(ResultSetParser.createReview(resultSet));
             }
 
         } catch (ConnectionPoolException e) {

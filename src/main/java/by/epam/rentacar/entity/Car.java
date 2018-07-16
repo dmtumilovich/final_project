@@ -1,5 +1,8 @@
 package by.epam.rentacar.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Car {
     private int id;
     private String brand;
@@ -11,6 +14,8 @@ public class Car {
     private double engineVolume;
     private boolean isAvailable;
     private double price;
+
+    private List<Review> reviewList = new ArrayList<>();
 
     public Car() {
 
@@ -94,5 +99,38 @@ public class Car {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
+    }
+
+    public void addReview(Review review) {
+        reviewList.add(review);
+    }
+
+    public int getNumberOfReviews() {
+        return reviewList.size();
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "id=" + id +
+                ", brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", carClass='" + carClass + '\'' +
+                ", yearOfIssue=" + yearOfIssue +
+                ", numberOfSeats=" + numberOfSeats +
+                ", color='" + color + '\'' +
+                ", engineVolume=" + engineVolume +
+                ", isAvailable=" + isAvailable +
+                ", price=" + price +
+                ", reviewList=" + reviewList +
+                '}';
     }
 }

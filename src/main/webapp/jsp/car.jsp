@@ -119,6 +119,56 @@
 
           </div>
         </div>
+
+
+        <div class="container">
+          <div class="row comments-container">
+            <div class="col-md-12 col-lg-12">
+              <div class="page-header">
+                <h2><small class="float-right">${requestScope.car.numberOfReviews} comments</small> Comments </h2>
+              </div>
+              <c:if test = "${not empty user}">
+                <div class="">
+                  <form action="/controller" method="get">
+                    <input type="hidden" name="command" value="add_review">
+                    <input type="hidden" name="car_id" value="${car.id}">
+                    <input type="hidden" name="user_id" value="${user.id}">
+
+                    <div class="row">
+                      <%-- <input type="text" name="review_text" class="form-control" placeholder="Your comment..."  required> --%>
+                      <textarea name="review_text" rows="3" placeholder="Your comment..." class="form-control"></textarea>
+                      <div class="col row">
+                        <button type="reset" class="btn btn-sm btn-secondary btn-block btn-reset">Reset</button>
+                      </div>
+                      <div class="col row">
+                        <button type="submit" class="btn btm-sm btn-secondary btn-block btn-send">Send</button>
+                      </div>
+
+                    </div>
+                  </form>
+                </div>
+              </c:if>
+              <div class="comments-list">
+                <c:forEach items="${requestScope.car.reviewList}" var = "review">
+                  <div class="media">
+                    <a class="media-left" href="#">
+                      <img src="../img/no_avatar.png" width="50px" height="50px">
+                      </a>
+                      <div class="media-body">
+                        <h4 class="media-heading user_name">${review.username}</h4>
+                        ${review.reviewText}
+                        <p><small><a href="">Like</a> - <a href="">Share</a></small></p>
+                      </div>
+                      <div class="media-right">
+                        ${review.reviewDate}
+                      </div>
+                    </div>
+                  </c:forEach>
+                </div>
+              </div>
+            </div>
+        </div>
+
       </main>
 
       <footer class="mastfoot mt-auto text-center">

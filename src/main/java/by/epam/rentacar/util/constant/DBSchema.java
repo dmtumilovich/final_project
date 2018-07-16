@@ -31,6 +31,16 @@ public class DBSchema {
         public static final String PRICE = "price";
     }
 
+    public static final class CarReviewTable {
+        public static final String TABLE_NAME = "car_review";
+
+        public static final String ID_REVIEW = "id_review";
+        public static final String ID_CAR = "id_car";
+        public static final String ID_USER = "id_user";
+        public static final String REVIEW_TEXT = "review";
+        public static final String DATE = "time";
+    }
+
     private DBSchema() {
 
     }

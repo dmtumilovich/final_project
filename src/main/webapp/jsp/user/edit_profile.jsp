@@ -49,7 +49,7 @@
         <div class="inner">
           <h3 class="masthead-brand">${title}</h3>
           <nav class="nav nav-masthead justify-content-center">
-            <a class="nav-link" href="main">${nav_home}</a>
+            <a class="nav-link" href="../main">${nav_home}</a>
             <a class="nav-link" href="/controller?command=show_cars">${nav_cars}</a>
             <a class="nav-link" href="#">${nav_contact}</a>
 
@@ -83,6 +83,7 @@
 
                 <div class="col-md-3 col-lg-3" align="center">
                   <img src="../img/no_avatar.png" alt="Photo" class="img-circle" width="150px" height="150px">
+                  <%-- <button type="button" name="button" class="btn btn-sm btn-secondary btn-block">Change photo</button> --%>
                 </div>
 
 
