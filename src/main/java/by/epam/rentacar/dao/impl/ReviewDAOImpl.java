@@ -41,4 +41,28 @@ public class ReviewDAOImpl implements ReviewDAO {
         }
 
     }
+
+    @Override
+    public void deleteReview(int reviewID) {
+
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+
+        Connection connection;
+        PreparedStatement statement;
+
+        try {
+            connectionPool.initPoolData();
+            connection = connectionPool.takeConnection();
+
+            statement = connection.prepareStatement("DELETE FROM rent_a_car.car_review WHERE id_review = ?");
+            statement.setInt(1, reviewID);
+
+            statement.executeUpdate();
+        } catch (ConnectionPoolException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

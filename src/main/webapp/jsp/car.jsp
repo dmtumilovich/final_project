@@ -157,7 +157,17 @@
                       <div class="media-body">
                         <h4 class="media-heading user_name">${review.username}</h4>
                         ${review.reviewText}
-                        <p><small><a href="">Like</a> - <a href="">Share</a></small></p>
+                        <p>
+                          <small>
+                            <c:if test = "${review.userID eq user.id}">
+                              <a href="/controller?command=delete_review&review_id=${review.id}">Delete</a> -
+                            </c:if>
+                            <c:if test = "${review.userID != user.id}">
+                              <a href="">Like</a> -
+                            </c:if>
+                            <a href=""> Share</a>
+                          </small>
+                        </p>
                       </div>
                       <div class="media-right">
                         ${review.reviewDate}

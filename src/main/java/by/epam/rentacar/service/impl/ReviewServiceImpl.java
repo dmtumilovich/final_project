@@ -18,4 +18,9 @@ public class ReviewServiceImpl implements ReviewService {
         reviewDTO.setReviewDate(reviewDate);
         reviewDAO.addReview(reviewDTO);
     }
+
+    @Override
+    public void deleteReview(int reviewID) {
+        reviewDAO.deleteReview(reviewID);
+    }
 }

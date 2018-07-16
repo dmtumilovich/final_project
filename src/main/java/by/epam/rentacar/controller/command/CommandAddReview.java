@@ -23,8 +23,8 @@ public class CommandAddReview implements Command {
 
         ServiceFactory.getInstance().getReviewService().addReview(addReviewDTO);
 
-        //переделать
-        response.sendRedirect("/controller?command=show_selected_car&car_id=" + carID);
+        String page = request.getHeader("referer");
+        response.sendRedirect(page);
 
     }
 }
