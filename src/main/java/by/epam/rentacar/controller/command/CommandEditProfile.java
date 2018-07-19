@@ -8,6 +8,7 @@ import by.epam.rentacar.service.impl.UserServiceImpl;
 import by.epam.rentacar.util.constant.PageParameters;
 import by.epam.rentacar.util.constant.RequestParameters;
 import by.epam.rentacar.util.constant.SessionAttributes;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

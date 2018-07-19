@@ -44,7 +44,7 @@
   </head>
   <body>
 
-    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <div class="cover-container w-100 h-100 p-3 mx-auto flex-column">
       <header class="masthead mb-auto">
         <div class="inner">
           <h3 class="masthead-brand">${title}</h3>
@@ -73,61 +73,116 @@
       <jsp:include page = "/jsp/header.jsp" />
 
       <main role="main" class="inner cover">
-        <div class="panel panel-info">
-          <div class="panel-heading">
-            <h3 class="panel-title text-center">${panel_title}</h3>
-          </div>
-          <div class="panel-body">
-            <form method="post" action="/controller">
-              <div class="row">
 
-                <div class="col-md-3 col-lg-3" align="center">
-                  <img src="../img/no_avatar.png" alt="Photo" class="img-circle" width="150px" height="150px">
-                  <%-- <button type="button" name="button" class="btn btn-sm btn-secondary btn-block">Change photo</button> --%>
-                </div>
+        <ul class="nav nav-tabs justify-content-center">
+          <li class="nav-item">
+            <a href="#edit_main" class="nav-link active" data-toggle="tab">Main</a>
+          </li>
+          <li class="nav-item">
+            <a href="#edit_password" class="nav-link" data-toggle="tab">Password</a>
+          </li>
+        </ul>
+
+        <div class="tab-content">
+          <div class="tab-pane container active" id="edit_main">
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h3 class="panel-title text-center">${panel_title}</h3>
+              </div>
+              <div class="panel-body">
+                <form method="post" action="/controller">
+                  <div class="row">
+
+                    <div class="col-md-3 col-lg-3" align="center">
+                      <img src="../img/no_avatar.png" alt="Photo" class="img-circle" width="150px" height="150px">
+                      <%-- <button type="button" name="button" class="btn btn-sm btn-primary btn-block">Change photo</button> --%>
+                      <label class="btn btn-sm btn-secondary btn-block">
+                        Browse photo<input type="file" name="photo" style="display: none;"/>
+                      </label>
+                    </div>
 
 
-                  <div class="col-md-9 col-lg-9">
-                      <input type="hidden" name="command" value="edit_profile">
-                      <table class="table table-user-information">
-                        <tbody>
-                          <tr>
-                            <td>${panel_username}:</td>
-                            <td>@${user.username}</td>
-                          </tr>
-                          <tr>
-                            <td>${panel_email}:</td>
-                            <td>${user.email}</td>
-                          </tr>
-                          <tr>
-                            <td>${panel_name}:</td>
-                            <td> <input type="text" name="edit_name" value="${user.name}" class="form-control" /> </td>
-                          </tr>
-                          <tr>
-                            <td>${panel_surname}:</td>
-                            <td> <input type="text" name="edit_surname" value="${user.surname}" class="form-control" /> </td>
-                          </tr>
-                          <tr>
-                            <td>${panel_phone}:</td>
-                            <td> <input type="text" name="edit_phone" value="${user.phone}" class="form-control" /> </td>
-                          </tr>
-                          <tr>
-                            <td>${panel_passport}:</td>
-                            <td> <input type="text" name="edit_passport" value="${user.passport}" class="form-control" /> </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <div class="col-md-9 col-lg-9">
+                          <input type="hidden" name="command" value="edit_profile">
+                          <table class="table table-user-information">
+                            <tbody>
+                              <tr>
+                                <td>${panel_username}:</td>
+                                <td>@${user.username}</td>
+                              </tr>
+                              <tr>
+                                <td>${panel_email}:</td>
+                                <td>${user.email}</td>
+                              </tr>
+                              <tr>
+                                <td>${panel_name}:</td>
+                                <td> <input type="text" name="edit_name" value="${user.name}" class="form-control" /> </td>
+                              </tr>
+                              <tr>
+                                <td>${panel_surname}:</td>
+                                <td> <input type="text" name="edit_surname" value="${user.surname}" class="form-control" /> </td>
+                              </tr>
+                              <tr>
+                                <td>${panel_phone}:</td>
+                                <td> <input type="text" name="edit_phone" value="${user.phone}" class="form-control" /> </td>
+                              </tr>
+                              <tr>
+                                <td>${panel_passport}:</td>
+                                <td> <input type="text" name="edit_passport" value="${user.passport}" class="form-control" /> </td>
+                              </tr>
+                            </tbody>
+                          </table>
+
+                        </div>
 
                     </div>
 
+                    <div class="panel-footer text-center">
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">${button_save}</button>
+                    </div>
+                  </form>
                 </div>
+            </div>
+          </div>
 
+          <div class="tab-pane container fade" id="edit_password">
+            <div class="panel panel-info">
+              <form method="post" action="/controller">
+                <input type="hidden" name="command" value="change_password">
+                <div class="panel-heading">
+                  <h3 class="panel-title text-center">Edit password</h3>
+                </div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-lg-9 col-md-9 mx-auto">
+                      <table class="table table-user-information">
+                        <tbody>
+                          <tr>
+                            <td>Previous password:</td>
+                            <td><input type="password" name="edit_previous_password" class="form-control"/></td>
+                          </tr>
+                          <tr>
+                            <td>New password:</td>
+                            <td><input type="password" name="edit_new_password" class="form-control"/></td>
+                          </tr>
+                          <tr>
+                            <td>Confirm new password:</td>
+                            <td><input type="password" name="edit_confirm_new_password" class="form-control"/></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
                 <div class="panel-footer text-center">
-                    <button class="btn btn-lg btn-secondary btn-block" type="submit">${button_save}</button>
+                  <button type="submit"class="btn btn-lg btn-primary btn-block">Change password</button>
                 </div>
               </form>
             </div>
+          </div>
+
         </div>
+
       </main>
 
 

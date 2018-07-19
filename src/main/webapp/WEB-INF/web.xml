@@ -44,14 +44,14 @@
     <url-pattern>/signup</url-pattern>
   </servlet-mapping>
   
-  <servlet>
-    <servlet-name>ProfilePage</servlet-name>
-    <jsp-file>/jsp/user/profile.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ProfilePage</servlet-name>
-    <url-pattern>/user/profile</url-pattern>
-  </servlet-mapping>
+    <servlet>
+      <servlet-name>ProfilePage</servlet-name>
+      <jsp-file>/jsp/user/profile.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+      <servlet-name>ProfilePage</servlet-name>
+      <url-pattern>/user/profile</url-pattern>
+    </servlet-mapping>
 
   <servlet>
     <servlet-name>EditProfilePage</servlet-name>

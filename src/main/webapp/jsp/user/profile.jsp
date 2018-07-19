@@ -43,7 +43,7 @@
   </head>
 
   <body>
-    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <div class="cover-container w-100 h-100 p-3 mx-auto flex-column">
       <header class="masthead mb-auto">
         <div class="inner">
           <h3 class="masthead-brand">${title}</h3>
@@ -71,61 +71,79 @@
 
       <jsp:include page = "/jsp/header.jsp"></jsp:include>
 
-      <!--profile-->
+
       <main role="main" class="inner cover">
-        <div class="panel panel-info">
-          <div class="panel-heading">
-            <h3 class="panel-title text-center">${panel_title}</h3>
-          </div>
-          <div class="panel-body">
-            <div class="row">
 
-              <div class="col-md-3 col-lg-3" align="center">
-                <img src="../img/no_avatar.png" alt="Photo" class="img-circle" width="150px" height="150px">
+
+        <ul class="nav nav-tabs justify-content-center">
+          <li>
+            <a href="#profile_main" class="nav-link active" data-toggle="tab">Main</a>
+          </li>
+          <li>
+            <a href="#" class="nav-link" data-toggle="tab">Other</a>
+          </li>
+        </ul>
+
+        <div class="tab-content">
+          <div class="tab-pane container active" id="profile_main">
+
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h3 class="panel-title text-center">${panel_title}</h3>
               </div>
+              <div class="panel-body">
+                <div class="row">
 
-              <div class="col-md-9 col-lg-9">
-                <table class="table table-striped table-user-information">
-                  <tbody>
-                    <tr>
-                      <td>${panel_username}:</td>
-                      <td>@${user.username}</td>
-                    </tr>
-                    <tr>
-                      <td>${panel_email}:</td>
-                      <td>${user.email}</td>
-                    </tr>
-                    <tr>
-                      <td>${panel_name}:</td>
-                      <td>${user.name}</td>
-                    </tr>
-                    <tr>
-                      <td>${panel_surname}:</td>
-                      <td>${user.surname}</td>
-                    </tr>
-                    <tr>
-                      <td>${panel_phone}:</td>
-                      <td>${user.phone}</td>
-                    </tr>
-                    <tr>
-                      <td>${panel_passport}:</td>
-                      <td>${user.passport}</td>
-                    </tr>
-                  </tbody>
-                </table>
+                  <div class="col-md-3 col-lg-3" align="center">
+                    <img src="../img/no_avatar.png" alt="Photo" class="img-circle" width="150px" height="150px">
+                  </div>
+
+                  <div class="col-md-9 col-lg-9">
+                    <table class="table table-striped table-user-information">
+                      <tbody>
+                        <tr>
+                          <td>${panel_username}:</td>
+                          <td>@${user.username}</td>
+                        </tr>
+                        <tr>
+                          <td>${panel_email}:</td>
+                          <td>${user.email}</td>
+                        </tr>
+                        <tr>
+                          <td>${panel_name}:</td>
+                          <td>${user.name}</td>
+                        </tr>
+                        <tr>
+                          <td>${panel_surname}:</td>
+                          <td>${user.surname}</td>
+                        </tr>
+                        <tr>
+                          <td>${panel_phone}:</td>
+                          <td>${user.phone}</td>
+                        </tr>
+                        <tr>
+                          <td>${panel_passport}:</td>
+                          <td>${user.passport}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                  </div>
+
+                </div>
+
+                <div class="panel-footer">
+                  <div class = "text-center">
+                    <a href="/user/edit_profile" class="btn btn-lg btn-secondary btn-block">${button_edit}</a>
+                  </div>
+                </div>
 
               </div>
-
             </div>
-
-            <div class="panel-footer">
-              <div class = "text-center">
-                <a href="/user/edit_profile" class="btn btn-lg btn-secondary btn-block">${button_edit}</a>
-              </div>
-            </div>
-
           </div>
         </div>
+
+
       </main>
 
 

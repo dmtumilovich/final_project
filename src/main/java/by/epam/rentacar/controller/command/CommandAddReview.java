@@ -2,6 +2,7 @@ package by.epam.rentacar.controller.command;
 
 import by.epam.rentacar.dto.AddReviewDTO;
 import by.epam.rentacar.service.ServiceFactory;
+import by.epam.rentacar.util.constant.RequestParameters;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,9 +13,9 @@ public class CommandAddReview implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        int carID = Integer.parseInt(request.getParameter("car_id"));
-        int userID = Integer.parseInt(request.getParameter("user_id"));
-        String reviewText = request.getParameter("review_text");
+        int carID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_CAR));
+        int userID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_USER));
+        String reviewText = request.getParameter(RequestParameters.KEY_REVIEW_TEXT);
 
         AddReviewDTO addReviewDTO = new AddReviewDTO();
         addReviewDTO.setCarID(carID);

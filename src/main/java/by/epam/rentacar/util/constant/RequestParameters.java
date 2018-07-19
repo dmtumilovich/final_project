@@ -16,6 +16,10 @@ public class RequestParameters {
     public static final String KEY_EDIT_PASSPORT = "edit_passport";
 
     public static final String KEY_ID_CAR = "car_id";
+    public static final String KEY_ID_USER = "user_id";
+
+    public static final String KEY_ID_REVIEW = "review_id";
+    public static final String KEY_REVIEW_TEXT = "review_text";
 
     private RequestParameters() {
 

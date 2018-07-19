@@ -4,9 +4,11 @@ import by.epam.rentacar.dao.UserDAO;
 import by.epam.rentacar.dao.connection.pool.ConnectionPool;
 import by.epam.rentacar.dao.connection.pool.ConnectionPoolException;
 import by.epam.rentacar.dao.exception.DAOException;
+import by.epam.rentacar.dto.ChangePasswordDTO;
 import by.epam.rentacar.entity.User;
 import by.epam.rentacar.util.ResultSetParser;
 import by.epam.rentacar.util.constant.DBQueries;
+import by.epam.rentacar.util.constant.DBSchema;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -96,7 +98,7 @@ public class UserDAOImpl implements UserDAO {
             connectionPool.initPoolData();
             connection = connectionPool.takeConnection();
 
-            statement = connection.prepareStatement(DBQueries.UPDATE_USER_INFO    );
+            statement = connection.prepareStatement(DBQueries.UPDATE_USER_INFO);
             statement.setString(1,  user.getName());
             statement.setString(2, user.getSurname());
             statement.setString(3, user.getPhone());
@@ -113,6 +115,67 @@ public class UserDAOImpl implements UserDAO {
         }
 
         return true;
+    }
+
+    @Override
+    public void changePassword(ChangePasswordDTO changePasswordDTO) throws DAOException {
+
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connectionPool.initPoolData();
+            connection = connectionPool.takeConnection();
+
+            statement = connection.prepareStatement("UPDATE user_list SET password = ? WHERE id_user = ?");
+            statement.setString(1, changePasswordDTO.getNewPassword());
+            statement.setInt(2, changePasswordDTO.getUserID());
+            statement.executeUpdate();
+
+        } catch (ConnectionPoolException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public boolean checkPassword(int userID, String password) throws DAOException {
+
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        boolean isMatches = false;
+
+        try {
+            connectionPool.initPoolData();
+            connection = connectionPool.takeConnection();
+
+            statement = connection.prepareStatement("SELECT * FROM user_list WHERE id_user = ?");
+            statement.setInt(1, userID);
+
+            resultSet = statement.executeQuery();
+            //????
+            if (!resultSet.next()) {
+                return false;
+            }
+
+            String userPassword = resultSet.getString(DBSchema.UserListTable.PASSWORD);
+            isMatches = password.equalsIgnoreCase(userPassword);
+
+        } catch (ConnectionPoolException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return isMatches;
     }
 
 }

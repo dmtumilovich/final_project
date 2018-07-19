@@ -14,6 +14,7 @@ public class CommandLogout implements Command {
         HttpSession session = request.getSession();
         session.setAttribute(SessionAttributes.KEY_USER, null);
 
-        response.sendRedirect(request.getContextPath() + PageParameters.PAGE_MAIN);
+        String page = request.getHeader("referer");
+        response.sendRedirect(page);
     }
 }

@@ -13,6 +13,8 @@ public class CommandLanguage implements Command{
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.getSession(true).setAttribute(SessionAttributes.KEY_LOCAL, request.getParameter(RequestParameters.KEY_LOCAL));
-        response.sendRedirect(request.getContextPath() + PageParameters.PAGE_MAIN);
+
+        String page = request.getHeader("referer");
+        response.sendRedirect(page);
     }
 }

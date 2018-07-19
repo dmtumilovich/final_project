@@ -4,6 +4,7 @@ import by.epam.rentacar.dao.DAOFactory;
 import by.epam.rentacar.dao.UserDAO;
 import by.epam.rentacar.dao.exception.DAOException;
 import by.epam.rentacar.dao.impl.UserDAOImpl;
+import by.epam.rentacar.dto.ChangePasswordDTO;
 import by.epam.rentacar.entity.User;
 import by.epam.rentacar.service.UserService;
 import by.epam.rentacar.service.exception.ServiceException;
@@ -58,6 +59,27 @@ public class UserServiceImpl implements UserService {
         }
 
         return true;
+    }
+
+    @Override
+    public void changePassword(ChangePasswordDTO changePasswordDTO) throws ServiceException {
+
+        String hashedPreviousPassword = hashPassword(changePasswordDTO.getPreviousPassword());
+        String hashedNewPassword = hashPassword(changePasswordDTO.getNewPassword());
+        String hashedConfirmPassword = hashPassword(changePasswordDTO.getConfirmPassword());
+
+        changePasswordDTO.setPreviousPassword(hashedPreviousPassword);
+        changePasswordDTO.setNewPassword(hashedNewPassword);
+        changePasswordDTO.setConfirmPassword(hashedConfirmPassword);
+
+        try {
+            if (!userDAO.checkPassword(changePasswordDTO.getUserID(), changePasswordDTO.getConfirmPassword())) {
+                //exception или возвратить false
+            }
+            userDAO.changePassword(changePasswordDTO);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
     }
 
     private String hashPassword(String password) {

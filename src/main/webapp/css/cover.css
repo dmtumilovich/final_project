@@ -199,6 +199,12 @@ div.btn-group-toggle {
   color: #fff;
 }
 
+.btn.btn-sm.btn-secondary {
+  background-color: #808080;
+  border-color: #808080;
+  color: #fff;
+}
+
 /* error */
 .error-template {padding: 40px 15px;text-align: center;}
 .error-actions {margin-top:15px;margin-bottom:15px;}
