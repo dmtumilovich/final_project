@@ -10,23 +10,14 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-public class ReviewDAOImpl implements ReviewDAO {
-
-    private ConnectionPool connectionPool;
-
-    public ReviewDAOImpl(ConnectionPool connectionPool) {
-        this.connectionPool = connectionPool;
-    }
+public class ReviewDAOImpl extends ReviewDAO {
 
     @Override
     public void addReview(AddReviewDTO reviewDTO) {
 
-        Connection connection = null;
         PreparedStatement statement = null;
 
         try {
-
-            connection = connectionPool.takeConnection();
 
             statement = connection.prepareStatement("INSERT INTO car_review (id_car, id_user, review, time) VALUES (?, ?, ?, ?)");
             statement.setInt(1, reviewDTO.getCarID());
@@ -37,12 +28,8 @@ public class ReviewDAOImpl implements ReviewDAO {
 
             statement.executeUpdate();
 
-        } catch (ConnectionPoolException e) {
-            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            connectionPool.closeConnection(connection, statement);
         }
 
     }
@@ -50,19 +37,15 @@ public class ReviewDAOImpl implements ReviewDAO {
     @Override
     public void deleteReview(int reviewID) {
 
-        Connection connection;
         PreparedStatement statement;
 
         try {
-
-            connection = connectionPool.takeConnection();
 
             statement = connection.prepareStatement("DELETE FROM rent_a_car.car_review WHERE id_review = ?");
             statement.setInt(1, reviewID);
 
             statement.executeUpdate();
-        } catch (ConnectionPoolException e) {
-            e.printStackTrace();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

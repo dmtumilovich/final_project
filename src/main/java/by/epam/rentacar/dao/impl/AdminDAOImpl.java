@@ -18,25 +18,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminDAOImpl implements AdminDAO {
-
-    private final ConnectionPool connectionPool;
-
-    public AdminDAOImpl(ConnectionPool connectionPool) {
-        this.connectionPool = connectionPool;
-    }
+public class AdminDAOImpl extends AdminDAO {
 
     @Override
     public List<CarItemDTO> getCarList() throws DAOException {
 
         List<CarItemDTO> carItemList = new ArrayList<>();
 
-        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         try {
-            connection = connectionPool.takeConnection();
 
             statement = connection.prepareStatement("SELECT car_list.id_car, car_list.brand, car_list.model, car_list.class, car_list.price, car_list.is_available, COUNT(car_review.id_car) AS comments_count\n" +
                                                     "FROM car_list\n" +
@@ -56,12 +48,9 @@ public class AdminDAOImpl implements AdminDAO {
 
                 carItemList.add(carItemDTO);
             }
-        } catch (ConnectionPoolException e) {
-            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("items size is " + carItemList.size());
 
         return carItemList;
 
@@ -70,14 +59,12 @@ public class AdminDAOImpl implements AdminDAO {
     @Override
     public CarInfoDTO getCarInfo(int carID) throws DAOException {
 
-        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         CarInfoDTO carInfoDTO = new CarInfoDTO();
 
         try {
-            connection = connectionPool.takeConnection();
 
             statement = connection.prepareStatement("SELECT * FROM car_list WHERE id_car = ?");
             statement.setInt(1, carID);
@@ -87,8 +74,6 @@ public class AdminDAOImpl implements AdminDAO {
                 Car car = ResultSetParser.createCar(resultSet);
                 carInfoDTO.setCar(car);
             }
-        } catch (ConnectionPoolException e) {
-            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -99,11 +84,9 @@ public class AdminDAOImpl implements AdminDAO {
     @Override
     public boolean addCar(AddCarDTO addCarDTO) throws DAOException {
 
-        Connection connection = null;
         PreparedStatement statement = null;
 
         try {
-            connection = connectionPool.takeConnection();
 
             statement = connection.prepareStatement("INSERT INTO car_list (brand, model, class, color, year_of_issue, number_of_seats, engine_volume, is_available, price) VALUES (?, ? ,?, ?, ?, ?, ?, '1', ?)");
             statement.setString(1, addCarDTO.getBrand());
@@ -116,8 +99,6 @@ public class AdminDAOImpl implements AdminDAO {
             statement.setDouble(8, addCarDTO.getPrice());
             statement.executeUpdate();
 
-        } catch (ConnectionPoolException e) {
-            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -129,11 +110,9 @@ public class AdminDAOImpl implements AdminDAO {
     @Override
     public boolean editCar(Car car) throws DAOException {
 
-        Connection connection = null;
         PreparedStatement statement = null;
 
         try {
-            connection = connectionPool.takeConnection();
 
             statement = connection.prepareStatement("UPDATE car_list\n" +
                                                     "SET brand = ?, model = ?, class = ?, year_of_issue = ?, number_of_seats = ?, color = ?, engine_volume = ?, is_available = ?, price = ?\n" +
@@ -151,8 +130,6 @@ public class AdminDAOImpl implements AdminDAO {
 
             statement.executeUpdate();
 
-        } catch (ConnectionPoolException e) {
-            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -164,18 +141,14 @@ public class AdminDAOImpl implements AdminDAO {
     @Override
     public boolean deleteCar(int carID) throws DAOException {
 
-        Connection connection = null;
         PreparedStatement statement = null;
 
         try {
-            connection = connectionPool.takeConnection();
 
             //может не делитом?
             statement = connection.prepareStatement("DELETE FROM car_list WHERE id_car = ?");
             statement.executeUpdate();
 
-        } catch (ConnectionPoolException e) {
-            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }

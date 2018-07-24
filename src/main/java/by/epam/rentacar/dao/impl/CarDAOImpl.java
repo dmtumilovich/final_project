@@ -17,25 +17,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarDAOImpl implements CarDAO {
-
-    private ConnectionPool connectionPool;
-
-    public CarDAOImpl(ConnectionPool connectionPool) {
-        this.connectionPool = connectionPool;
-    }
+public class CarDAOImpl extends CarDAO {
 
     public List<Car> getAllCars() throws DAOException {
 
         List<Car> carList = new ArrayList<>();
 
-        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         try {
-
-            connection = connectionPool.takeConnection();
 
             statement = connection.prepareStatement(DBQueries.FIND_ALL_CARS);
             resultSet = statement.executeQuery();
@@ -44,12 +35,8 @@ public class CarDAOImpl implements CarDAO {
                 Car car = ResultSetParser.createCar(resultSet);
                 carList.add(car);
             }
-        } catch (ConnectionPoolException e) {
-            throw new DAOException("Connection error!", e);
         } catch (SQLException e) {
             throw new DAOException("Error while getting car list.", e);
-        } finally {
-            connectionPool.closeConnection(connection, statement, resultSet);
         }
 
         return carList;
@@ -58,13 +45,10 @@ public class CarDAOImpl implements CarDAO {
     public Car getCarByID(int carID) throws DAOException {
 
         Car car = null;
-        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         try {
-
-            connection = connectionPool.takeConnection();
 
             statement = connection.prepareStatement(DBQueries.FIND_CAR_WITH_REVIEWS_BY_ID);
             statement.setInt(1, carID);
@@ -82,14 +66,9 @@ public class CarDAOImpl implements CarDAO {
                 car.addReview(ResultSetParser.createReview(resultSet));
             }
 
-        } catch (ConnectionPoolException e) {
-            throw new DAOException("Connection error!", e);
         } catch (SQLException e) {
             throw new DAOException("Error while getting car info by id.", e);
-        } finally {
-            connectionPool.closeConnection(connection, statement, resultSet);
         }
-
         return car;
     }
 
@@ -98,13 +77,10 @@ public class CarDAOImpl implements CarDAO {
 
         List<Car> carList = new ArrayList<>();
 
-        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         try {
-            System.out.println(createSearchQueryFromDTO(carSearchDTO));
-            connection = connectionPool.takeConnection();
 
 //            statement = connection.prepareStatement("SELECT * FROM car_list WHERE brand = ? and model = ? and color = ? and class = ? and" +
 //                                                    " year_of_issue BETWEEN ? and ? and engine_volume BETWEEN ? and ? and price BETWEEN ? and ?");
@@ -129,12 +105,8 @@ public class CarDAOImpl implements CarDAO {
                 Car car = ResultSetParser.createCar(resultSet);
                 carList.add(car);
             }
-        } catch (ConnectionPoolException e) {
-            throw new DAOException("Connection error!", e);
         } catch (SQLException e) {
             throw new DAOException("Error while getting car list by filter.", e);
-        } finally {
-            //connectionPool.closeConnection(connection, statement, resultSet);
         }
 
         //System.out.println("size: " + carList.size());

@@ -16,24 +16,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserDAOImpl implements UserDAO {
-
-    private ConnectionPool connectionPool;
-
-    public UserDAOImpl(ConnectionPool connectionPool) {
-        this.connectionPool = connectionPool;
-    }
+public class UserDAOImpl extends UserDAO {
 
     public User findUser(String username, String password) throws DAOException {
 
         User user = null;
-        Connection connection = null;
+
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         try {
-
-            connection = connectionPool.takeConnection();
 
             statement = connection.prepareStatement(DBQueries.FIND_USER_BY_USERNAME);
             statement.setString(1, username);
@@ -49,12 +41,8 @@ public class UserDAOImpl implements UserDAO {
 
             user = ResultSetParser.createUser(resultSet);
 
-        } catch (ConnectionPoolException e) {
-            throw new DAOException("Connection error!", e);
         } catch (SQLException e) {
             throw new DAOException("Error while getting user info by id.", e);
-        } finally {
-            connectionPool.closeConnection(connection, statement, resultSet);
         }
 
         return user;
@@ -64,15 +52,12 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User findUserByUsername(String username) throws DAOException {
 
-        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         User user = null;
 
         try {
-
-            connection = connectionPool.takeConnection();
 
             statement = connection.prepareStatement(DBQueries.FIND_USER_BY_USERNAME);
             statement.setString(1, username);
@@ -82,8 +67,6 @@ public class UserDAOImpl implements UserDAO {
                 user = ResultSetParser.createUser(resultSet);
             }
 
-        } catch (ConnectionPoolException e) {
-            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -94,15 +77,12 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public String findPasswordByUsername(String username) throws DAOException {
 
-        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         String password = null;
 
         try {
-
-            connection = connectionPool.takeConnection();
 
             statement = connection.prepareStatement("SELECT password FROM user_list WHERE username = ?");
             statement.setString(1, username);
@@ -112,8 +92,6 @@ public class UserDAOImpl implements UserDAO {
                 password = resultSet.getString(DBSchema.UserListTable.PASSWORD);
             }
 
-        } catch (ConnectionPoolException e) {
-            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -125,13 +103,10 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public String findEmail(String email) throws DAOException {
 
-        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         try {
-
-            connection = connectionPool.takeConnection();
 
             statement = connection.prepareStatement("SELECT * FROM user_list WHERE email = ?");
             statement.setString(1, email);
@@ -141,8 +116,6 @@ public class UserDAOImpl implements UserDAO {
                 email = resultSet.getString(DBSchema.UserListTable.EMAIL);
             }
 
-        } catch (ConnectionPoolException e) {
-            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -153,12 +126,9 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void registerUser(SignupDTO signupDTO) throws DAOException {
 
-        Connection connection = null;
         PreparedStatement statement = null;
 
         try {
-
-            connection = connectionPool.takeConnection();
 
             statement = connection.prepareStatement(DBQueries.ADD_USER);
             statement.setString(1, signupDTO.getUsername());
@@ -166,12 +136,8 @@ public class UserDAOImpl implements UserDAO {
             statement.setString(3, signupDTO.getEmail());
 
             statement.executeUpdate();
-        } catch (ConnectionPoolException e) {
-            throw new DAOException("Connection error!", e);
         } catch (SQLException e) {
             throw new DAOException("Error while adding new user to the database.", e);
-        } finally {
-            connectionPool.closeConnection(connection, statement);
         }
 
     }
@@ -179,12 +145,9 @@ public class UserDAOImpl implements UserDAO {
     //убрать бул или переделать
     public boolean signupUser(String username, String password, String email) throws DAOException {
 
-        Connection connection = null;
         PreparedStatement statement = null;
         
         try {
-
-            connection = connectionPool.takeConnection();
 
             statement = connection.prepareStatement(DBQueries.ADD_USER);
             statement.setString(1, username);
@@ -192,12 +155,8 @@ public class UserDAOImpl implements UserDAO {
             statement.setString(3, email);
 
             statement.executeUpdate();
-        } catch (ConnectionPoolException e) {
-            throw new DAOException("Connection error!", e);
         } catch (SQLException e) {
             throw new DAOException("Error while adding new user to the database.", e);
-        } finally {
-            connectionPool.closeConnection(connection, statement);
         }
 
         return true;
@@ -206,12 +165,9 @@ public class UserDAOImpl implements UserDAO {
     //тоже убрать бул или переделать
     public boolean updateUser(User user) throws DAOException {
 
-        Connection connection = null;
         PreparedStatement statement = null;
 
         try {
-
-            connection = connectionPool.takeConnection();
 
             statement = connection.prepareStatement(DBQueries.UPDATE_USER_INFO);
             statement.setString(1,  user.getName());
@@ -221,12 +177,8 @@ public class UserDAOImpl implements UserDAO {
             statement.setInt(5, user.getId());
             statement.executeUpdate();
 
-        } catch (ConnectionPoolException e) {
-            throw new DAOException("Connection error!", e);
         } catch (SQLException e) {
             throw new DAOException("Error while updating user info.", e);
-        } finally {
-            connectionPool.closeConnection(connection, statement);
         }
 
         return true;
@@ -235,20 +187,15 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void changePassword(ChangePasswordDTO changePasswordDTO) throws DAOException {
 
-        Connection connection = null;
         PreparedStatement statement = null;
 
         try {
-
-            connection = connectionPool.takeConnection();
 
             statement = connection.prepareStatement("UPDATE user_list SET password = ? WHERE id_user = ?");
             statement.setString(1, changePasswordDTO.getNewPassword());
             statement.setInt(2, changePasswordDTO.getUserID());
             statement.executeUpdate();
 
-        } catch (ConnectionPoolException e) {
-            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -258,15 +205,12 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public boolean checkPassword(int userID, String password) throws DAOException {
 
-        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         boolean isMatches = false;
 
         try {
-
-            connection = connectionPool.takeConnection();
 
             statement = connection.prepareStatement("SELECT * FROM user_list WHERE id_user = ?");
             statement.setInt(1, userID);
@@ -280,8 +224,6 @@ public class UserDAOImpl implements UserDAO {
             String userPassword = resultSet.getString(DBSchema.UserListTable.PASSWORD);
             isMatches = password.equalsIgnoreCase(userPassword);
 
-        } catch (ConnectionPoolException e) {
-            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }

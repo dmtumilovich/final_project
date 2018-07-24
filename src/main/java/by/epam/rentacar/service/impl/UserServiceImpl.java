@@ -1,8 +1,12 @@
 package by.epam.rentacar.service.impl;
 
 import by.epam.rentacar.dao.DAOFactory;
+import by.epam.rentacar.dao.TransactionHelper;
 import by.epam.rentacar.dao.UserDAO;
+import by.epam.rentacar.dao.connection.pool.ConnectionPool;
+import by.epam.rentacar.dao.connection.pool.ConnectionPoolException;
 import by.epam.rentacar.dao.exception.DAOException;
+import by.epam.rentacar.dao.impl.UserDAOImpl;
 import by.epam.rentacar.domain.dto.ChangePasswordDTO;
 import by.epam.rentacar.domain.dto.SigninDTO;
 import by.epam.rentacar.domain.dto.SignupDTO;
@@ -12,12 +16,11 @@ import by.epam.rentacar.service.exception.EmailAlreadyExistsException;
 import by.epam.rentacar.service.exception.ServiceException;
 import by.epam.rentacar.service.exception.UsernameAlreadyExistsException;
 import com.google.common.hash.Hashing;
+import com.sun.corba.se.spi.transport.TransportDefault;
+
 import java.nio.charset.StandardCharsets;
 
 public class UserServiceImpl implements UserService {
-
-    private static final DAOFactory daoFactory = DAOFactory.getInstance();
-    private final UserDAO userDAO = daoFactory.getUserDAO();
 
     public User login(SigninDTO signinDTO) throws ServiceException {
 
@@ -26,7 +29,11 @@ public class UserServiceImpl implements UserService {
         String hashedPassword = hashPassword(signinDTO.getPassword());
         String username = signinDTO.getUsername();
 
+        UserDAO userDAO = new UserDAOImpl();
+
         try {
+            TransactionHelper transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(userDAO);
             String userPassword = userDAO.findPasswordByUsername(username);
 
             if (userPassword == null || !userPassword.equalsIgnoreCase(hashedPassword)) {
@@ -34,6 +41,9 @@ public class UserServiceImpl implements UserService {
             }
 
             user = userDAO.findUserByUsername(username);
+
+            transactionHelper.endTransaction();
+            transactionHelper.commit();
 
         } catch (DAOException e) {
             e.printStackTrace();
@@ -55,7 +65,12 @@ public class UserServiceImpl implements UserService {
         String hashedPassword = hashPassword(signupDTO.getPassword());
         signupDTO.setPassword(hashedPassword);
 
+        UserDAO userDAO = new UserDAOImpl();
+
         try {
+
+            TransactionHelper transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(userDAO);
 
             if(userDAO.findUserByUsername(username) != null) {
                 throw new UsernameAlreadyExistsException();
@@ -68,6 +83,9 @@ public class UserServiceImpl implements UserService {
             userDAO.registerUser(signupDTO);
             user = userDAO.findUserByUsername(username);
 
+            transactionHelper.endTransaction();
+            transactionHelper.commit();
+
         } catch (DAOException e) {
             e.printStackTrace();
             throw new ServiceException("Could not sign up user", e);
@@ -79,8 +97,18 @@ public class UserServiceImpl implements UserService {
     //переделать
     public boolean editProfile(User user) throws ServiceException {
 
+        UserDAO userDAO = new UserDAOImpl();
+
         try {
+
+            TransactionHelper transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(userDAO);
+
             userDAO.updateUser(user);
+
+            transactionHelper.endTransaction();
+            transactionHelper.commit();
+
         } catch (DAOException e) {
             e.printStackTrace();
             throw new ServiceException("Could not update user info", e);
@@ -100,11 +128,20 @@ public class UserServiceImpl implements UserService {
         changePasswordDTO.setNewPassword(hashedNewPassword);
         changePasswordDTO.setConfirmPassword(hashedConfirmPassword);
 
+        UserDAO userDAO = new UserDAOImpl();
+
         try {
+            TransactionHelper transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(userDAO);
+
             if (!userDAO.checkPassword(changePasswordDTO.getUserID(), changePasswordDTO.getConfirmPassword())) {
                 //exception или возвратить false
             }
             userDAO.changePassword(changePasswordDTO);
+
+            transactionHelper.endTransaction();
+            transactionHelper.commit();
+
         } catch (DAOException e) {
             e.printStackTrace();
         }

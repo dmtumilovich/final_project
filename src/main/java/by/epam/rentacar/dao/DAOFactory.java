@@ -13,7 +13,7 @@ public class DAOFactory {
 
     private static final DAOFactory instance = new DAOFactory();
 
-    private static ConnectionPool connectionPool = null;
+    private static ConnectionPool connectionPool = ConnectionPool.getInstance();
 
     private UserDAO userDAO;
     private CarDAO carDAO;
@@ -41,18 +41,11 @@ public class DAOFactory {
     }
 
     private DAOFactory() {
-        connectionPool = ConnectionPool.getInstance();
 
-        try {
-            connectionPool.initPoolData();
-        } catch (ConnectionPoolException e) {
-            e.printStackTrace();
-        }
-
-        userDAO = new UserDAOImpl(connectionPool);
-        carDAO = new CarDAOImpl(connectionPool);
-        reviewDAO = new ReviewDAOImpl(connectionPool);
-        adminDAO = new AdminDAOImpl(connectionPool);
+        userDAO = new UserDAOImpl();
+        carDAO = new CarDAOImpl();
+        reviewDAO = new ReviewDAOImpl();
+        adminDAO = new AdminDAOImpl();
 
     }
 

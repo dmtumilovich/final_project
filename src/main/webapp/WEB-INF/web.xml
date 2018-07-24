@@ -132,5 +132,9 @@
     <location>/error</location>
   </error-page>
 
+  <listener>
+    <listener-class>by.epam.rentacar.controller.ContextListener</listener-class>
+  </listener>
+
 
 </web-app>

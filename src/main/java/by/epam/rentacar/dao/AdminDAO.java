@@ -8,12 +8,12 @@ import by.epam.rentacar.domain.entity.Car;
 
 import java.util.List;
 
-public interface AdminDAO {
+public abstract class AdminDAO extends AbstractDAO {
 
-    List<CarItemDTO> getCarList() throws DAOException;
-    CarInfoDTO getCarInfo(int carID) throws DAOException;
-    boolean addCar(AddCarDTO addCarDTO) throws DAOException;
-    boolean editCar(Car car) throws DAOException;
-    boolean deleteCar(int carID) throws DAOException;
+    public abstract List<CarItemDTO> getCarList() throws DAOException;
+    public abstract CarInfoDTO getCarInfo(int carID) throws DAOException;
+    public abstract boolean addCar(AddCarDTO addCarDTO) throws DAOException;
+    public abstract boolean editCar(Car car) throws DAOException;
+    public abstract boolean deleteCar(int carID) throws DAOException;
 
 }

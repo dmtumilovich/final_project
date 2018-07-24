@@ -2,9 +2,9 @@ package by.epam.rentacar.dao;
 
 import by.epam.rentacar.domain.dto.AddReviewDTO;
 
-public interface ReviewDAO {
+public abstract class ReviewDAO extends AbstractDAO {
 
-    void addReview(AddReviewDTO reviewDTO);
-    void deleteReview(int reviewID);
+    public abstract void addReview(AddReviewDTO reviewDTO);
+    public abstract void deleteReview(int reviewID);
 
 }

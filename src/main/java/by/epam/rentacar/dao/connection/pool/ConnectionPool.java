@@ -10,10 +10,15 @@ import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ConnectionPool {
 
-    private static final ConnectionPool instance = new ConnectionPool();
+    private static ConnectionPool instance = null;
+
+    private static ReentrantLock lock = new ReentrantLock();
+    private static AtomicBoolean instanceCreated = new AtomicBoolean(false);
 
     private BlockingQueue<Connection> connectionQueue;
     private BlockingQueue<Connection> givenAwayConnectionQueue;
@@ -25,7 +30,21 @@ public class ConnectionPool {
     private int poolSize;
 
     public static ConnectionPool getInstance() {
+
+        if(!instanceCreated.get()) {
+            lock.lock();
+            try {
+                if (instance == null) {
+                    instance = new ConnectionPool();
+                    instanceCreated.set(true);
+                }
+            } finally {
+                lock.unlock();
+            }
+        }
+
         return instance;
+
     }
 
     private ConnectionPool() {
@@ -47,6 +66,7 @@ public class ConnectionPool {
 
         try {
             Class.forName(driver);
+
             connectionQueue = new ArrayBlockingQueue<>(poolSize);
             givenAwayConnectionQueue = new ArrayBlockingQueue<>(poolSize);
 
@@ -73,6 +93,28 @@ public class ConnectionPool {
         }
 
         return connection;
+    }
+
+    public void releaseConnection(Connection connection) {
+
+//        if (connection == null) {
+//            return false;
+//        }
+//
+//        givenAwayConnectionQueue.remove(connection);
+//        connectionQueue.add(connection);
+//
+//        return true;
+
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            //logger
+        }
+
     }
 
     public void closeConnection(Connection connection, Statement st, ResultSet rs) {

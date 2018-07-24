@@ -73,7 +73,7 @@ public class ResultSetParser {
         if (reviewID == 0) {
             return null;
         }
-        System.out.println("reviewID " + reviewID);
+
         int userID = rs.getInt(CarReviewTable.ID_USER);
         String username = rs.getString(UserListTable.USERNAME);
         String reviewText = rs.getString(CarReviewTable.REVIEW_TEXT);
