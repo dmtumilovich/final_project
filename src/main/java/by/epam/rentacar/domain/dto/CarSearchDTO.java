@@ -1,4 +1,4 @@
-package by.epam.rentacar.dto;
+package by.epam.rentacar.domain.dto;
 
 public class CarSearchDTO {
 
@@ -110,45 +110,6 @@ public class CarSearchDTO {
         this.priceTo = priceTo;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CarSearchDTO)) return false;
-
-        CarSearchDTO that = (CarSearchDTO) o;
-
-        if (yearFrom != that.yearFrom) return false;
-        if (yearTo != that.yearTo) return false;
-        if (Double.compare(that.volumeFrom, volumeFrom) != 0) return false;
-        if (Double.compare(that.volumeTo, volumeTo) != 0) return false;
-        if (Double.compare(that.priceFrom, priceFrom) != 0) return false;
-        if (Double.compare(that.priceTo, priceTo) != 0) return false;
-        if (brand != null ? !brand.equals(that.brand) : that.brand != null) return false;
-        if (model != null ? !model.equals(that.model) : that.model != null) return false;
-        if (carClass != null ? !carClass.equals(that.carClass) : that.carClass != null) return false;
-        return color != null ? color.equals(that.color) : that.color == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        result = brand != null ? brand.hashCode() : 0;
-        result = 31 * result + (model != null ? model.hashCode() : 0);
-        result = 31 * result + (carClass != null ? carClass.hashCode() : 0);
-        result = 31 * result + (color != null ? color.hashCode() : 0);
-        result = 31 * result + yearFrom;
-        result = 31 * result + yearTo;
-        temp = Double.doubleToLongBits(volumeFrom);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(volumeTo);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(priceFrom);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(priceTo);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
-    }
 
     @Override
     public String toString() {
@@ -167,16 +128,16 @@ public class CarSearchDTO {
     }
 
     public static class Builder {
-        private String brand = "all";
-        private String model = "all";
-        private String carClass = "all";
-        private String color = "all";
-        private int yearFrom = -1;
-        private int yearTo = -1;
-        private double volumeFrom = -1;
-        private double volumeTo = -1;
-        private double priceFrom = -1;
-        private double priceTo = -1;
+        private String brand;
+        private String model;
+        private String carClass;
+        private String color;
+        private int yearFrom;
+        private int yearTo;
+        private double volumeFrom;
+        private double volumeTo;
+        private double priceFrom;
+        private double priceTo;
 
         public Builder setBrand(String brand) {
             this.brand = brand;

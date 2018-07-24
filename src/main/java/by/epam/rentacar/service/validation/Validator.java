@@ -1,8 +1,7 @@
 package by.epam.rentacar.service.validation;
 
-import by.epam.rentacar.dto.SigninDTO;
-import by.epam.rentacar.dto.SignupDTO;
-import com.sun.org.apache.regexp.internal.RE;
+import by.epam.rentacar.domain.dto.SigninDTO;
+import by.epam.rentacar.domain.dto.SignupDTO;
 
 public class Validator {
 

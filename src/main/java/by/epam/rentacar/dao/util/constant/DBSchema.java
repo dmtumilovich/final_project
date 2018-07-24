@@ -1,4 +1,4 @@
-package by.epam.rentacar.util.constant;
+package by.epam.rentacar.dao.util.constant;
 
 public class DBSchema {
 
@@ -14,6 +14,13 @@ public class DBSchema {
         public static final String PHONE_NUMBER = "phone_number";
         public static final String PASSPORT = "passport";
         public static final String ID_ROLE = "id_role";
+    }
+
+    public static final class UserRoleTable {
+        public static final String TABLE_NAME = "user_role";
+
+        public static final String ID_ROLE = "id_role";
+        public static final String ROLE_NAME = "role";
     }
 
     public static final class CarListTable {

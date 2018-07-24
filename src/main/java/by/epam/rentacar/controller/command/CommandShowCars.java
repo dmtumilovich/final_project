@@ -1,11 +1,12 @@
 package by.epam.rentacar.controller.command;
 
-import by.epam.rentacar.entity.Car;
+import by.epam.rentacar.controller.util.constant.RequestHeader;
+import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.exception.ServiceException;
-import by.epam.rentacar.util.constant.PageParameters;
-import by.epam.rentacar.util.constant.RequestAttributes;
+import by.epam.rentacar.controller.util.constant.PageParameters;
+import by.epam.rentacar.controller.util.constant.RequestAttributes;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

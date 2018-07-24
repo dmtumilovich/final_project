@@ -3,7 +3,7 @@ package by.epam.rentacar.dao.impl;
 import by.epam.rentacar.dao.ReviewDAO;
 import by.epam.rentacar.dao.connection.pool.ConnectionPool;
 import by.epam.rentacar.dao.connection.pool.ConnectionPoolException;
-import by.epam.rentacar.dto.AddReviewDTO;
+import by.epam.rentacar.domain.dto.AddReviewDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,16 +11,21 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 public class ReviewDAOImpl implements ReviewDAO {
+
+    private ConnectionPool connectionPool;
+
+    public ReviewDAOImpl(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
+    }
+
     @Override
     public void addReview(AddReviewDTO reviewDTO) {
-
-        ConnectionPool connectionPool = ConnectionPool.getInstance();
 
         Connection connection = null;
         PreparedStatement statement = null;
 
         try {
-            connectionPool.initPoolData();
+
             connection = connectionPool.takeConnection();
 
             statement = connection.prepareStatement("INSERT INTO car_review (id_car, id_user, review, time) VALUES (?, ?, ?, ?)");
@@ -45,13 +50,11 @@ public class ReviewDAOImpl implements ReviewDAO {
     @Override
     public void deleteReview(int reviewID) {
 
-        ConnectionPool connectionPool = ConnectionPool.getInstance();
-
         Connection connection;
         PreparedStatement statement;
 
         try {
-            connectionPool.initPoolData();
+
             connection = connectionPool.takeConnection();
 
             statement = connection.prepareStatement("DELETE FROM rent_a_car.car_review WHERE id_review = ?");

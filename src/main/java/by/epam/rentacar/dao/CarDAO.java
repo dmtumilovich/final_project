@@ -1,8 +1,8 @@
 package by.epam.rentacar.dao;
 
 import by.epam.rentacar.dao.exception.DAOException;
-import by.epam.rentacar.dto.CarSearchDTO;
-import by.epam.rentacar.entity.Car;
+import by.epam.rentacar.domain.dto.CarSearchDTO;
+import by.epam.rentacar.domain.entity.Car;
 
 import java.util.List;
 

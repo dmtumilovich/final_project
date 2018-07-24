@@ -1,9 +1,9 @@
-package by.epam.rentacar.util.constant;
+package by.epam.rentacar.dao.util.constant;
 
 public class DBQueries {
 
     //user queries
-    public static final String FIND_USER_BY_USERNAME = "SELECT id_user, username, password, email, name, surname, phone_number, passport, id_role FROM user_list WHERE username = ?";
+    public static final String FIND_USER_BY_USERNAME = "SELECT user_list.id_user, user_list.username, user_list.password, user_list.email, user_list.name, user_list.surname, user_list.phone_number, user_list.passport, user_role.role FROM user_list INNER JOIN user_role ON user_list.id_role = user_role.id_role WHERE username = ?";
     public static final String ADD_USER = "INSERT INTO user_list (username, password, email, id_role) VALUES (?, ?, ?, '2')";
     public static final String UPDATE_USER_INFO = "UPDATE user_list SET name = ?, surname = ?, phone_number = ?, passport = ? WHERE id_user = ?";
 

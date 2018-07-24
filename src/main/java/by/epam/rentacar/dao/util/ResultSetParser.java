@@ -1,10 +1,10 @@
-package by.epam.rentacar.util;
+package by.epam.rentacar.dao.util;
 
-import static by.epam.rentacar.util.constant.DBSchema.*;
+import static by.epam.rentacar.dao.util.constant.DBSchema.*;
 
-import by.epam.rentacar.entity.Car;
-import by.epam.rentacar.entity.Review;
-import by.epam.rentacar.entity.User;
+import by.epam.rentacar.domain.entity.Car;
+import by.epam.rentacar.domain.entity.Review;
+import by.epam.rentacar.domain.entity.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,7 +22,7 @@ public class ResultSetParser {
         String surname = rs.getString(UserListTable.SURNAME);
         String phoneNumber = rs.getString(UserListTable.PHONE_NUMBER);
         String passport = rs.getString(UserListTable.PASSPORT);
-        String idRole = rs.getString(UserListTable.ID_ROLE);
+        String role = rs.getString(UserRoleTable.ROLE_NAME);
 
         //builder???
         user = new User();
@@ -33,6 +33,7 @@ public class ResultSetParser {
         user.setEmail(email);
         user.setPhone(phoneNumber);
         user.setPassport(passport);
+        user.setRole(User.Role.valueOf(role.toUpperCase()));
 
         return user;
     }

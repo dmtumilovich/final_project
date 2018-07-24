@@ -1,4 +1,4 @@
-package by.epam.rentacar.dto;
+package by.epam.rentacar.domain.dto;
 
 import java.util.Date;
 

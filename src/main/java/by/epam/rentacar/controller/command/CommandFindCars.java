@@ -1,11 +1,12 @@
 package by.epam.rentacar.controller.command;
 
-import by.epam.rentacar.dto.CarSearchDTO;
-import by.epam.rentacar.entity.Car;
+import by.epam.rentacar.controller.util.constant.RequestParameters;
+import by.epam.rentacar.domain.dto.CarSearchDTO;
+import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.exception.ServiceException;
-import by.epam.rentacar.util.constant.PageParameters;
-import by.epam.rentacar.util.constant.RequestAttributes;
+import by.epam.rentacar.controller.util.constant.PageParameters;
+import by.epam.rentacar.controller.util.constant.RequestAttributes;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -47,25 +48,24 @@ public class CommandFindCars implements Command {
     }
 
     private CarSearchDTO createCarSearchDTO(HttpServletRequest request) {
-        //???????????????????????????????????????????????????????????????????????????????????????????????7
-        String carClass = request.getParameter("class");
-        String brand = request.getParameter("brand");
-        String model = request.getParameter("model");
-        String color = request.getParameter("color");
+        String carClass = request.getParameter(RequestParameters.KEY_CAR_CLASS);
+        String brand = request.getParameter(RequestParameters.KEY_CAR_BRAND);
+        String model = request.getParameter(RequestParameters.KEY_CAR_MODEL);
+        String color = request.getParameter(RequestParameters.KEY_CAR_COLOR);
 
-        String yearFromStr = request.getParameter("year_from");
-        int yearFrom = yearFromStr.isEmpty() ? -1 : Integer.parseInt(yearFromStr);
-        String yearToStr = request.getParameter("year_to");
-        int yearTo = yearToStr.isEmpty() ? -1 : Integer.parseInt(yearToStr);
+        String yearFromStr = request.getParameter(RequestParameters.KEY_YEAR_FROM);
+        int yearFrom = yearFromStr.isEmpty() ? 0 : Integer.parseInt(yearFromStr);
+        String yearToStr = request.getParameter(RequestParameters.KEY_YEAR_TO);
+        int yearTo = yearToStr.isEmpty() ? 0 : Integer.parseInt(yearToStr);
 
-        String volumeFromStr = request.getParameter("volume_from");
-        double volumeFrom = volumeFromStr.isEmpty() ? -1 : Double.parseDouble(volumeFromStr);
-        String volumeToStr = request.getParameter("volume_to");
-        double volumeTo = volumeToStr.isEmpty() ? -1 : Double.parseDouble(volumeToStr);
-        String priceFromStr = request.getParameter("price_from");
-        double priceFrom = priceFromStr.isEmpty() ? -1 : Double.parseDouble(priceFromStr);
-        String priceToStr = request.getParameter("price_to");
-        double priceTo = priceToStr.isEmpty() ? -1 : Double.parseDouble(priceToStr);
+        String volumeFromStr = request.getParameter(RequestParameters.KEY_VOLUME_FROM);
+        double volumeFrom = volumeFromStr.isEmpty() ? 0 : Double.parseDouble(volumeFromStr);
+        String volumeToStr = request.getParameter(RequestParameters.KEY_VOLUME_TO);
+        double volumeTo = volumeToStr.isEmpty() ? 0 : Double.parseDouble(volumeToStr);
+        String priceFromStr = request.getParameter(RequestParameters.KEY_PRICE_FROM);
+        double priceFrom = priceFromStr.isEmpty() ? 0 : Double.parseDouble(priceFromStr);
+        String priceToStr = request.getParameter(RequestParameters.KEY_PRICE_TO);
+        double priceTo = priceToStr.isEmpty() ? 0 : Double.parseDouble(priceToStr);
 
         CarSearchDTO.Builder builder = new CarSearchDTO.Builder();
         builder.setBrand(brand).setModel(model).setCarClass(carClass)

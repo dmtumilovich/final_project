@@ -1,6 +1,4 @@
-package by.epam.rentacar.dto;
-
-import java.util.Objects;
+package by.epam.rentacar.domain.dto;
 
 public class SigninDTO {
 

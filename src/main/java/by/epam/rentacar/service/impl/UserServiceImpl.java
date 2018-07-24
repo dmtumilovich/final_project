@@ -3,11 +3,14 @@ package by.epam.rentacar.service.impl;
 import by.epam.rentacar.dao.DAOFactory;
 import by.epam.rentacar.dao.UserDAO;
 import by.epam.rentacar.dao.exception.DAOException;
-import by.epam.rentacar.dao.impl.UserDAOImpl;
-import by.epam.rentacar.dto.ChangePasswordDTO;
-import by.epam.rentacar.entity.User;
+import by.epam.rentacar.domain.dto.ChangePasswordDTO;
+import by.epam.rentacar.domain.dto.SigninDTO;
+import by.epam.rentacar.domain.dto.SignupDTO;
+import by.epam.rentacar.domain.entity.User;
 import by.epam.rentacar.service.UserService;
+import by.epam.rentacar.service.exception.EmailAlreadyExistsException;
 import by.epam.rentacar.service.exception.ServiceException;
+import by.epam.rentacar.service.exception.UsernameAlreadyExistsException;
 import com.google.common.hash.Hashing;
 import java.nio.charset.StandardCharsets;
 
@@ -16,13 +19,22 @@ public class UserServiceImpl implements UserService {
     private static final DAOFactory daoFactory = DAOFactory.getInstance();
     private final UserDAO userDAO = daoFactory.getUserDAO();
 
-    public User login(String username, String password) throws ServiceException {
+    public User login(SigninDTO signinDTO) throws ServiceException {
 
         User user = null;
-        String hashedPassword = hashPassword(password);
+
+        String hashedPassword = hashPassword(signinDTO.getPassword());
+        String username = signinDTO.getUsername();
 
         try {
-            user = userDAO.checkUser(username, hashedPassword);
+            String userPassword = userDAO.findPasswordByUsername(username);
+
+            if (userPassword == null || !userPassword.equalsIgnoreCase(hashedPassword)) {
+                return null;
+            }
+
+            user = userDAO.findUserByUsername(username);
+
         } catch (DAOException e) {
             e.printStackTrace();
             throw new ServiceException("Could not login user", e);
@@ -32,14 +44,30 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public User signup(String username, String password, String email) throws ServiceException {
+    public User signup(SignupDTO signupDTO) throws ServiceException {
 
         User user = null;
-        String hashedPassword = hashPassword(password);
+
+        //валидация
+
+        String username = signupDTO.getUsername();
+        String email = signupDTO.getEmail();
+        String hashedPassword = hashPassword(signupDTO.getPassword());
+        signupDTO.setPassword(hashedPassword);
 
         try {
-            userDAO.signupUser(username, hashedPassword, email);
-            user = userDAO.checkUser(username, hashedPassword);
+
+            if(userDAO.findUserByUsername(username) != null) {
+                throw new UsernameAlreadyExistsException();
+            }
+
+            if(userDAO.findEmail(username) != null) {
+                throw new EmailAlreadyExistsException();
+            }
+
+            userDAO.registerUser(signupDTO);
+            user = userDAO.findUserByUsername(username);
+
         } catch (DAOException e) {
             e.printStackTrace();
             throw new ServiceException("Could not sign up user", e);

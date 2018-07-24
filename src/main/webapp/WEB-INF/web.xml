@@ -79,7 +79,44 @@
     <servlet-name>CarPage</servlet-name>
     <url-pattern>/car</url-pattern>
   </servlet-mapping>
-  
+
+  <!--Admin-->
+  <servlet>
+    <servlet-name>AdminPage</servlet-name>
+    <jsp-file>/jsp/admin/panel.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AdminPage</servlet-name>
+    <url-pattern>/admin</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AdminStatisticPage</servlet-name>
+    <jsp-file>/jsp/admin/panel.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AdminStatisticPage</servlet-name>
+    <url-pattern>/admin/panel</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AdminCarsPage</servlet-name>
+    <jsp-file>/jsp/admin/cars.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AdminCarsPage</servlet-name>
+    <url-pattern>/admin/cars</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AdminCarPage</servlet-name>
+    <jsp-file>/jsp/admin/car.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AdminCarPage</servlet-name>
+    <url-pattern>/admin/car</url-pattern>
+  </servlet-mapping>
+
   <servlet>
     <servlet-name>ErrorPage</servlet-name>
     <jsp-file>/jsp/error/error.jsp</jsp-file>
@@ -88,6 +125,7 @@
     <servlet-name>ErrorPage</servlet-name>
     <url-pattern>/error</url-pattern>
   </servlet-mapping>
+
 
   <error-page>
     <error-code>404</error-code>

@@ -18,6 +18,7 @@
     <fmt:message bundle = "${loc}" key = "local.signup.text.confirm-password" var = "hint_confirm_password" />
     <fmt:message bundle = "${loc}" key = "local.signup.text.email" var = "hint_email" />
     <fmt:message bundle = "${loc}" key = "local.signup.button.signup" var = "button_signup" />
+    <fmt:message bundle = "${loc}" key = "local.signin.text.error" var = "message_error" />
 
     <title>rent-a-car signup</title>
 
@@ -45,21 +46,15 @@
       <label for="inputEmail" class="sr-only">${hint_email}</label>
       <input type="email" name="email" id="inputEmail" class="form-control" placeholder="${hint_email}" required>
 
-      <!-- <div class="checkbox mb-3">
-        <label>
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
-      </div> -->
-
       <button class="btn btn-lg btn-primary btn-block" type="submit">${button_signup}</button>
-    </form>
 
-    <!--Позже сделать -->
-    <%-- <c:if test = "${signup_error eq true}">
-      <div class="alert alert-danger text-center">
-        <strong>Error!</strong> Verify that the data entered is correct!
-      </div>
-    </c:if> --%>
+      <c:if test = "${signup_failed eq true}">
+        <div class="alert alert-danger text-center">
+          <strong>${message_error}</strong>
+          <fmt:message bundle = "${loc}" key = "${error_message_key}" />
+        </div>
+      </c:if>
+    </form>
 
   </body>
 </html>

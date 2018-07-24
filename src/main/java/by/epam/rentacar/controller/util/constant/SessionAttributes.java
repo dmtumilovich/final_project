@@ -1,4 +1,4 @@
-package by.epam.rentacar.util.constant;
+package by.epam.rentacar.controller.util.constant;
 
 public class SessionAttributes {
 

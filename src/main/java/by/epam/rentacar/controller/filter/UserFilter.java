@@ -1,8 +1,8 @@
 package by.epam.rentacar.controller.filter;
 
-import by.epam.rentacar.util.constant.PageParameters;
-import by.epam.rentacar.util.constant.RequestAttributes;
-import by.epam.rentacar.util.constant.SessionAttributes;
+import by.epam.rentacar.controller.util.constant.PageParameters;
+import by.epam.rentacar.controller.util.constant.RequestHeader;
+import by.epam.rentacar.controller.util.constant.SessionAttributes;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -27,7 +27,7 @@ public class UserFilter implements Filter {
             return;
         }
 
-        String page = request.getHeader("referer");
+        String page = request.getHeader(RequestHeader.KEY_REFERER);
         if (page != null) {
             response.sendRedirect(page);
             return;

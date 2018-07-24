@@ -3,7 +3,7 @@ package by.epam.rentacar.controller;
 
 import by.epam.rentacar.controller.command.Command;
 import by.epam.rentacar.controller.command.CommandContainer;
-import by.epam.rentacar.util.constant.RequestParameters;
+import by.epam.rentacar.controller.util.constant.RequestParameters;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

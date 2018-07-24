@@ -1,13 +1,12 @@
 package by.epam.rentacar.controller.command;
 
-import by.epam.rentacar.entity.Car;
+import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.exception.ServiceException;
-import by.epam.rentacar.service.impl.CarServiceImpl;
-import by.epam.rentacar.util.constant.PageParameters;
-import by.epam.rentacar.util.constant.RequestAttributes;
-import by.epam.rentacar.util.constant.RequestParameters;
+import by.epam.rentacar.controller.util.constant.PageParameters;
+import by.epam.rentacar.controller.util.constant.RequestAttributes;
+import by.epam.rentacar.controller.util.constant.RequestParameters;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,8 +17,7 @@ public class CommandShowSelectedCar implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        int carID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_CAR)); //проверка на null
-        //exception???
+        int carID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_CAR));
         CarService carService = ServiceFactory.getInstance().getCarService();
         Car car = null;
 

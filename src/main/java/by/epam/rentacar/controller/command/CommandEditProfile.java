@@ -1,14 +1,12 @@
 package by.epam.rentacar.controller.command;
 
-import by.epam.rentacar.entity.User;
+import by.epam.rentacar.domain.entity.User;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.UserService;
 import by.epam.rentacar.service.exception.ServiceException;
-import by.epam.rentacar.service.impl.UserServiceImpl;
-import by.epam.rentacar.util.constant.PageParameters;
-import by.epam.rentacar.util.constant.RequestParameters;
-import by.epam.rentacar.util.constant.SessionAttributes;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import by.epam.rentacar.controller.util.constant.PageParameters;
+import by.epam.rentacar.controller.util.constant.RequestParameters;
+import by.epam.rentacar.controller.util.constant.SessionAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -1,8 +1,8 @@
 package by.epam.rentacar.controller.command;
 
-import by.epam.rentacar.util.constant.PageParameters;
-import by.epam.rentacar.util.constant.RequestParameters;
-import by.epam.rentacar.util.constant.SessionAttributes;
+import by.epam.rentacar.controller.util.constant.RequestHeader;
+import by.epam.rentacar.controller.util.constant.RequestParameters;
+import by.epam.rentacar.controller.util.constant.SessionAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +14,7 @@ public class CommandLanguage implements Command{
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.getSession(true).setAttribute(SessionAttributes.KEY_LOCAL, request.getParameter(RequestParameters.KEY_LOCAL));
 
-        String page = request.getHeader("referer");
+        String page = request.getHeader(RequestHeader.KEY_REFERER);
         response.sendRedirect(page);
     }
 }

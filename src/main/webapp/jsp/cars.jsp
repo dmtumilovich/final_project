@@ -72,7 +72,7 @@
 
               <div class="btn-group btn-group-toggle" data-toggle="buttons" role="group">
                 <label class="btn btn-secondary active">
-                  <input type="radio" name="class" value="all" id="option1" autocomplete="off" checked> All
+                  <input type="radio" name="class" value="" id="option1" autocomplete="off" checked> All
                 </label>
                 <label class="btn btn-secondary">
                   <input type="radio" name="class" value="economy" id="option2" autocomplete="off"> Economy
@@ -89,7 +89,7 @@
             <div class="row">
               <div class="col">
                 <select name="brand" class="form-control form-control-sm">
-                  <option value="none">Choose brand</option>
+                  <option value="">Choose brand</option>
                   <option value="bmw">BMW</option>
                   <option value="hyndai">Hyndai</option>
                   <option value="mercedes">Mercedes</option>
@@ -112,7 +112,7 @@
             <div class="row">
               <div class="col">
                 <select name="model" class="form-control form-control-sm">
-                  <option value="none">Choose model</option>
+                  <option value="">Choose model</option>
                   <option value="520i">520i</option>
                   <option value="solaris">Solaris</option>
                   <option value="benz">Benz</option>
@@ -135,7 +135,7 @@
             <div class="row">
               <div class="col">
                 <select name="color" class="form-control form-control-sm">
-                  <option value="none">Choose color</option>
+                  <option value="">Choose color</option>
                   <option value="white">White</option>
                   <option value="blue">Blue</option>
                   <option value="black">Black</option>
@@ -198,6 +198,15 @@
 
           </div>
         </c:forEach>
+
+        <ul class="pagination justify-content-center">
+          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+
       </main>
 
 

@@ -2,7 +2,7 @@ package by.epam.rentacar.service.impl;
 
 import by.epam.rentacar.dao.DAOFactory;
 import by.epam.rentacar.dao.ReviewDAO;
-import by.epam.rentacar.dto.AddReviewDTO;
+import by.epam.rentacar.domain.dto.AddReviewDTO;
 import by.epam.rentacar.service.ReviewService;
 
 import java.util.Date;

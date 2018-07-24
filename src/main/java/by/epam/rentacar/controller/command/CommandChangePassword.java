@@ -1,10 +1,11 @@
 package by.epam.rentacar.controller.command;
 
-import by.epam.rentacar.dto.ChangePasswordDTO;
-import by.epam.rentacar.entity.User;
+import by.epam.rentacar.controller.util.constant.PageParameters;
+import by.epam.rentacar.domain.dto.ChangePasswordDTO;
+import by.epam.rentacar.domain.entity.User;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.exception.ServiceException;
-import by.epam.rentacar.util.constant.SessionAttributes;
+import by.epam.rentacar.controller.util.constant.SessionAttributes;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,7 @@ public class CommandChangePassword implements Command {
 
         try {
             ServiceFactory.getInstance().getUserService().changePassword(changePasswordDTO);
+            response.sendRedirect(PageParameters.PAGE_PROFILE);
         } catch (ServiceException e) {
             e.printStackTrace();
         }

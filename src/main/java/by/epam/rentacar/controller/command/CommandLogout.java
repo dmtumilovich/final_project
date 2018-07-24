@@ -1,7 +1,9 @@
 package by.epam.rentacar.controller.command;
 
-import by.epam.rentacar.util.constant.PageParameters;
-import by.epam.rentacar.util.constant.SessionAttributes;
+import by.epam.rentacar.controller.util.constant.PageParameters;
+import by.epam.rentacar.controller.util.constant.RequestHeader;
+import by.epam.rentacar.controller.util.constant.SessionAttributes;
+import by.epam.rentacar.domain.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,9 +14,11 @@ public class CommandLogout implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        session.setAttribute(SessionAttributes.KEY_USER, null);
 
-        String page = request.getHeader("referer");
-        response.sendRedirect(page);
+        session.removeAttribute(SessionAttributes.KEY_USER);
+
+        String referer = request.getHeader(RequestHeader.KEY_REFERER);
+        String destPage = (referer.contains("user") || referer.contains("admin")) ? PageParameters.PAGE_MAIN : referer;
+        response.sendRedirect(destPage);
     }
 }

@@ -1,4 +1,4 @@
-package by.epam.rentacar.util.constant;
+package by.epam.rentacar.controller.util.constant;
 
 public class RequestAttributes {
 
@@ -8,7 +8,8 @@ public class RequestAttributes {
 //    public static final String KEY_EMAIL_IS_ALREADY_TAKEN = "email_taken";
 //    public static final String KEY_PASSWORD_MISSMATCH = "password_missmatch";
 
-    public static final String KEY_SIGNUP_ERROR = "signup_error";
+    public static final String KEY_SIGNUP_FAILED = "signup_failed";
+    public static final String KEY_SIGNUP_FAILED_MESSAGE = "error_message_key";
 
     public static final String KEY_CAR = "car";
     public static final String KEY_CAR_LIST = "car_list";

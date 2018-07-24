@@ -1,8 +1,9 @@
 package by.epam.rentacar.controller.command;
 
-import by.epam.rentacar.dto.AddReviewDTO;
+import by.epam.rentacar.controller.util.constant.RequestHeader;
+import by.epam.rentacar.domain.dto.AddReviewDTO;
 import by.epam.rentacar.service.ServiceFactory;
-import by.epam.rentacar.util.constant.RequestParameters;
+import by.epam.rentacar.controller.util.constant.RequestParameters;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +25,7 @@ public class CommandAddReview implements Command {
 
         ServiceFactory.getInstance().getReviewService().addReview(addReviewDTO);
 
-        String page = request.getHeader("referer");
+        String page = request.getHeader(RequestHeader.KEY_REFERER);
         response.sendRedirect(page);
 
     }

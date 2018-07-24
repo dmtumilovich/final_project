@@ -2,11 +2,9 @@ package by.epam.rentacar.service.impl;
 
 import by.epam.rentacar.dao.CarDAO;
 import by.epam.rentacar.dao.DAOFactory;
-import by.epam.rentacar.dao.UserDAO;
 import by.epam.rentacar.dao.exception.DAOException;
-import by.epam.rentacar.dao.impl.CarDAOImpl;
-import by.epam.rentacar.dto.CarSearchDTO;
-import by.epam.rentacar.entity.Car;
+import by.epam.rentacar.domain.dto.CarSearchDTO;
+import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.exception.ServiceException;
 

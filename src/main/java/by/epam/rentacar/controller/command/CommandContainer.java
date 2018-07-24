@@ -1,5 +1,7 @@
 package by.epam.rentacar.controller.command;
 
+import by.epam.rentacar.controller.command.admin.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +21,11 @@ public class CommandContainer {
         commands.put("add_review", new CommandAddReview());
         commands.put("delete_review", new CommandDeleteReview());
         commands.put("change_password", new CommandChangePassword());
+        commands.put("show_car_table", new CommandGetCarTable());
+        commands.put("get_car_info", new CommandGetCarInfo());
+        commands.put("edit_car", new CommandEditCar());
+        commands.put("delete_car", new CommandDeleteCar());
+        commands.put("add_car", new CommandAddCar());
     }
 
     public static Command get(String commandStr) {

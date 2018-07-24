@@ -1,6 +1,6 @@
 package by.epam.rentacar.service;
 
-import by.epam.rentacar.dto.AddReviewDTO;
+import by.epam.rentacar.domain.dto.AddReviewDTO;
 
 public interface ReviewService {
 

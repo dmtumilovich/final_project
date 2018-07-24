@@ -1,4 +1,4 @@
-package by.epam.rentacar.entity;
+package by.epam.rentacar.domain.entity;
 
 public class User {
 
@@ -9,7 +9,7 @@ public class User {
     private String surname;
     private String phone;
     private String passport;
-
+    private Role role;
 
     public User() {
 
@@ -70,4 +70,17 @@ public class User {
     public void setPassport(String passport) {
         this.passport = passport;
     }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public enum Role {
+        ADMIN, USER
+    }
+
 }

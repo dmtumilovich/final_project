@@ -57,3 +57,7 @@ button.btn {
   background-color: #696969;
   border-color: gray;
 }
+
+.alert {
+  margin-top: 10px;
+}
