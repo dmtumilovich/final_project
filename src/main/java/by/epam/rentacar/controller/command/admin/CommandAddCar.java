@@ -1,6 +1,7 @@
 package by.epam.rentacar.controller.command.admin;
 
 import by.epam.rentacar.controller.command.Command;
+import by.epam.rentacar.controller.util.constant.RequestParameters;
 import by.epam.rentacar.domain.dto.AddCarDTO;
 import by.epam.rentacar.service.AdminService;
 import by.epam.rentacar.service.ServiceFactory;
@@ -16,14 +17,28 @@ public class CommandAddCar implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        String brand = request.getParameter("add_brand");
-        String model = request.getParameter("add_model");
-        String carClass = request.getParameter("add_class");
-        String color = request.getParameter("add_color");
-        int yearOfIssue = Integer.parseInt(request.getParameter("add_year"));
-        int numberOfSeats = Integer.parseInt(request.getParameter("add_seats"));
-        double engineVolume = Double.parseDouble(request.getParameter("add_engine_volume"));
-        double price = Double.parseDouble(request.getParameter("add_price"));
+        AdminService adminService = ServiceFactory.getInstance().getAdminService();
+        AddCarDTO addCarDTO = parseRequest(request);
+
+        try {
+            adminService.addCar(addCarDTO);
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+
+        response.sendRedirect("/controller?command=show_car_table");
+    }
+
+    private AddCarDTO parseRequest(HttpServletRequest request) {
+
+        String brand = request.getParameter(RequestParameters.KEY_ADD_BRAND);
+        String model = request.getParameter(RequestParameters.KEY_ADD_MODEL);
+        String carClass = request.getParameter(RequestParameters.KEY_ADD_CLASS);
+        String color = request.getParameter(RequestParameters.KEY_ADD_COLOR);
+        int yearOfIssue = Integer.parseInt(request.getParameter(RequestParameters.KEY_ADD_YEAR));
+        int numberOfSeats = Integer.parseInt(request.getParameter(RequestParameters.KEY_ADD_SEATS));
+        double engineVolume = Double.parseDouble(request.getParameter(RequestParameters.KEY_ADD_ENGINE_VOLUME));
+        double price = Double.parseDouble(request.getParameter(RequestParameters.KEY_ADD_PRICE));
 
         AddCarDTO addCarDTO = new AddCarDTO();
         addCarDTO.setBrand(brand);
@@ -35,14 +50,7 @@ public class CommandAddCar implements Command {
         addCarDTO.setEngineVolume(engineVolume);
         addCarDTO.setPrice(price);
 
-        AdminService adminService = ServiceFactory.getInstance().getAdminService();
+        return addCarDTO;
 
-        try {
-            adminService.addCar(addCarDTO);
-        } catch (ServiceException e) {
-            e.printStackTrace();
-        }
-
-        response.sendRedirect("/controller?command=show_car_table");
     }
 }

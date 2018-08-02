@@ -26,6 +26,10 @@ public class CommandContainer {
         commands.put("edit_car", new CommandEditCar());
         commands.put("delete_car", new CommandDeleteCar());
         commands.put("add_car", new CommandAddCar());
+        commands.put("get_orders", new CommandGetOrdersTable());
+        commands.put("get_order_info", new CommandGetOrderInfo());
+        commands.put("confirm_order", new CommandConfirmOrder());
+        commands.put("reject_order", new CommandRejectOrder());
     }
 
     public static Command get(String commandStr) {

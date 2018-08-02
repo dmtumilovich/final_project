@@ -1,6 +1,7 @@
 package by.epam.rentacar.controller.command;
 
 import by.epam.rentacar.controller.util.constant.PageParameters;
+import by.epam.rentacar.controller.util.constant.RequestParameters;
 import by.epam.rentacar.domain.dto.ChangePasswordDTO;
 import by.epam.rentacar.domain.entity.User;
 import by.epam.rentacar.service.ServiceFactory;
@@ -15,16 +16,8 @@ import java.io.IOException;
 public class CommandChangePassword implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        int userID = ((User)request.getSession().getAttribute(SessionAttributes.KEY_USER)).getId();
-        String previousPassword = request.getParameter("edit_previous_password");
-        String newPassword = request.getParameter("edit_new_password");
-        String confirmPassword = request.getParameter("edit_confirm_new_password");
 
-        ChangePasswordDTO changePasswordDTO = new ChangePasswordDTO();
-        changePasswordDTO.setUserID(userID);
-        changePasswordDTO.setPreviousPassword(previousPassword);
-        changePasswordDTO.setNewPassword(newPassword);
-        changePasswordDTO.setConfirmPassword(confirmPassword);
+        ChangePasswordDTO changePasswordDTO = parseRequest(request);
 
         try {
             ServiceFactory.getInstance().getUserService().changePassword(changePasswordDTO);
@@ -32,5 +25,22 @@ public class CommandChangePassword implements Command {
         } catch (ServiceException e) {
             e.printStackTrace();
         }
+    }
+
+    private ChangePasswordDTO parseRequest(HttpServletRequest request) {
+
+        int userID = ((User)request.getSession().getAttribute(SessionAttributes.KEY_USER)).getId();
+        String previousPassword = request.getParameter(RequestParameters.KEY_EDIT_PREVIOUS_PASSWORD);
+        String newPassword = request.getParameter(RequestParameters.KEY_EDIT_NEW_PASSWORD);
+        String confirmPassword = request.getParameter(RequestParameters.KEY_EDIT_CONFIRM_PASSWORD);
+
+        ChangePasswordDTO changePasswordDTO = new ChangePasswordDTO();
+        changePasswordDTO.setUserID(userID);
+        changePasswordDTO.setPreviousPassword(previousPassword);
+        changePasswordDTO.setNewPassword(newPassword);
+        changePasswordDTO.setConfirmPassword(confirmPassword);
+
+        return changePasswordDTO;
+
     }
 }

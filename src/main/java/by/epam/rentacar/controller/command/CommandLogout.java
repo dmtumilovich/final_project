@@ -18,7 +18,7 @@ public class CommandLogout implements Command {
         session.removeAttribute(SessionAttributes.KEY_USER);
 
         String referer = request.getHeader(RequestHeader.KEY_REFERER);
-        String destPage = (referer.contains("user") || referer.contains("admin")) ? PageParameters.PAGE_MAIN : referer;
+        String destPage = (referer.contains("user") || referer.contains("admin") || referer.contains("controller")) ? PageParameters.PAGE_MAIN : referer;
         response.sendRedirect(destPage);
     }
 }

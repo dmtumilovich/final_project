@@ -30,9 +30,10 @@ public class UserServiceImpl implements UserService {
         String username = signinDTO.getUsername();
 
         UserDAO userDAO = new UserDAOImpl();
+        TransactionHelper transactionHelper = null;
 
         try {
-            TransactionHelper transactionHelper = new TransactionHelper();
+            transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(userDAO);
             String userPassword = userDAO.findPasswordByUsername(username);
 
@@ -42,12 +43,14 @@ public class UserServiceImpl implements UserService {
 
             user = userDAO.findUserByUsername(username);
 
-            transactionHelper.endTransaction();
             transactionHelper.commit();
 
         } catch (DAOException e) {
+            transactionHelper.rollback();
             e.printStackTrace();
             throw new ServiceException("Could not login user", e);
+        } finally {
+            transactionHelper.endTransaction();
         }
 
         return user;
@@ -66,29 +69,32 @@ public class UserServiceImpl implements UserService {
         signupDTO.setPassword(hashedPassword);
 
         UserDAO userDAO = new UserDAOImpl();
+        TransactionHelper transactionHelper = null;
 
         try {
 
-            TransactionHelper transactionHelper = new TransactionHelper();
+            transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(userDAO);
 
             if(userDAO.findUserByUsername(username) != null) {
                 throw new UsernameAlreadyExistsException();
             }
-
-            if(userDAO.findEmail(username) != null) {
-                throw new EmailAlreadyExistsException();
-            }
+//
+//            if(userDAO.findEmail(username) != null) {
+//                throw new EmailAlreadyExistsException();
+//            }
 
             userDAO.registerUser(signupDTO);
             user = userDAO.findUserByUsername(username);
 
-            transactionHelper.endTransaction();
             transactionHelper.commit();
 
         } catch (DAOException e) {
+            transactionHelper.rollback();
             e.printStackTrace();
             throw new ServiceException("Could not sign up user", e);
+        } finally {
+            transactionHelper.endTransaction();
         }
 
         return user;
@@ -98,20 +104,23 @@ public class UserServiceImpl implements UserService {
     public boolean editProfile(User user) throws ServiceException {
 
         UserDAO userDAO = new UserDAOImpl();
+        TransactionHelper transactionHelper = null;
 
         try {
 
-            TransactionHelper transactionHelper = new TransactionHelper();
+            transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(userDAO);
 
             userDAO.updateUser(user);
 
-            transactionHelper.endTransaction();
             transactionHelper.commit();
 
         } catch (DAOException e) {
+            transactionHelper.rollback();
             e.printStackTrace();
             throw new ServiceException("Could not update user info", e);
+        } finally {
+            transactionHelper.endTransaction();
         }
 
         return true;
@@ -129,9 +138,10 @@ public class UserServiceImpl implements UserService {
         changePasswordDTO.setConfirmPassword(hashedConfirmPassword);
 
         UserDAO userDAO = new UserDAOImpl();
+        TransactionHelper transactionHelper = null;
 
         try {
-            TransactionHelper transactionHelper = new TransactionHelper();
+            transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(userDAO);
 
             if (!userDAO.checkPassword(changePasswordDTO.getUserID(), changePasswordDTO.getConfirmPassword())) {
@@ -139,11 +149,13 @@ public class UserServiceImpl implements UserService {
             }
             userDAO.changePassword(changePasswordDTO);
 
-            transactionHelper.endTransaction();
             transactionHelper.commit();
 
         } catch (DAOException e) {
+            transactionHelper.rollback();
             e.printStackTrace();
+        } finally {
+            transactionHelper.endTransaction();
         }
     }
 

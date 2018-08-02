@@ -1,10 +1,7 @@
 package by.epam.rentacar.controller.command.admin;
 
 import by.epam.rentacar.controller.command.Command;
-import by.epam.rentacar.controller.util.constant.PageParameters;
-import by.epam.rentacar.controller.util.constant.RequestAttributes;
-import by.epam.rentacar.controller.util.constant.RequestParameters;
-import by.epam.rentacar.domain.dto.CarInfoDTO;
+import by.epam.rentacar.domain.entity.Order;
 import by.epam.rentacar.service.AdminService;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.exception.ServiceException;
@@ -13,25 +10,27 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class CommandGetCarInfo implements Command {
+public class CommandGetOrdersTable implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        int carID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_CAR));
+        List<Order> orderList = new ArrayList<>();
 
         AdminService adminService = ServiceFactory.getInstance().getAdminService();
-        CarInfoDTO carInfoDTO = null;
 
         try {
-            carInfoDTO = adminService.getCarInfo(carID);
-
-            request.setAttribute(RequestAttributes.KEY_CAR_INFO, carInfoDTO);
-            request.getRequestDispatcher(PageParameters.PAGE_ADMIN_CAR).forward(request, response);
+            orderList = adminService.getOrderList();
         } catch (ServiceException e) {
             e.printStackTrace();
         }
 
+        request.setAttribute("order_list", orderList);
+        request.getRequestDispatcher("/jsp/admin/orders.jsp").forward(request, response);
+
     }
+
 }

@@ -13,6 +13,7 @@ public class PageParameters {
 
     public static final String PAGE_ADMIN_PANEL = "/admin/panel";
     public static final String PAGE_ADMIN_CARS = "/admin/cars";
+    public static final String PAGE_ADMIN_CAR = "/admin/car";
 
     private PageParameters() {
 

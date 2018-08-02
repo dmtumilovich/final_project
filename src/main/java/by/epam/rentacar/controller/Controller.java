@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSessionEvent;
 import java.io.IOException;
 
 public class Controller extends HttpServlet {
@@ -27,5 +28,6 @@ public class Controller extends HttpServlet {
         String commandStr = request.getParameter(RequestParameters.KEY_COMMAND);
         Command command = CommandContainer.get(commandStr);
         command.execute(request, response);
+
     }
 }

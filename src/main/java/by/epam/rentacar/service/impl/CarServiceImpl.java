@@ -21,18 +21,21 @@ public class CarServiceImpl implements CarService {
         List<Car> carList = new ArrayList<>();
 
         CarDAO carDAO = new CarDAOImpl();
+        TransactionHelper transactionHelper = null;
 
         try {
-            TransactionHelper transactionHelper = new TransactionHelper();
+            transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(carDAO);
 
             carList = carDAO.getAllCars();
 
-            transactionHelper.endTransaction();
             transactionHelper.commit();
         } catch (DAOException e) {
+            transactionHelper.rollback();
             e.printStackTrace();
             throw new ServiceException("Could not find car list", e);
+        } finally {
+            transactionHelper.endTransaction();
         }
 
         return carList;
@@ -43,18 +46,21 @@ public class CarServiceImpl implements CarService {
         Car car = null;
 
         CarDAO carDAO = new CarDAOImpl();
+        TransactionHelper transactionHelper = null;
 
         try {
-            TransactionHelper transactionHelper = new TransactionHelper();
+            transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(carDAO);
 
             car = carDAO.getCarByID(carID);
 
-            transactionHelper.endTransaction();
             transactionHelper.commit();
         } catch (DAOException e) {
+            transactionHelper.rollback();
             e.printStackTrace();
             throw new ServiceException("Could not find the car", e);
+        } finally {
+            transactionHelper.endTransaction();
         }
 
         return car;
@@ -66,18 +72,21 @@ public class CarServiceImpl implements CarService {
         List<Car> carList = new ArrayList<>();
 
         CarDAO carDAO = new CarDAOImpl();
+        TransactionHelper transactionHelper = null;
 
         try {
-            TransactionHelper transactionHelper = new TransactionHelper();
+            transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(carDAO);
 
             carList = carDAO.getCarsByFilter(carSearchDTO);
 
-            transactionHelper.endTransaction();
             transactionHelper.commit();
         } catch (DAOException e) {
+            transactionHelper.rollback();
             e.printStackTrace();
             throw new ServiceException("Could not find cars by filter");
+        } finally {
+            transactionHelper.endTransaction();
         }
 
         return carList;

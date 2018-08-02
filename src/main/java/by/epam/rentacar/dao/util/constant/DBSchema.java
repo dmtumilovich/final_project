@@ -48,6 +48,25 @@ public class DBSchema {
         public static final String DATE = "time";
     }
 
+    public static final class OrderListTable {
+        public static final String TABLE_NAME = "order_list";
+
+        public static final String ID_ORDER = "id_order";
+        public static final String ID_USER = "id_user";
+        public static final String ID_CAR = "id_car";
+        public static final String DATE_START = "date_start";
+        public static final String DATE_END = "date_end";
+        public static final String TOTAL_PRICE = "total_price";
+        public static final String ID_STATUS = "id_status";
+    }
+
+    public static final class OrderStatusTable {
+        public static final String TABLE_NAME = "order_status";
+
+        public static final String ID_STATUS = "id_status";
+        public static final String STATUS = "status";
+    }
+
     private DBSchema() {
 
     }

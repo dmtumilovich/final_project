@@ -16,9 +16,10 @@ public class ReviewServiceImpl implements ReviewService {
     public void addReview(AddReviewDTO reviewDTO) {
 
         ReviewDAO reviewDAO = new ReviewDAOImpl();
+        TransactionHelper transactionHelper = null;
 
         try {
-            TransactionHelper transactionHelper = new TransactionHelper();
+            transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(reviewDAO);
 
             Date reviewDate = new Date();
@@ -26,11 +27,13 @@ public class ReviewServiceImpl implements ReviewService {
 
             reviewDAO.addReview(reviewDTO);
 
-            transactionHelper.endTransaction();
             transactionHelper.commit();
 
         } catch (DAOException e) {
+            transactionHelper.rollback();
             e.printStackTrace();
+        } finally {
+            transactionHelper.endTransaction();
         }
 
     }
@@ -39,17 +42,20 @@ public class ReviewServiceImpl implements ReviewService {
     public void deleteReview(int reviewID) {
 
         ReviewDAO reviewDAO = new ReviewDAOImpl();
+        TransactionHelper transactionHelper = null;
 
         try {
-            TransactionHelper transactionHelper = new TransactionHelper();
+            transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(reviewDAO);
 
             reviewDAO.deleteReview(reviewID);
 
-            transactionHelper.endTransaction();
             transactionHelper.commit();
         } catch (DAOException e) {
+            transactionHelper.rollback();
             e.printStackTrace();
+        } finally {
+            transactionHelper.endTransaction();
         }
 
     }

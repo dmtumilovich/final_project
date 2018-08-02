@@ -9,7 +9,9 @@ import by.epam.rentacar.dao.util.constant.DBSchema;
 import by.epam.rentacar.domain.dto.AddCarDTO;
 import by.epam.rentacar.domain.dto.CarInfoDTO;
 import by.epam.rentacar.domain.dto.CarItemDTO;
+import by.epam.rentacar.domain.dto.OrderInfoDTO;
 import by.epam.rentacar.domain.entity.Car;
+import by.epam.rentacar.domain.entity.Order;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -154,5 +156,110 @@ public class AdminDAOImpl extends AdminDAO {
         }
 
         return true;
+    }
+
+    @Override
+    public List<Order> getOrderList() throws DAOException {
+
+        List<Order> orderList = new ArrayList<>();
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = connection.prepareStatement("SELECT order_list.id_order, id_user, id_car, date_start, date_end, total_price, order_status.status\n" +
+                                                    "FROM order_list\n" +
+                                                    "INNER JOIN order_status\n" +
+                                                    "ON order_list.id_status = order_status.id_status\n" +
+                                                    "ORDER BY date_start DESC");
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Order order = ResultSetParser.createOrder(resultSet);
+                orderList.add(order);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return orderList;
+
+    }
+
+    @Override
+    public OrderInfoDTO getOrderInfo(int orderID) throws DAOException {
+
+        OrderInfoDTO orderInfoDTO = null;
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = connection.prepareStatement("SELECT order_list.id_order, order_list.id_user, order_list.id_car, order_list.date_start, order_list.date_end, order_list.total_price,\n" +
+                                                    "order_status.status,\n" +
+                                                    "user_list.username, user_list.name, user_list.surname, user_list.phone_number,\n" +
+                                                    "car_list.brand, car_list.model, car_list.class, car_list.price\n" +
+                                                    "FROM order_list\n" +
+                                                    "INNER JOIN order_status\n" +
+                                                    "ON order_list.id_status = order_status.id_status\n" +
+                                                    "INNER JOIN user_list\n" +
+                                                    "ON order_list.id_user = user_list.id_user\n" +
+                                                    "INNER JOIN car_list\n" +
+                                                    "ON order_list.id_car = car_list.id_car\n" +
+                                                    "WHERE id_order = ?");
+            statement.setInt(1, orderID);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                orderInfoDTO = ResultSetParser.createOrderInfoDTO(resultSet);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return orderInfoDTO;
+
+    }
+
+    @Override
+    public void confirmOrder(int orderID) throws DAOException {
+
+        final int STATUS_CONFIRMED = 1;
+
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement("UPDATE order_list\n" +
+                                                    "SET id_status = ?\n" +
+                                                    "WHERE id_order = ?");
+            statement.setInt(1, STATUS_CONFIRMED);
+            statement.setInt(2, orderID);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void rejectOrder(int orderID) throws DAOException {
+
+        final int STATUS_REJECTED = 2;
+
+        try {
+
+            PreparedStatement statement = connection.prepareStatement("UPDATE order_list\n" +
+                                                                        "SET id_status = ?\n" +
+                                                                        "WHERE id_order = ?");
+            statement.setInt(1, STATUS_REJECTED);
+            statement.setInt(2, orderID);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }

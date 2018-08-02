@@ -5,13 +5,16 @@
 <fmt:setBundle basename = "local" var = "loc" />
 
 <div class="navbar bg-light navbar-light rounded">
-  <span class="navbar-brand">Cars</span>
+  <span class="navbar-brand">Orders</span>
   <ul class="navbar-nav">
     <li class="nav-item">
-      <a href="/controller?command=show_car_table" class="nav-link">List</a>
+      <a href="#" class="nav-link">All</a>
     </li>
     <li class="nav-item">
-      <a href="#" class="nav-link">Other info</a>
+      <a href="#" class="nav-link">Waiting for confirmation</a>
+    </li>
+    <li class="nav-item">
+      <a href="#" class="nav-link">Disapproved</a>
     </li>
   </ul>
 </div>

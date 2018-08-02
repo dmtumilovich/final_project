@@ -11,7 +11,7 @@
       <a class="navbar-brand" href="/admin/panel">Admin panel</a>
       <ul class="navbar-nav ">
         <li class="nav-item">
-          <a href="#" class="nav-link">Statistic</a>
+          <a href="/controller?command=get_orders" class="nav-link">Orders</a>
         </li>
         <li class="nav-item">
           <a href="#" class="nav-link">Users</a>

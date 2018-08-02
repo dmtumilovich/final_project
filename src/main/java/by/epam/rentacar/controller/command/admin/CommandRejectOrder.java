@@ -1,10 +1,7 @@
 package by.epam.rentacar.controller.command.admin;
 
 import by.epam.rentacar.controller.command.Command;
-import by.epam.rentacar.controller.util.constant.PageParameters;
-import by.epam.rentacar.controller.util.constant.RequestAttributes;
-import by.epam.rentacar.controller.util.constant.RequestParameters;
-import by.epam.rentacar.domain.dto.CarInfoDTO;
+import by.epam.rentacar.controller.util.constant.RequestHeader;
 import by.epam.rentacar.service.AdminService;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.exception.ServiceException;
@@ -14,24 +11,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CommandGetCarInfo implements Command {
-
+public class CommandRejectOrder implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        int carID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_CAR));
+        int orderID = Integer.parseInt(request.getParameter("order_id"));
 
         AdminService adminService = ServiceFactory.getInstance().getAdminService();
-        CarInfoDTO carInfoDTO = null;
 
         try {
-            carInfoDTO = adminService.getCarInfo(carID);
-
-            request.setAttribute(RequestAttributes.KEY_CAR_INFO, carInfoDTO);
-            request.getRequestDispatcher(PageParameters.PAGE_ADMIN_CAR).forward(request, response);
+            adminService.rejectOrder(orderID);
         } catch (ServiceException e) {
             e.printStackTrace();
         }
+
+        String destPage = request.getHeader(RequestHeader.KEY_REFERER);
+        response.sendRedirect(destPage);
 
     }
 }

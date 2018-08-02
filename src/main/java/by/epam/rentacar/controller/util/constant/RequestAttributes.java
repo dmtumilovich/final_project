@@ -13,6 +13,7 @@ public class RequestAttributes {
 
     public static final String KEY_CAR = "car";
     public static final String KEY_CAR_LIST = "car_list";
+    public static final String KEY_CAR_INFO = "car_info";
 
     private RequestAttributes() {
 
