@@ -8,6 +8,7 @@ import by.epam.rentacar.dao.connection.pool.ConnectionPoolException;
 import by.epam.rentacar.dao.exception.DAOException;
 import by.epam.rentacar.dao.impl.UserDAOImpl;
 import by.epam.rentacar.domain.dto.ChangePasswordDTO;
+import by.epam.rentacar.domain.dto.EditProfileDTO;
 import by.epam.rentacar.domain.dto.SigninDTO;
 import by.epam.rentacar.domain.dto.SignupDTO;
 import by.epam.rentacar.domain.entity.User;
@@ -100,8 +101,34 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public User getUser(int userID) throws ServiceException {
+
+        UserDAO userDAO = new UserDAOImpl();
+        User user = null;
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(userDAO);
+
+            user = userDAO.getUserById(userID);
+
+            transactionHelper.commit();
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            e.printStackTrace();
+            throw new ServiceException("Error while getting user data", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
+        return user;
+
+    }
+
     //переделать
-    public boolean editProfile(User user) throws ServiceException {
+    public boolean editProfile(EditProfileDTO editProfileDTO) throws ServiceException {
 
         UserDAO userDAO = new UserDAOImpl();
         TransactionHelper transactionHelper = null;
@@ -111,7 +138,7 @@ public class UserServiceImpl implements UserService {
             transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(userDAO);
 
-            userDAO.updateUser(user);
+            userDAO.updateUser(editProfileDTO);
 
             transactionHelper.commit();
 

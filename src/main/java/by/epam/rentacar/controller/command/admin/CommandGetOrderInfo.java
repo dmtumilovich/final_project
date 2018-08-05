@@ -1,6 +1,9 @@
 package by.epam.rentacar.controller.command.admin;
 
 import by.epam.rentacar.controller.command.Command;
+import by.epam.rentacar.controller.util.constant.PageParameters;
+import by.epam.rentacar.controller.util.constant.RequestAttributes;
+import by.epam.rentacar.controller.util.constant.RequestParameters;
 import by.epam.rentacar.domain.dto.OrderInfoDTO;
 import by.epam.rentacar.service.AdminService;
 import by.epam.rentacar.service.ServiceFactory;
@@ -16,7 +19,7 @@ public class CommandGetOrderInfo implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        int orderID = Integer.parseInt(request.getParameter("order_id"));
+        int orderID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ORDER_ID));
 
         AdminService adminService = ServiceFactory.getInstance().getAdminService();
 
@@ -28,8 +31,8 @@ public class CommandGetOrderInfo implements Command {
             e.printStackTrace();
         }
 
-        request.setAttribute("order_info", orderInfo);
-        request.getRequestDispatcher("/jsp/admin/order.jsp").forward(request, response);
+        request.setAttribute(RequestAttributes.KEY_ORDER_INFO, orderInfo);
+        request.getRequestDispatcher(PageParameters.PAGE_ADMIN_ORDER).forward(request, response);
 
     }
 }

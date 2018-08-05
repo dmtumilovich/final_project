@@ -1,6 +1,8 @@
 package by.epam.rentacar.controller.command.admin;
 
 import by.epam.rentacar.controller.command.Command;
+import by.epam.rentacar.controller.util.constant.PageParameters;
+import by.epam.rentacar.controller.util.constant.RequestAttributes;
 import by.epam.rentacar.domain.entity.Order;
 import by.epam.rentacar.service.AdminService;
 import by.epam.rentacar.service.ServiceFactory;
@@ -28,8 +30,8 @@ public class CommandGetOrdersTable implements Command {
             e.printStackTrace();
         }
 
-        request.setAttribute("order_list", orderList);
-        request.getRequestDispatcher("/jsp/admin/orders.jsp").forward(request, response);
+        request.setAttribute(RequestAttributes.KEY_ORDER_LIST, orderList);
+        request.getRequestDispatcher(PageParameters.PAGE_ADMIN_ORDERS).forward(request, response);
 
     }
 

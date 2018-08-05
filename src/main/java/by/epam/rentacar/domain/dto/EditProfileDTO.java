@@ -1,42 +1,23 @@
-package by.epam.rentacar.domain.entity;
+package by.epam.rentacar.domain.dto;
 
-public class User {
+public class EditProfileDTO {
 
-    private int id;
-    private String username;
-    private String email;
+    private int userID;
     private String name;
     private String surname;
     private String phone;
     private String passport;
-    private Role role;
 
-    public User() {
+    public EditProfileDTO() {
 
     }
 
-    public int getId() {
-        return id;
+    public int getUserID() {
+        return userID;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public String getName() {
@@ -71,30 +52,14 @@ public class User {
         this.passport = passport;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
+        return "EditProfileDTO{" +
+                "userID=" + userID +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", phone='" + phone + '\'' +
                 ", passport='" + passport + '\'' +
-                ", role=" + role +
                 '}';
     }
-
-    public enum Role {
-        ADMIN, USER
-    }
-
 }

@@ -15,6 +15,9 @@ public class RequestAttributes {
     public static final String KEY_CAR_LIST = "car_list";
     public static final String KEY_CAR_INFO = "car_info";
 
+    public static final String KEY_ORDER_LIST = "order_list";
+    public static final String KEY_ORDER_INFO = "order_info";
+
     private RequestAttributes() {
 
     }

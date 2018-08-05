@@ -1,6 +1,8 @@
 package by.epam.rentacar.controller.command;
 
 import by.epam.rentacar.controller.command.admin.*;
+import by.epam.rentacar.controller.command.admin.CommandGetOrderInfo;
+import by.epam.rentacar.controller.command.user.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +16,9 @@ public class CommandContainer {
         commands.put("signup", new CommandSignup());
         commands.put("logout", new CommandLogout());
         commands.put("change_lang", new CommandLanguage());
-        commands.put("edit_profile", new CommandEditProfile());
+        commands.put("profile", new CommandGetProfile());
+        commands.put("edit_profile", new CommandGetEditProfile());
+        commands.put("save_profile", new CommandSaveProfile());
         commands.put("show_cars", new CommandShowCars());
         commands.put("show_selected_car", new CommandShowSelectedCar());
         commands.put("find_cars", new CommandFindCars());
@@ -30,6 +34,10 @@ public class CommandContainer {
         commands.put("get_order_info", new CommandGetOrderInfo());
         commands.put("confirm_order", new CommandConfirmOrder());
         commands.put("reject_order", new CommandRejectOrder());
+        commands.put("get_booking_info", new CommandGetBookingInfo());
+        commands.put("orders", new CommandGetOrders());
+        commands.put("user_order", new CommandGetOrder());
+        commands.put("make_order", new CommandMakeOrder());
     }
 
     public static Command get(String commandStr) {

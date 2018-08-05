@@ -30,7 +30,8 @@ public class AdminFilter implements Filter {
         String destPage = null;
 
         if (user == null || user.getRole() != User.Role.ADMIN) {
-            destPage = (referer != null) ? referer : PageParameters.PAGE_MAIN;
+            //destPage = (referer != null) ? referer : PageParameters.PAGE_MAIN;
+            destPage = PageParameters.PAGE_MAIN;
             response.sendRedirect(destPage);
             return;
         }

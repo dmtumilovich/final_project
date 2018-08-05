@@ -5,6 +5,7 @@ import by.epam.rentacar.dao.connection.pool.ConnectionPool;
 import by.epam.rentacar.dao.connection.pool.ConnectionPoolException;
 import by.epam.rentacar.dao.exception.DAOException;
 import by.epam.rentacar.domain.dto.ChangePasswordDTO;
+import by.epam.rentacar.domain.dto.EditProfileDTO;
 import by.epam.rentacar.domain.dto.SignupDTO;
 import by.epam.rentacar.domain.entity.User;
 import by.epam.rentacar.dao.util.ResultSetParser;
@@ -17,6 +18,32 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDAOImpl extends UserDAO {
+
+    @Override
+    public User getUserById(int userID) throws DAOException {
+
+        User user = null;
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = connection.prepareStatement(DBQueries.FIND_USER_BY_ID);
+            statement.setInt(1, userID);
+
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                user = ResultSetParser.createUser(resultSet);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DAOException("Error while getting user by id", e);
+        }
+
+        return user;
+
+    }
 
     public User findUser(String username, String password) throws DAOException {
 
@@ -163,18 +190,18 @@ public class UserDAOImpl extends UserDAO {
     }
 
     //тоже убрать бул или переделать
-    public boolean updateUser(User user) throws DAOException {
+    public boolean updateUser(EditProfileDTO editProfileDTO) throws DAOException {
 
         PreparedStatement statement = null;
 
         try {
 
             statement = connection.prepareStatement(DBQueries.UPDATE_USER_INFO);
-            statement.setString(1,  user.getName());
-            statement.setString(2, user.getSurname());
-            statement.setString(3, user.getPhone());
-            statement.setString(4, user.getPassport());
-            statement.setInt(5, user.getId());
+            statement.setString(1,  editProfileDTO.getName());
+            statement.setString(2, editProfileDTO.getSurname());
+            statement.setString(3, editProfileDTO.getPhone());
+            statement.setString(4, editProfileDTO.getPassport());
+            statement.setInt(5, editProfileDTO.getUserID());
             statement.executeUpdate();
 
         } catch (SQLException e) {

@@ -11,5 +11,6 @@ public abstract class CarDAO extends AbstractDAO {
     public abstract List<Car> getAllCars() throws DAOException;
     public abstract Car getCarByID(int carID) throws DAOException;
     public abstract List<Car> getCarsByFilter(CarSearchDTO carSearchDTO) throws DAOException;
+    public abstract double getPriceByCarID(int carID) throws DAOException;
 
 }

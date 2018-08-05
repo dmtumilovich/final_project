@@ -4,6 +4,7 @@ import by.epam.rentacar.dao.CarDAO;
 import by.epam.rentacar.dao.connection.pool.ConnectionPool;
 import by.epam.rentacar.dao.connection.pool.ConnectionPoolException;
 import by.epam.rentacar.dao.exception.DAOException;
+import by.epam.rentacar.dao.util.constant.DBSchema;
 import by.epam.rentacar.domain.dto.CarSearchDTO;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.domain.entity.Review;
@@ -112,6 +113,33 @@ public class CarDAOImpl extends CarDAO {
         //System.out.println("size: " + carList.size());
 
         return carList;
+
+    }
+
+    @Override
+    public double getPriceByCarID(int carID) throws DAOException {
+
+        double price = 0;
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = connection.prepareStatement("SELECT price\n" +
+                                                    "FROM car_list\n" +
+                                                    "WHERE id_car = ?");
+            statement.setInt(1, carID);
+
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                price = resultSet.getDouble(DBSchema.CarListTable.PRICE);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DAOException("error while getting price by car id", e);
+        }
+
+        return price;
 
     }
 

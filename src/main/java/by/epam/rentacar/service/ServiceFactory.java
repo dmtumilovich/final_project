@@ -1,9 +1,6 @@
 package by.epam.rentacar.service;
 
-import by.epam.rentacar.service.impl.AdminServiceImpl;
-import by.epam.rentacar.service.impl.CarServiceImpl;
-import by.epam.rentacar.service.impl.ReviewServiceImpl;
-import by.epam.rentacar.service.impl.UserServiceImpl;
+import by.epam.rentacar.service.impl.*;
 
 public class ServiceFactory {
 
@@ -13,6 +10,7 @@ public class ServiceFactory {
     private final CarService carService = new CarServiceImpl();
     private final ReviewService reviewService = new ReviewServiceImpl();
     private final AdminService adminService = new AdminServiceImpl();
+    private final OrderService orderService = new OrderServiceImpl();
 
     public UserService getUserService() {
         return userService;
@@ -28,6 +26,10 @@ public class ServiceFactory {
 
     public AdminService getAdminService() {
         return adminService;
+    }
+
+    public OrderService getOrderService() {
+        return orderService;
     }
 
     public static ServiceFactory getInstance() {

@@ -1,6 +1,7 @@
 package by.epam.rentacar.service;
 
 import by.epam.rentacar.domain.dto.ChangePasswordDTO;
+import by.epam.rentacar.domain.dto.EditProfileDTO;
 import by.epam.rentacar.domain.dto.SigninDTO;
 import by.epam.rentacar.domain.dto.SignupDTO;
 import by.epam.rentacar.domain.entity.User;
@@ -10,8 +11,9 @@ public interface UserService {
 
     User login(SigninDTO signinDTO) throws ServiceException;
     User signup(SignupDTO signupDTO) throws ServiceException;
+    User getUser(int userID) throws ServiceException;
     //переделать
-    boolean editProfile(User user) throws ServiceException;
+    boolean editProfile(EditProfileDTO editProfileDTO) throws ServiceException;
     void changePassword(ChangePasswordDTO changePasswordDTO) throws ServiceException;
 
 }

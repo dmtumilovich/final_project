@@ -26,7 +26,7 @@ public class CommandEditCar implements Command {
             e.printStackTrace();
         }
 
-        response.sendRedirect("/controller?command=get_car_info&car_id=" + car.getId());
+        response.sendRedirect("/controller?command=get_car_info&car_id=" + car.getId()); //ubrat
 
     }
 

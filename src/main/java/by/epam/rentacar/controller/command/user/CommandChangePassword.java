@@ -1,5 +1,6 @@
-package by.epam.rentacar.controller.command;
+package by.epam.rentacar.controller.command.user;
 
+import by.epam.rentacar.controller.command.Command;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
 import by.epam.rentacar.domain.dto.ChangePasswordDTO;

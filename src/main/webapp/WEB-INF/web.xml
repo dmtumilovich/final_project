@@ -19,7 +19,7 @@
 
   <servlet>
     <servlet-name>MainPage</servlet-name>
-    <jsp-file>/jsp/index.jsp</jsp-file>
+    <jsp-file>/jsp/main.jsp</jsp-file>
   </servlet>
   <servlet-mapping>
     <servlet-name>MainPage</servlet-name>
@@ -46,7 +46,7 @@
   
     <servlet>
       <servlet-name>ProfilePage</servlet-name>
-      <jsp-file>/jsp/user/profile.jsp</jsp-file>
+      <jsp-file>/jsp/user/profile2.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
       <servlet-name>ProfilePage</servlet-name>
@@ -55,7 +55,7 @@
 
   <servlet>
     <servlet-name>EditProfilePage</servlet-name>
-    <jsp-file>/jsp/user/edit_profile.jsp</jsp-file>
+    <jsp-file>/jsp/user/edit_profile2.jsp</jsp-file>
   </servlet>
   <servlet-mapping>
     <servlet-name>EditProfilePage</servlet-name>
@@ -63,8 +63,17 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>UserOrdersPage</servlet-name>
+    <jsp-file>/jsp/user/orders.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserOrdersPage</servlet-name>
+    <url-pattern>/user/orders</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>CarsPage</servlet-name>
-    <jsp-file>/jsp/cars.jsp</jsp-file>
+    <jsp-file>/jsp/cars2.jsp</jsp-file>
   </servlet>
   <servlet-mapping>
     <servlet-name>CarsPage</servlet-name>
@@ -73,11 +82,29 @@
 
   <servlet>
     <servlet-name>CarPage</servlet-name>
-    <jsp-file>/jsp/car.jsp</jsp-file>
+    <jsp-file>/jsp/car2.jsp</jsp-file>
   </servlet>
   <servlet-mapping>
     <servlet-name>CarPage</servlet-name>
     <url-pattern>/car</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>OrderingPage</servlet-name>
+    <jsp-file>/jsp/user/ordering.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>OrderingPage</servlet-name>
+    <url-pattern>/user/ordering</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>OrderPage</servlet-name>
+    <jsp-file>/jsp/user/order.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>OrderPage</servlet-name>
+    <url-pattern>/user/order</url-pattern>
   </servlet-mapping>
 
   <!--Admin-->
@@ -115,6 +142,24 @@
   <servlet-mapping>
     <servlet-name>AdminCarPage</servlet-name>
     <url-pattern>/admin/car</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AdminOrdersPage</servlet-name>
+    <jsp-file>/jsp/admin/orders.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AdminOrdersPage</servlet-name>
+    <url-pattern>/admin/orders</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AdminOrderPage</servlet-name>
+    <jsp-file>/jsp/admin/order.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AdminOrderPage</servlet-name>
+    <url-pattern>/admin/order</url-pattern>
   </servlet-mapping>
 
   <servlet>
