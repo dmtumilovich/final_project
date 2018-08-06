@@ -6,6 +6,9 @@ import by.epam.rentacar.domain.dto.AddCarDTO;
 import by.epam.rentacar.service.AdminService;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.exception.ServiceException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class CommandAddCar implements Command {
+
+    private static final Logger logger = LogManager.getLogger(CommandAddCar.class);
+
+    private static final String PAGE_CARS = "/controller?command=show_car_table";//rename
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -22,11 +29,11 @@ public class CommandAddCar implements Command {
 
         try {
             adminService.addCar(addCarDTO);
+            response.sendRedirect(PAGE_CARS);
         } catch (ServiceException e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, "Failed to add car!", e);
         }
 
-        response.sendRedirect("/controller?command=show_car_table");
     }
 
     private AddCarDTO parseRequest(HttpServletRequest request) {

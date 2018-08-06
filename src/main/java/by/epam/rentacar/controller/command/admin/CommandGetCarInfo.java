@@ -8,6 +8,9 @@ import by.epam.rentacar.domain.dto.CarInfoDTO;
 import by.epam.rentacar.service.AdminService;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.exception.ServiceException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class CommandGetCarInfo implements Command {
+
+    private static final Logger logger = LogManager.getLogger(CommandGetCarInfo.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -30,7 +35,7 @@ public class CommandGetCarInfo implements Command {
             request.setAttribute(RequestAttributes.KEY_CAR_INFO, carInfoDTO);
             request.getRequestDispatcher(PageParameters.PAGE_ADMIN_CAR).forward(request, response);
         } catch (ServiceException e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, "Failed to get car info!", e);
         }
 
     }

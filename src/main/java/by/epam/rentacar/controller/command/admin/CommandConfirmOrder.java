@@ -6,6 +6,9 @@ import by.epam.rentacar.controller.util.constant.RequestParameters;
 import by.epam.rentacar.service.AdminService;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.exception.ServiceException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,22 +17,23 @@ import java.io.IOException;
 
 public class CommandConfirmOrder implements Command {
 
+    private static final Logger logger = LogManager.getLogger(CommandConfirmOrder.class);
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        int orderID = Integer.parseInt(request.getParameter("order_id"));
+        int orderID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_ORDER));
 
         AdminService adminService = ServiceFactory.getInstance().getAdminService();
 
         try {
             adminService.confirmOrder(orderID);
-        } catch (ServiceException e) {
-            e.printStackTrace();
-        }
 
-        String destPage = request.getHeader(RequestHeader.KEY_REFERER);
-        System.out.println("REFERER: " + destPage);
-        response.sendRedirect(destPage);
+            String destPage = request.getHeader(RequestHeader.KEY_REFERER);
+            response.sendRedirect(destPage);
+        } catch (ServiceException e) {
+            logger.log(Level.ERROR, "Failed to confirm order!", e);
+        }
 
     }
 

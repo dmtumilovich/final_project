@@ -11,12 +11,16 @@ public class RequestAttributes {
     public static final String KEY_SIGNUP_FAILED = "signup_failed";
     public static final String KEY_SIGNUP_FAILED_MESSAGE = "error_message_key";
 
+    public static final String KEY_USER_DATA = "user_data";
+
     public static final String KEY_CAR = "car";
     public static final String KEY_CAR_LIST = "car_list";
     public static final String KEY_CAR_INFO = "car_info";
 
     public static final String KEY_ORDER_LIST = "order_list";
     public static final String KEY_ORDER_INFO = "order_info";
+    public static final String KEY_ORDERS_INFO = "orders_info";
+    public static final String KEY_BOOKING_INFO = "booking_info";
 
     private RequestAttributes() {
 

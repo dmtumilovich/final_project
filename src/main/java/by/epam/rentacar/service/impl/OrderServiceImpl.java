@@ -16,6 +16,7 @@ import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.domain.entity.Order;
 import by.epam.rentacar.domain.entity.User;
 import by.epam.rentacar.service.OrderService;
+import by.epam.rentacar.service.exception.InvalidDateRangeException;
 import by.epam.rentacar.service.exception.ServiceException;
 
 import java.text.ParseException;
@@ -39,6 +40,10 @@ public class OrderServiceImpl implements OrderService {
         } catch (ParseException e) {
             e.printStackTrace();
             throw new ServiceException("Error occurred while parsing date");
+        }
+
+        if (dateStart.after(dateEnd) || (dateEnd.getTime() - dateStart.getTime() < 24*60*60*1000)) {
+            throw new InvalidDateRangeException("invalid date range");
         }
 
         CarDAO carDAO = new CarDAOImpl();

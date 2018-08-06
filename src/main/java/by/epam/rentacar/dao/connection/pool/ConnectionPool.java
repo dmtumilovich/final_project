@@ -2,6 +2,9 @@ package by.epam.rentacar.dao.connection.pool;
 
 import by.epam.rentacar.dao.connection.DBParameter;
 import by.epam.rentacar.dao.connection.DBResourceManager;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.Locale;
@@ -14,6 +17,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class ConnectionPool {
+
+    private static final Logger logger = LogManager.getLogger(ConnectionPool.class);
 
     private static ConnectionPool instance = null;
 
@@ -60,6 +65,7 @@ public class ConnectionPool {
         } catch (NumberFormatException e) {
             poolSize = 5;
         }
+
     }
 
     public void initPoolData() throws ConnectionPoolException {
@@ -75,6 +81,9 @@ public class ConnectionPool {
                 PooledConnection pooledConnection = new PooledConnection(connection);
                 connectionQueue.add(pooledConnection);
             }
+
+            logger.log(Level.DEBUG, "Connection pool has been initialized! Pool size is " + poolSize);
+
         } catch (ClassNotFoundException e) {
             throw new ConnectionPoolException("Can't find database drive class!", e);
         } catch (SQLException e) {
@@ -88,6 +97,9 @@ public class ConnectionPool {
         try {
             connection = connectionQueue.take();
             givenAwayConnectionQueue.add(connection);
+            logger.log(Level.DEBUG, "Connection has been taken!");
+//            logger.log(Level.DEBUG, "The number of connections is " + connectionQueue.size()); //а надо ли?
+//            logger.log(Level.DEBUG, "The number of given away connections is " + givenAwayConnectionQueue.size());
         } catch (InterruptedException e) {
             throw new ConnectionPoolException("Error connecting to the data source." , e);
         }
@@ -207,6 +219,10 @@ public class ConnectionPool {
             if(!connectionQueue.offer(this)) {
                 throw new SQLException("Error allocating connection in the pool.");
             }
+
+            logger.log(Level.DEBUG, "Connection has been released!");
+//            logger.log(Level.DEBUG, "The number of connections is " + connectionQueue.size());
+//            logger.log(Level.DEBUG, "The number of given away connections is " + givenAwayConnectionQueue.size());
         }
 
         @Override

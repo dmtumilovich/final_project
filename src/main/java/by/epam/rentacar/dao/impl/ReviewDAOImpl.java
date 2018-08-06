@@ -3,6 +3,7 @@ package by.epam.rentacar.dao.impl;
 import by.epam.rentacar.dao.ReviewDAO;
 import by.epam.rentacar.dao.connection.pool.ConnectionPool;
 import by.epam.rentacar.dao.connection.pool.ConnectionPoolException;
+import by.epam.rentacar.dao.util.constant.DBQueries;
 import by.epam.rentacar.domain.dto.AddReviewDTO;
 
 import java.sql.Connection;
@@ -19,7 +20,7 @@ public class ReviewDAOImpl extends ReviewDAO {
 
         try {
 
-            statement = connection.prepareStatement("INSERT INTO car_review (id_car, id_user, review, time) VALUES (?, ?, ?, ?)");
+            statement = connection.prepareStatement(DBQueries.INSERT_REVIEW);
             statement.setInt(1, reviewDTO.getCarID());
             statement.setInt(2, reviewDTO.getUserID());
             statement.setString(3, reviewDTO.getReviewText());
@@ -34,6 +35,7 @@ public class ReviewDAOImpl extends ReviewDAO {
 
     }
 
+    //переделать
     @Override
     public void deleteReview(int reviewID) {
 

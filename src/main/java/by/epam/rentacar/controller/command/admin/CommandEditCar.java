@@ -6,6 +6,9 @@ import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.AdminService;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.exception.ServiceException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class CommandEditCar implements Command {
+
+    private static final Logger logger = LogManager.getLogger(CommandEditCar.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -22,11 +27,11 @@ public class CommandEditCar implements Command {
 
         try {
             adminService.editCar(car);
-        } catch (ServiceException e) {
-            e.printStackTrace();
-        }
 
-        response.sendRedirect("/controller?command=get_car_info&car_id=" + car.getId()); //ubrat
+            response.sendRedirect("/controller?command=get_car_info&car_id=" + car.getId()); //ubrat
+        } catch (ServiceException e) {
+            logger.log(Level.ERROR, "Failed to edit car info!", e);
+        }
 
     }
 
@@ -42,7 +47,7 @@ public class CommandEditCar implements Command {
         double engineVolume = Double.parseDouble(request.getParameter(RequestParameters.KEY_EDIT_ENGINE_VOLUME));
         double price = Double.parseDouble(request.getParameter(RequestParameters.KEY_EDIT_PRICE));
 
-        Car car = new Car();
+        Car car = new Car(); //builder
         car.setId(carID);
         car.setBrand(brand);
         car.setModel(model);

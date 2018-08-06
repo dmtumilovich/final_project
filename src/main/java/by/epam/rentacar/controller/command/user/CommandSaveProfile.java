@@ -9,6 +9,9 @@ import by.epam.rentacar.service.exception.ServiceException;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
 import by.epam.rentacar.controller.util.constant.SessionAttributes;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,8 +20,28 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class CommandSaveProfile implements Command {
+
+    private static final Logger logger = LogManager.getLogger(CommandSaveProfile.class);
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        EditProfileDTO editProfileDTO = parseRequest(request);
+        UserService userService = ServiceFactory.getInstance().getUserService();
+
+        try {
+
+            if(userService.editProfile(editProfileDTO)) {
+                request.setAttribute("profile_edited", true);
+                request.getRequestDispatcher("/controller?command=profile").forward(request, response);
+            }
+
+        } catch (ServiceException e) {
+            logger.log(Level.ERROR, "Failed to save user profile!", e);
+        }
+    }
+
+    private EditProfileDTO parseRequest(HttpServletRequest request) {
 
         HttpSession session = request.getSession();
         int userID = ((User) session.getAttribute(SessionAttributes.KEY_USER)).getId();
@@ -35,17 +58,7 @@ public class CommandSaveProfile implements Command {
         editProfileDTO.setPhone(editPhone);
         editProfileDTO.setPassport(editPassport);
 
-        UserService userService = ServiceFactory.getInstance().getUserService();
+        return editProfileDTO;
 
-        try {
-
-            if(userService.editProfile(editProfileDTO)) {
-                request.setAttribute("profile_edited", true);
-                request.getRequestDispatcher("/controller?command=profile").forward(request, response);
-            }
-
-        } catch (ServiceException e) {
-            e.printStackTrace();
-        }
     }
 }

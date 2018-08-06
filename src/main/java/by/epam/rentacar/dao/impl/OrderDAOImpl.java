@@ -3,12 +3,11 @@ package by.epam.rentacar.dao.impl;
 import by.epam.rentacar.dao.OrderDAO;
 import by.epam.rentacar.dao.exception.DAOException;
 import by.epam.rentacar.dao.util.ResultSetParser;
-import by.epam.rentacar.dao.util.constant.DBSchema;
+import by.epam.rentacar.dao.util.constant.DBQueries;
 import by.epam.rentacar.domain.dto.UserOrderDTO;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.domain.entity.Order;
 
-import javax.xml.transform.Result;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,11 +24,7 @@ public class OrderDAOImpl extends OrderDAO {
         ResultSet resultSet = null;
 
         try {
-            statement = connection.prepareStatement("SELECT order_list.id_order, id_user, id_car, date_start, date_end, total_price, order_status.status\n" +
-                    "FROM order_list\n" +
-                    "INNER JOIN order_status\n" +
-                    "ON order_list.id_status = order_status.id_status\n" +
-                    "ORDER BY date_start DESC");
+            statement = connection.prepareStatement(DBQueries.GET_ALL_ORDERS);
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -53,13 +48,7 @@ public class OrderDAOImpl extends OrderDAO {
         ResultSet resultSet = null;
 
         try {
-            statement = connection.prepareStatement("SELECT order_list.*, order_status.status, car_list.*\n" +
-                                                    "FROM order_list\n" +
-                                                    "INNER JOIN car_list\n" +
-                                                    "ON order_list.id_car = car_list.id_car\n" +
-                                                    "INNER JOIN order_status\n" +
-                                                    "ON order_list.id_status = order_status.id_status\n" +
-                                                    "WHERE id_order = ?");
+            statement = connection.prepareStatement(DBQueries.GET_USER_ORDER);
             statement.setInt(1, orderID);
 
             resultSet = statement.executeQuery();
@@ -91,13 +80,7 @@ public class OrderDAOImpl extends OrderDAO {
         ResultSet resultSet = null;
 
         try {
-            statement = connection.prepareStatement("SELECT order_list.*, order_status.status, car_list.*\n" +
-                                                    "FROM order_list\n" +
-                                                    "INNER JOIN car_list\n" +
-                                                    "ON order_list.id_car = car_list.id_car\n" +
-                                                    "INNER JOIN order_status\n" +
-                                                    "ON order_list.id_status = order_status.id_status\n" +
-                                                    "WHERE id_user = ?");
+            statement = connection.prepareStatement(DBQueries.GET_USER_ORDERS);
             statement.setInt(1, userID);
 
             resultSet = statement.executeQuery();
@@ -125,8 +108,7 @@ public class OrderDAOImpl extends OrderDAO {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("INSERT INTO order_list (id_user, id_car, date_start, date_end, total_price, id_status)\n" +
-                                                    "VALUES (?, ?, ?, ?, ?, ?)");
+            statement = connection.prepareStatement(DBQueries.INSERT_ORDER);
             statement.setInt(1, order.getUserID());
             statement.setInt(2, order.getCarID());
             Timestamp dateStart = new Timestamp(order.getDateStart().getTime());

@@ -110,8 +110,6 @@ public class CarDAOImpl extends CarDAO {
             throw new DAOException("Error while getting car list by filter.", e);
         }
 
-        //System.out.println("size: " + carList.size());
-
         return carList;
 
     }
@@ -125,9 +123,7 @@ public class CarDAOImpl extends CarDAO {
         ResultSet resultSet = null;
 
         try {
-            statement = connection.prepareStatement("SELECT price\n" +
-                                                    "FROM car_list\n" +
-                                                    "WHERE id_car = ?");
+            statement = connection.prepareStatement(DBQueries.GET_CAR_PRICE_BY_ID);
             statement.setInt(1, carID);
 
             resultSet = statement.executeQuery();

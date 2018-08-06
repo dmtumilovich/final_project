@@ -8,6 +8,9 @@ import by.epam.rentacar.domain.entity.User;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.exception.ServiceException;
 import by.epam.rentacar.controller.util.constant.SessionAttributes;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class CommandChangePassword implements Command {
+
+    private static final Logger logger = LogManager.getLogger(CommandChangePassword.class);
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
@@ -24,7 +30,7 @@ public class CommandChangePassword implements Command {
             ServiceFactory.getInstance().getUserService().changePassword(changePasswordDTO);
             response.sendRedirect(PageParameters.PAGE_PROFILE);
         } catch (ServiceException e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, "Failed to change password!", e);
         }
     }
 

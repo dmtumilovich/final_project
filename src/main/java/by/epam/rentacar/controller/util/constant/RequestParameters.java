@@ -50,7 +50,9 @@ public class RequestParameters {
     public static final String KEY_EDIT_ENGINE_VOLUME = "edit_engine_volume";
     public static final String KEY_EDIT_PRICE = "edit_price";
 
-    public static final String KEY_ORDER_ID = "order_id";
+    public static final String KEY_ID_ORDER = "order_id";
+    public static final String KEY_DATE_START = "date_start";
+    public static final String KEY_DATE_END = "date_end";
 
     public static final String KEY_ID_REVIEW = "review_id";
     public static final String KEY_REVIEW_TEXT = "review_text";

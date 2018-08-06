@@ -59,6 +59,9 @@
           </c:if>
 
         </form>
+        <div class="float-right mt-1 mr-1">
+          <a href="/signup">Registration</a>
+        </div>
       </div>
 
     </main>

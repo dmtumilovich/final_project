@@ -12,6 +12,7 @@ public class CommandLanguage implements Command{
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
         request.getSession(true).setAttribute(SessionAttributes.KEY_LOCAL, request.getParameter(RequestParameters.KEY_LOCAL));
 
         String page = request.getHeader(RequestHeader.KEY_REFERER);

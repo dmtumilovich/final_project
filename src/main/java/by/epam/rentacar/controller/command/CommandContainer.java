@@ -19,8 +19,8 @@ public class CommandContainer {
         commands.put("profile", new CommandGetProfile());
         commands.put("edit_profile", new CommandGetEditProfile());
         commands.put("save_profile", new CommandSaveProfile());
-        commands.put("show_cars", new CommandShowCars());
-        commands.put("show_selected_car", new CommandShowSelectedCar());
+        commands.put("show_cars", new CommandGetCars());
+        commands.put("show_selected_car", new CommandGetCar());
         commands.put("find_cars", new CommandFindCars());
         commands.put("add_review", new CommandAddReview());
         commands.put("delete_review", new CommandDeleteReview());

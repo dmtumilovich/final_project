@@ -9,6 +9,9 @@ import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestAttributes;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
 import by.epam.rentacar.controller.util.constant.SessionAttributes;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,17 +21,13 @@ import java.io.IOException;
 
 public class CommandSignin implements Command {
 
+    private static final Logger logger = LogManager.getLogger(CommandSignin.class);
+
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        String username = request.getParameter(RequestParameters.KEY_USERNAME);
-        String password = request.getParameter(RequestParameters.KEY_PASSWORD);
-
-        SigninDTO signinDTO = new SigninDTO();
-        signinDTO.setUsername(username);
-        signinDTO.setPassword(password);
-
+        SigninDTO signinDTO = parseRequest(request);
         UserService userService = ServiceFactory.getInstance().getUserService();
         User user = null;
 
@@ -46,9 +45,21 @@ public class CommandSignin implements Command {
             }
 
         } catch (ServiceException e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, "Signing in failed!", e);
         }
 
+    }
+
+    public SigninDTO parseRequest(HttpServletRequest request) {
+
+        String username = request.getParameter(RequestParameters.KEY_USERNAME);
+        String password = request.getParameter(RequestParameters.KEY_PASSWORD);
+
+        SigninDTO signinDTO = new SigninDTO();
+        signinDTO.setUsername(username);
+        signinDTO.setPassword(password);
+
+        return signinDTO;
 
     }
 }

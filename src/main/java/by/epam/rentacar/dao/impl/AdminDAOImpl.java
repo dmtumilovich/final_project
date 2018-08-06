@@ -5,6 +5,7 @@ import by.epam.rentacar.dao.connection.pool.ConnectionPool;
 import by.epam.rentacar.dao.connection.pool.ConnectionPoolException;
 import by.epam.rentacar.dao.exception.DAOException;
 import by.epam.rentacar.dao.util.ResultSetParser;
+import by.epam.rentacar.dao.util.constant.DBQueries;
 import by.epam.rentacar.dao.util.constant.DBSchema;
 import by.epam.rentacar.domain.dto.AddCarDTO;
 import by.epam.rentacar.domain.dto.CarInfoDTO;
@@ -22,6 +23,9 @@ import java.util.List;
 
 public class AdminDAOImpl extends AdminDAO {
 
+    private static final String COLUMN_COMMENTS_COUNT = "comments_count";
+
+    //переделать и доделать
     @Override
     public List<CarItemDTO> getCarList() throws DAOException {
 
@@ -32,10 +36,7 @@ public class AdminDAOImpl extends AdminDAO {
 
         try {
 
-            statement = connection.prepareStatement("SELECT car_list.id_car, car_list.brand, car_list.model, car_list.class, car_list.price, car_list.is_available, COUNT(car_review.id_car) AS comments_count\n" +
-                                                    "FROM car_list\n" +
-                                                    "LEFT JOIN car_review ON car_list.id_car = car_review.id_car\n" +
-                                                    "GROUP BY car_list.id_car");
+            statement = connection.prepareStatement(DBQueries.FIND_ALL_CARS_FOR_ADMIN);
 
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -46,7 +47,7 @@ public class AdminDAOImpl extends AdminDAO {
                 carItemDTO.setCarClass(resultSet.getString(DBSchema.CarListTable.CLASS));
                 carItemDTO.setPrice(resultSet.getDouble(DBSchema.CarListTable.PRICE));
                 carItemDTO.setStatus("Available");
-                carItemDTO.setCommentsCount(resultSet.getInt("comments_count"));
+                carItemDTO.setCommentsCount(resultSet.getInt(COLUMN_COMMENTS_COUNT));
 
                 carItemList.add(carItemDTO);
             }
@@ -68,7 +69,7 @@ public class AdminDAOImpl extends AdminDAO {
 
         try {
 
-            statement = connection.prepareStatement("SELECT * FROM car_list WHERE id_car = ?");
+            statement = connection.prepareStatement(DBQueries.FIND_CAR_BY_ID); //потом поменять запрос
             statement.setInt(1, carID);
 
             resultSet = statement.executeQuery();
@@ -90,7 +91,7 @@ public class AdminDAOImpl extends AdminDAO {
 
         try {
 
-            statement = connection.prepareStatement("INSERT INTO car_list (brand, model, class, color, year_of_issue, number_of_seats, engine_volume, is_available, price) VALUES (?, ? ,?, ?, ?, ?, ?, '1', ?)");
+            statement = connection.prepareStatement(DBQueries.INSERT_CAR);
             statement.setString(1, addCarDTO.getBrand());
             statement.setString(2, addCarDTO.getModel());
             statement.setString(3, addCarDTO.getCarClass());
@@ -116,9 +117,7 @@ public class AdminDAOImpl extends AdminDAO {
 
         try {
 
-            statement = connection.prepareStatement("UPDATE car_list\n" +
-                                                    "SET brand = ?, model = ?, class = ?, year_of_issue = ?, number_of_seats = ?, color = ?, engine_volume = ?, is_available = ?, price = ?\n" +
-                                                    "WHERE id_car = ?;");
+            statement = connection.prepareStatement(DBQueries.UPDATE_CAR);
             statement.setString(1, car.getBrand());
             statement.setString(2, car.getModel());
             statement.setString(3, car.getCarClass());
@@ -167,11 +166,7 @@ public class AdminDAOImpl extends AdminDAO {
         ResultSet resultSet = null;
 
         try {
-            statement = connection.prepareStatement("SELECT order_list.id_order, id_user, id_car, date_start, date_end, total_price, order_status.status\n" +
-                                                    "FROM order_list\n" +
-                                                    "INNER JOIN order_status\n" +
-                                                    "ON order_list.id_status = order_status.id_status\n" +
-                                                    "ORDER BY date_start DESC");
+            statement = connection.prepareStatement(DBQueries.GET_ALL_ORDERS);
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -196,18 +191,7 @@ public class AdminDAOImpl extends AdminDAO {
         ResultSet resultSet = null;
 
         try {
-            statement = connection.prepareStatement("SELECT order_list.id_order, order_list.id_user, order_list.id_car, order_list.date_start, order_list.date_end, order_list.total_price,\n" +
-                                                    "order_status.status,\n" +
-                                                    "user_list.username, user_list.name, user_list.surname, user_list.phone_number,\n" +
-                                                    "car_list.brand, car_list.model, car_list.class, car_list.price\n" +
-                                                    "FROM order_list\n" +
-                                                    "INNER JOIN order_status\n" +
-                                                    "ON order_list.id_status = order_status.id_status\n" +
-                                                    "INNER JOIN user_list\n" +
-                                                    "ON order_list.id_user = user_list.id_user\n" +
-                                                    "INNER JOIN car_list\n" +
-                                                    "ON order_list.id_car = car_list.id_car\n" +
-                                                    "WHERE id_order = ?");
+            statement = connection.prepareStatement(DBQueries.GET_ORDER_INFO_FOR_ADMIN);
             statement.setInt(1, orderID);
             resultSet = statement.executeQuery();
 
@@ -231,9 +215,7 @@ public class AdminDAOImpl extends AdminDAO {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("UPDATE order_list\n" +
-                                                    "SET id_status = ?\n" +
-                                                    "WHERE id_order = ?");
+            statement = connection.prepareStatement(DBQueries.CONFIRM_ORDER);
             statement.setInt(1, STATUS_CONFIRMED);
             statement.setInt(2, orderID);
             statement.executeUpdate();
@@ -250,9 +232,7 @@ public class AdminDAOImpl extends AdminDAO {
 
         try {
 
-            PreparedStatement statement = connection.prepareStatement("UPDATE order_list\n" +
-                                                                        "SET id_status = ?\n" +
-                                                                        "WHERE id_order = ?");
+            PreparedStatement statement = connection.prepareStatement(DBQueries.REJECT_ORDER);
             statement.setInt(1, STATUS_REJECTED);
             statement.setInt(2, orderID);
             statement.executeUpdate();

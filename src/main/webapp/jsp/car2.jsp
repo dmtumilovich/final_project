@@ -61,13 +61,13 @@
                 <div class="row float-right">
                   <c:choose>
                     <c:when test = "${not empty user}">
-                      <form action="/controller" method="post">
+                      <%-- <form action="/controller" method="post">
                         <input type="hidden" name="command" value="get_booking_info">
                         <input type="hidden" name="car_id" value="${car.id}">
                         <input type="hidden" name="user_id" value="${user.id}">
                         <button type="submit" class="btn btn-md btn-success">Rent now</button>
-                      </form>
-                      <%-- <a href="#" class="btn btn-md btn-success">Rent now</a> --%>
+                      </form> --%>
+                      <a href="/controller?command=get_booking_info&car_id=${car.id}" class="btn btn-md btn-success">Rent now</a>
                       <%-- <button type="button" class="btn btn-md btn-success" data-toggle="modal" data-target="#verify_data">Rent now</button> --%>
                     </c:when>
                     <c:when test = "${empty user}">

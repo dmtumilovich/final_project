@@ -111,7 +111,7 @@ public class UserDAOImpl extends UserDAO {
 
         try {
 
-            statement = connection.prepareStatement("SELECT password FROM user_list WHERE username = ?");
+            statement = connection.prepareStatement(DBQueries.FIND_PASSWORD_BY_USERNAME);
             statement.setString(1, username);
             resultSet = statement.executeQuery();
 
@@ -126,7 +126,7 @@ public class UserDAOImpl extends UserDAO {
         return password;
     }
 
-
+    //сделать по юзернейму поиск (facepalm)
     @Override
     public String findEmail(String email) throws DAOException {
 
@@ -218,7 +218,7 @@ public class UserDAOImpl extends UserDAO {
 
         try {
 
-            statement = connection.prepareStatement("UPDATE user_list SET password = ? WHERE id_user = ?");
+            statement = connection.prepareStatement(DBQueries.UPDATE_PASSWORD);
             statement.setString(1, changePasswordDTO.getNewPassword());
             statement.setInt(2, changePasswordDTO.getUserID());
             statement.executeUpdate();
@@ -229,6 +229,7 @@ public class UserDAOImpl extends UserDAO {
 
     }
 
+    //delete this method
     @Override
     public boolean checkPassword(int userID, String password) throws DAOException {
 
