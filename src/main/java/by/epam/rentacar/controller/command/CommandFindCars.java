@@ -42,6 +42,7 @@ public class CommandFindCars implements Command {
     }
 
     private CarSearchDTO createCarSearchDTO(HttpServletRequest request) {
+
         String carClass = request.getParameter(RequestParameters.KEY_CAR_CLASS);
         carClass = (carClass == null) ? "" : carClass;
         String brand = request.getParameter(RequestParameters.KEY_CAR_BRAND);

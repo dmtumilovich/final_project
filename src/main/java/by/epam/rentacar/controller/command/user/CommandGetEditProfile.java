@@ -23,7 +23,8 @@ public class CommandGetEditProfile implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        int userID = ((User) request.getSession().getAttribute(SessionAttributes.KEY_USER)).getId(); //переделать чтоб в сессии был только id, username и role
+
+        int userID = (int) request.getSession().getAttribute(SessionAttributes.KEY_ID_USER);
 
         UserService userService = ServiceFactory.getInstance().getUserService();
         User user = null;

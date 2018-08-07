@@ -149,7 +149,7 @@
                 </div>
                 <div class="card-footer">
                   <div class="float-right">
-                    <a href="#" class="btn btn-md btn-primary">Edit</a>
+                    <a href="/controller?command=edit_profile" class="btn btn-md btn-primary">Edit</a>
                   </div>
                 </div>
               </div>

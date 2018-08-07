@@ -35,9 +35,14 @@ public class CommandSignin implements Command {
             user = userService.login(signinDTO);
 
             if(user != null) {
+                int userID = user.getId();
+                User.Role role = user.getRole();
+
                 HttpSession session = request.getSession();
-                session.setAttribute(SessionAttributes.KEY_USER, user);
-                String destPage = (user.getRole() == User.Role.ADMIN) ? PageParameters.PAGE_ADMIN_PANEL : PageParameters.PAGE_MAIN;
+                session.setAttribute(SessionAttributes.KEY_ID_USER, userID);
+                session.setAttribute(SessionAttributes.KEY_ROLE, role);
+
+                String destPage = (role == User.Role.ADMIN) ? PageParameters.PAGE_ADMIN_PANEL : PageParameters.PAGE_MAIN;
                 response.sendRedirect(request.getContextPath() + destPage);
             } else {
                 request.setAttribute(RequestAttributes.KEY_INCORRECT_DATA, true);

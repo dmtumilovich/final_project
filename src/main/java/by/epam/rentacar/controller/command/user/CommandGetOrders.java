@@ -26,7 +26,7 @@ public class CommandGetOrders implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        int userID = ((User)request.getSession().getAttribute(SessionAttributes.KEY_USER)).getId();
+        int userID = (int) request.getSession().getAttribute(SessionAttributes.KEY_ID_USER);
 
         UserOrdersDTO userOrdersDTO = null;
         OrderService orderService = new OrderServiceImpl();

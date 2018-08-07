@@ -60,7 +60,7 @@
               <div class="card-footer">
                 <div class="row float-right">
                   <c:choose>
-                    <c:when test = "${not empty user}">
+                    <c:when test = "${not empty user_id}">
                       <%-- <form action="/controller" method="post">
                         <input type="hidden" name="command" value="get_booking_info">
                         <input type="hidden" name="car_id" value="${car.id}">
@@ -70,7 +70,7 @@
                       <a href="/controller?command=get_booking_info&car_id=${car.id}" class="btn btn-md btn-success">Rent now</a>
                       <%-- <button type="button" class="btn btn-md btn-success" data-toggle="modal" data-target="#verify_data">Rent now</button> --%>
                     </c:when>
-                    <c:when test = "${empty user}">
+                    <c:when test = "${empty user_id}">
                       <a href="/signin" class="btn btn-md btn-success">Log in to rent</a>
                     </c:when>
                   </c:choose>
@@ -86,7 +86,7 @@
                 </div>
 
                 <div class="mb-5 px-3">
-                  <c:if test = "${not empty user}">
+                  <c:if test = "${not empty user_id}">
                     <form action="/controller" method="post">
                       <input type="hidden" name="command" value="add_review">
                       <input type="hidden" name="car_id" value="${car.id}">

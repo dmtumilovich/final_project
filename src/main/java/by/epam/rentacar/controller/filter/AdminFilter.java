@@ -24,13 +24,14 @@ public class AdminFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        User user = (User) request.getSession().getAttribute(SessionAttributes.KEY_USER);
+        HttpSession session = request.getSession();
+        Integer userID = (Integer) session.getAttribute(SessionAttributes.KEY_ID_USER);
+        User.Role role = (User.Role) session.getAttribute(SessionAttributes.KEY_ROLE);
 
         String referer = request.getHeader(RequestHeader.KEY_REFERER);
         String destPage = null;
 
-        if (user == null || user.getRole() != User.Role.ADMIN) {
-            //destPage = (referer != null) ? referer : PageParameters.PAGE_MAIN;
+        if (userID == null || role != User.Role.ADMIN) {
             destPage = PageParameters.PAGE_MAIN;
             response.sendRedirect(destPage);
             return;

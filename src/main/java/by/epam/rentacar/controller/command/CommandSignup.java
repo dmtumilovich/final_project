@@ -40,8 +40,13 @@ public class CommandSignup implements Command {
             user = userService.signup(signupDTO);
 
             if(user != null) {
+
+                int userID = user.getId();
+                User.Role role = user.getRole();
+
                 HttpSession session = request.getSession();
-                session.setAttribute(SessionAttributes.KEY_USER, user);
+                session.setAttribute(SessionAttributes.KEY_ID_USER, userID);
+                session.setAttribute(SessionAttributes.KEY_ROLE, role);
                 response.sendRedirect(request.getContextPath() + PageParameters.PAGE_MAIN);
             }
 

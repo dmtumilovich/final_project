@@ -15,7 +15,7 @@
         <li class="nav-item">
           <a href="/controller?command=show_cars" class="nav-link">Cars</a>
         </li>
-        <c:if test="${not empty user}">
+        <c:if test="${not empty user_id}">
           <li class="nav-item">
             <a href="/controller?command=profile" class="nav-link">Profile</a>
           </li>
@@ -32,10 +32,10 @@
         </li>
         <li class="nav-item">
           <c:choose>
-            <c:when test="${empty user}">
+            <c:when test="${empty user_id}">
               <a href="/signin" class="btn btn-outline-success">Log In</a>
             </c:when>
-            <c:when test="${not empty user}">
+            <c:when test="${not empty user_id}">
               <a href="/controller?command=logout" class="btn btn-outline-danger">Logout</a>
             </c:when>
           </c:choose>

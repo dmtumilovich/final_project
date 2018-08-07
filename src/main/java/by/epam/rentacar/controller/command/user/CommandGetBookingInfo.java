@@ -27,7 +27,7 @@ public class CommandGetBookingInfo implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        int userID = ((User) request.getSession().getAttribute(SessionAttributes.KEY_USER)).getId();
+        int userID = (int) request.getSession().getAttribute(SessionAttributes.KEY_ID_USER);
         int carID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_CAR));
 
         OrderingInfo orderingInfo = null;

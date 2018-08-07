@@ -102,6 +102,33 @@ public class UserDAOImpl extends UserDAO {
     }
 
     @Override
+    public int findUserIdByUsername(String username) throws DAOException {
+
+        int userID = -1;
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+
+            statement = connection.prepareStatement("SELECT id_user FROM user_list WHERE username = ?");
+            statement.setString(1, username);
+
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                userID = resultSet.getInt(DBSchema.UserListTable.ID_USER);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DAOException("error while finding user id by username", e);
+        }
+
+        return userID;
+
+    }
+
+    @Override
     public String findPasswordByUsername(String username) throws DAOException {
 
         PreparedStatement statement = null;

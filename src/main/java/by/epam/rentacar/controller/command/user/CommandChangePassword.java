@@ -36,7 +36,7 @@ public class CommandChangePassword implements Command {
 
     private ChangePasswordDTO parseRequest(HttpServletRequest request) {
 
-        int userID = ((User)request.getSession().getAttribute(SessionAttributes.KEY_USER)).getId();
+        int userID = (int) request.getSession().getAttribute(SessionAttributes.KEY_ID_USER);
         String previousPassword = request.getParameter(RequestParameters.KEY_EDIT_PREVIOUS_PASSWORD);
         String newPassword = request.getParameter(RequestParameters.KEY_EDIT_NEW_PASSWORD);
         String confirmPassword = request.getParameter(RequestParameters.KEY_EDIT_CONFIRM_PASSWORD);

@@ -11,6 +11,7 @@ public abstract class UserDAO extends AbstractDAO{
     public abstract User getUserById(int userID) throws DAOException;
     public abstract User findUser(String username, String password) throws DAOException;
     public abstract User findUserByUsername(String username) throws DAOException;
+    public abstract int findUserIdByUsername(String username) throws DAOException;
     public abstract String findPasswordByUsername(String username) throws DAOException;
     public abstract String findEmail(String username) throws DAOException;
     public abstract void registerUser(SignupDTO signupDTO) throws DAOException;

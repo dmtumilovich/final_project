@@ -43,8 +43,7 @@ public class CommandSaveProfile implements Command {
 
     private EditProfileDTO parseRequest(HttpServletRequest request) {
 
-        HttpSession session = request.getSession();
-        int userID = ((User) session.getAttribute(SessionAttributes.KEY_USER)).getId();
+        int userID = (int) request.getSession().getAttribute(SessionAttributes.KEY_ID_USER);
 
         String editName = request.getParameter(RequestParameters.KEY_EDIT_NAME);
         String editSurname = request.getParameter(RequestParameters.KEY_EDIT_SURNAME);

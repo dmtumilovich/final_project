@@ -22,7 +22,9 @@ public class UserFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if (request.getSession().getAttribute(SessionAttributes.KEY_USER) != null) {
+        Integer userID = (Integer) request.getSession().getAttribute(SessionAttributes.KEY_ID_USER);
+
+        if (userID != null) {
             filterChain.doFilter(request, response);
             return;
         }
