@@ -55,6 +55,11 @@
                     <td>${car_info.car.price}</td>
                   </tr>
                 </tbody>
+                <tfoot>
+                  <td colspan="2">
+                    
+                  </td>
+                </tfoot>
               </table>
             </div>
             <div class="card-footer">
@@ -64,9 +69,6 @@
               </div>
             </div>
           </div>
-
-
-
         </div>
       </div>
     </main>

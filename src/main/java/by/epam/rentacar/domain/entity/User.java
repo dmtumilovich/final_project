@@ -10,6 +10,7 @@ public class User {
     private String phone;
     private String passport;
     private Role role;
+    private String photoUrl;
 
     public User() {
 
@@ -79,6 +80,14 @@ public class User {
         this.role = role;
     }
 
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -90,6 +99,7 @@ public class User {
                 ", phone='" + phone + '\'' +
                 ", passport='" + passport + '\'' +
                 ", role=" + role +
+                ", photoUrl='" + photoUrl + '\'' +
                 '}';
     }
 

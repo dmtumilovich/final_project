@@ -15,5 +15,6 @@ public interface UserService {
     //переделать
     boolean editProfile(EditProfileDTO editProfileDTO) throws ServiceException;
     void changePassword(ChangePasswordDTO changePasswordDTO) throws ServiceException;
+    void setPhoto(int userID, String filename) throws ServiceException;
 
 }

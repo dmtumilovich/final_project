@@ -286,4 +286,25 @@ public class UserDAOImpl extends UserDAO {
         return isMatches;
     }
 
+    @Override
+    public void setPhoto(int userID, String filename) throws DAOException {
+
+        PreparedStatement statement = null;
+
+        try {
+
+            statement = connection.prepareStatement("UPDATE user_list\n" +
+                                                        "SET photo = ?\n" +
+                                                        "WHERE id_user = ?");
+            statement.setString(1, filename);
+            statement.setInt(2, userID);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DAOException("error while updating user photo!", e);
+        }
+
+    }
+
 }

@@ -25,6 +25,7 @@ public class ResultSetParser {
         String phoneNumber = rs.getString(UserListTable.PHONE_NUMBER);
         String passport = rs.getString(UserListTable.PASSPORT);
         String role = rs.getString(UserRoleTable.ROLE_NAME);
+        String photoUrl = rs.getString(UserListTable.PHOTO);
 
         //builder???
         user = new User();
@@ -36,6 +37,7 @@ public class ResultSetParser {
         user.setPhone(phoneNumber);
         user.setPassport(passport);
         user.setRole(User.Role.valueOf(role.toUpperCase()));
+        user.setPhotoUrl(photoUrl);
 
         return user;
     }
@@ -78,12 +80,14 @@ public class ResultSetParser {
 
         int userID = rs.getInt(CarReviewTable.ID_USER);
         String username = rs.getString(UserListTable.USERNAME);
+        String userPhotoUrl = rs.getString(UserListTable.PHOTO);
         String reviewText = rs.getString(CarReviewTable.REVIEW_TEXT);
         Date date = rs.getDate(CarReviewTable.DATE);
 
         Review review = new Review();
         review.setId(reviewID);
         review.setUsername(username);
+        review.setUserPhotoUrl(userPhotoUrl);
         review.setUserID(userID);
         review.setReviewText(reviewText);
         review.setReviewDate(date);

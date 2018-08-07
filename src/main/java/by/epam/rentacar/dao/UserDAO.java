@@ -19,5 +19,6 @@ public abstract class UserDAO extends AbstractDAO{
     public abstract boolean updateUser(EditProfileDTO editProfileDTO) throws DAOException;
     public abstract void changePassword(ChangePasswordDTO changePasswordDTO) throws DAOException;
     public abstract boolean checkPassword(int userID, String password) throws DAOException;
+    public abstract void setPhoto(int userID, String filename) throws DAOException;
 
 }

@@ -52,7 +52,7 @@
                     </tr>
                     <tr>
                       <td>Price per day:</td>
-                      <td>${car.price}</td>
+                      <td>${car.price}$</td>
                     </tr>
                   </tbody>
                 </table>
@@ -106,14 +106,14 @@
 
                 <c:forEach items="${requestScope.car.reviewList}" var="review">
                   <div class="media border-bottom p-2">
-                    <img src="../img/no_avatar.png" alt="User photo" class="mr-3 mt-3 rounded-circle" style="width:50px;height:50px">
+                    <img src="../img/uploads/user/${review.userPhotoUrl}" alt="User photo" class="mr-3 mt-3 rounded-circle" style="width:50px;height:50px">
                     <div class="media-body">
                       <h6 class="font-weight-bold">@${review.username}</h6>
                       ${review.reviewText}
                       <p>
                         <small>
                           <a href="#" class="text-dark">Share</a>
-                          <c:if test="${review.userID eq user.id}">
+                          <c:if test="${review.userID eq sessionScope.user_id}">
                              - <a href="/controller?command=delete_review&review_id=${review.id}" class="text-dark">Delete</a>
                           </c:if>
                         </small>

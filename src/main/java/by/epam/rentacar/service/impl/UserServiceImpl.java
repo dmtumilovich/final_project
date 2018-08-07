@@ -186,6 +186,29 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public void setPhoto(int userID, String filename) throws ServiceException {
+
+        UserDAO userDAO = new UserDAOImpl();
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(userDAO);
+
+            userDAO.setPhoto(userID, filename);
+
+            transactionHelper.commit();
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            e.printStackTrace();
+            throw new ServiceException("error while updating user photo", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
+    }
+
     private String hashPassword(String password) {
         return Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
     }

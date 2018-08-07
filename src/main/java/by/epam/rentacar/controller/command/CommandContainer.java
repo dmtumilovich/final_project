@@ -38,6 +38,7 @@ public class CommandContainer {
         commands.put("orders", new CommandGetOrders());
         commands.put("user_order", new CommandGetOrder());
         commands.put("make_order", new CommandMakeOrder());
+        commands.put("upload_user_photo", new CommandUploadPhoto());
     }
 
     public static Command get(String commandStr) {

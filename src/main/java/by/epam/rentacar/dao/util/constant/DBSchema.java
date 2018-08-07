@@ -13,7 +13,7 @@ public class DBSchema {
         public static final String SURNAME = "surname";
         public static final String PHONE_NUMBER = "phone_number";
         public static final String PASSPORT = "passport";
-        public static final String ID_ROLE = "id_role";
+        public static final String PHOTO = "photo";
     }
 
     public static final class UserRoleTable {

@@ -25,8 +25,15 @@
                 <h4 class="card-title">Profile information</h4>
               </div>
               <div class="card-body">
-                <div class="col-2 float-left">
-                  <img src="../../img/no_avatar.png" alt="User photo" width="100px" height="100px">
+                <div class="col-2 float-left text-center">
+                  <img src="../../img/uploads/user/${user_data.photoUrl}" alt="User photo" width="150px" height="187px" class="img-thumbnail">
+                    <form action="/upload" method="post" enctype="multipart/form-data">
+                      <input type="hidden" name="command" value="upload_user_photo">
+                      <label class="btn btn-sm btn-light border mt-1">
+                        Browse photo<input type="file" name="user_photo" style="display: none;" required/>
+                      </label>
+                      <button type="submit" class="btn btn-sm btn-secondary">Upload photo</button>
+                    </form>
                 </div>
                 <div class="col-10 float-left">
                   <table class="table">

@@ -7,6 +7,7 @@ public class Review {
     private int id;
     private int userID;
     private String username;
+    private String userPhotoUrl;
     private String reviewText;
     private Date reviewDate;
 
@@ -38,6 +39,14 @@ public class Review {
         this.username = username;
     }
 
+    public String getUserPhotoUrl() {
+        return userPhotoUrl;
+    }
+
+    public void setUserPhotoUrl(String userPhotoUrl) {
+        this.userPhotoUrl = userPhotoUrl;
+    }
+
     public String getReviewText() {
         return reviewText;
     }
@@ -59,6 +68,8 @@ public class Review {
         return "Review{" +
                 "id=" + id +
                 ", userID=" + userID +
+                ", username='" + username + '\'' +
+                ", userPhotoUrl='" + userPhotoUrl + '\'' +
                 ", reviewText='" + reviewText + '\'' +
                 ", reviewDate=" + reviewDate +
                 '}';
