@@ -27,10 +27,17 @@
                 </div>
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-2">
-                      <img src="../img/no_avatar_car.png" alt="Car photo" class="img-circle" width="100px" height="100px">
+                    <div class="col-3 text-center">
+                      <c:choose>
+                        <c:when test="${car.photos.size() != 0}">
+                          <img src="../img/uploads/cars/${car.photos.get(0).url}" alt="" height="97px" width="173px" class="rounded">
+                        </c:when>
+                        <c:otherwise>
+                          <img src="../img/uploads/cars/no_car_avatar.png" alt="" height="97px" width="173px" class="rounded">
+                        </c:otherwise>
+                      </c:choose>
                     </div>
-                    <div class="col-8">
+                    <div class="col-7">
                       <table class="table">
                         <tbody>
                           <tr>

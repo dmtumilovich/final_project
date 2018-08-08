@@ -74,7 +74,16 @@ public class AdminDAOImpl extends AdminDAO {
 
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                Car car = ResultSetParser.createCar(resultSet);
+                Car car = ResultSetParser.createCarWithPhotos(resultSet);
+//
+//                String photoUrl = resultSet.getString("photo_url");
+//                car.addPhoto(photoUrl);
+//
+//                while (resultSet.next()) {
+//                    car.addPhoto(resultSet.getString("photo_url"));
+//                }
+
+                System.out.println("PHOTOS SIZE IS " + car.getPhotos().size());
                 carInfoDTO.setCar(car);
             }
         } catch (SQLException e) {

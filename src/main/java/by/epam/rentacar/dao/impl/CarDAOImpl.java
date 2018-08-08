@@ -33,7 +33,7 @@ public class CarDAOImpl extends CarDAO {
             resultSet = statement.executeQuery();
 
             while(resultSet.next()) {
-                Car car = ResultSetParser.createCar(resultSet);
+                Car car = ResultSetParser.createCarWithPhotos(resultSet);
                 carList.add(car);
             }
         } catch (SQLException e) {
@@ -51,25 +51,18 @@ public class CarDAOImpl extends CarDAO {
 
         try {
 
-            statement = connection.prepareStatement(DBQueries.FIND_CAR_WITH_REVIEWS_BY_ID);
+            statement = connection.prepareStatement(DBQueries.FIND_CAR_BY_ID);
             statement.setInt(1, carID);
             resultSet = statement.executeQuery();
 
             if(resultSet.next()) {
-                car = ResultSetParser.createCar(resultSet);
-                Review review;
-                if ((review = ResultSetParser.createReview(resultSet)) != null)  {
-                    car.addReview(review);
-                }
-            }
-
-            while (resultSet.next()) {
-                car.addReview(ResultSetParser.createReview(resultSet));
+                car = ResultSetParser.createCarWithPhotos(resultSet);
             }
 
         } catch (SQLException e) {
             throw new DAOException("Error while getting car info by id.", e);
         }
+
         return car;
     }
 
@@ -136,6 +129,24 @@ public class CarDAOImpl extends CarDAO {
         }
 
         return price;
+
+    }
+
+    @Override
+    public void addPhoto(int carID, String filename) throws DAOException {
+
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement("INSERT INTO car_photos (id_car, photo_url)\n" +
+                                                    "VALUES (?, ?)");
+            statement.setInt(1, carID);
+            statement.setString(2, filename);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DAOException("error while adding car photo", e);
+        }
 
     }
 

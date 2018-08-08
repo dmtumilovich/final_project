@@ -16,6 +16,7 @@ public class Car {
     private double price;
 
     private List<Review> reviewList = new ArrayList<>();
+    private List<CarPhoto> photos = new ArrayList<>();
 
     public Car() {
 
@@ -115,6 +116,18 @@ public class Car {
 
     public int getNumberOfReviews() {
         return reviewList.size();
+    }
+
+    public List<CarPhoto> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<CarPhoto> photos) {
+        this.photos = photos;
+    }
+
+    public void addPhoto(CarPhoto photo) {
+        this.photos.add(photo);
     }
 
     @Override

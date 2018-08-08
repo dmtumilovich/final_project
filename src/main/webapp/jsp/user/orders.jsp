@@ -20,7 +20,7 @@
             <jsp:include page = "/jsp/user/parts/profile_sidebar.jsp" />
           </div>
           <div class="col-10 float-left">
-            <div class="card">
+            <%-- <div class="card">
               <div class="card-header">
                 <h4 class="card-title">Orders information</h4>
               </div>
@@ -50,8 +50,8 @@
                   </tbody>
                 </table>
               </div>
-            </div>
-            <div class="card mt-3">
+            </div> --%>
+            <div class="card">
               <div class="card-header">
                 <h4 class="card-title">All orders</h4>
               </div>

@@ -2,9 +2,11 @@ package by.epam.rentacar.service.impl;
 
 import by.epam.rentacar.dao.CarDAO;
 import by.epam.rentacar.dao.DAOFactory;
+import by.epam.rentacar.dao.ReviewDAO;
 import by.epam.rentacar.dao.TransactionHelper;
 import by.epam.rentacar.dao.exception.DAOException;
 import by.epam.rentacar.dao.impl.CarDAOImpl;
+import by.epam.rentacar.dao.impl.ReviewDAOImpl;
 import by.epam.rentacar.domain.dto.CarSearchDTO;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.CarService;
@@ -46,13 +48,15 @@ public class CarServiceImpl implements CarService {
         Car car = null;
 
         CarDAO carDAO = new CarDAOImpl();
+        ReviewDAO reviewDAO = new ReviewDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
             transactionHelper = new TransactionHelper();
-            transactionHelper.beginTransaction(carDAO);
+            transactionHelper.beginTransaction(carDAO, reviewDAO);
 
             car = carDAO.getCarByID(carID);
+            car.setReviewList(reviewDAO.getCarReviews(carID));
 
             transactionHelper.commit();
         } catch (DAOException e) {
@@ -90,6 +94,29 @@ public class CarServiceImpl implements CarService {
         }
 
         return carList;
+    }
+
+    @Override
+    public void addPhoto(int carID, String filename) throws ServiceException {
+
+        CarDAO carDAO = new CarDAOImpl();
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(carDAO);
+
+            carDAO.addPhoto(carID, filename);
+
+            transactionHelper.commit();
+
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            throw new ServiceException("error while adding car photo", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
     }
 
 }

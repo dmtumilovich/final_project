@@ -3,10 +3,7 @@ package by.epam.rentacar.dao.util;
 import static by.epam.rentacar.dao.util.constant.DBSchema.*;
 
 import by.epam.rentacar.domain.dto.OrderInfoDTO;
-import by.epam.rentacar.domain.entity.Car;
-import by.epam.rentacar.domain.entity.Order;
-import by.epam.rentacar.domain.entity.Review;
-import by.epam.rentacar.domain.entity.User;
+import by.epam.rentacar.domain.entity.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -54,6 +51,18 @@ public class ResultSetParser {
         double engineVolume = rs.getDouble(CarListTable.ENGINE_VOLUME);
         boolean isAvailable = rs.getBoolean(CarListTable.IS_AVAILABLE);
         double price = rs.getDouble(CarListTable.PRICE);
+//        List<String> photos = new ArrayList<>();
+//
+//
+//        do {
+//
+//            String photoUrl = rs.getString(CarPhotosTable.PHOTO_URL);
+//            if (photoUrl != null) {
+//                photos.add(photoUrl);
+//            }
+//
+//        } while (rs.getInt(CarListTable.ID_CAR) == id && rs.next());
+//        rs.previous();
 
         //builder???
         Car car = new Car();
@@ -67,8 +76,40 @@ public class ResultSetParser {
         car.setEngineVolume(engineVolume);
         car.setAvailable(isAvailable);
         car.setPrice(price);
+//        car.setPhotos(photos);
 
         return car;
+    }
+
+    public static CarPhoto createCarPhoto(ResultSet rs) throws SQLException {
+
+        int id = rs.getInt(CarPhotosTable.ID_PHOTO);
+        int carID = rs.getInt(CarPhotosTable.ID_CAR);
+        String photoUrl = rs.getString(CarPhotosTable.PHOTO_URL);
+
+        CarPhoto carPhoto = new CarPhoto();
+        carPhoto.setId(id);
+        carPhoto.setCarID(carID);
+        carPhoto.setUrl(photoUrl);
+
+        return carPhoto;
+
+    }
+
+    public static Car createCarWithPhotos(ResultSet rs) throws SQLException {
+
+        Car car = createCar(rs);
+
+        do {
+            CarPhoto photo = createCarPhoto(rs);
+            if (photo.getUrl() != null) {
+                car.addPhoto(photo);
+            }
+        } while (rs.getInt(CarListTable.ID_CAR) == car.getId() && rs.next());
+        rs.previous();
+
+        return car;
+
     }
 
     //?????

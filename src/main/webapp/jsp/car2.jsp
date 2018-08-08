@@ -55,20 +55,24 @@
                       <td>${car.price}$</td>
                     </tr>
                   </tbody>
+                  <tfoot>
+                    <td colspan="2">
+                      <div class="row mx-auto">
+                        <c:forEach items="${car.photos}" var = "photo">
+                          <div class="col-4">
+                            <img src="../img/uploads/cars/${photo.url}" alt="" height="145px" width="260px" class="img-thumbnail">
+                          </div>
+                        </c:forEach>
+                      </div>
+                    </td>
+                  </tfoot>
                 </table>
               </div>
               <div class="card-footer">
                 <div class="row float-right">
                   <c:choose>
                     <c:when test = "${not empty user_id}">
-                      <%-- <form action="/controller" method="post">
-                        <input type="hidden" name="command" value="get_booking_info">
-                        <input type="hidden" name="car_id" value="${car.id}">
-                        <input type="hidden" name="user_id" value="${user.id}">
-                        <button type="submit" class="btn btn-md btn-success">Rent now</button>
-                      </form> --%>
                       <a href="/controller?command=get_booking_info&car_id=${car.id}" class="btn btn-md btn-success">Rent now</a>
-                      <%-- <button type="button" class="btn btn-md btn-success" data-toggle="modal" data-target="#verify_data">Rent now</button> --%>
                     </c:when>
                     <c:when test = "${empty user_id}">
                       <a href="/signin" class="btn btn-md btn-success">Log in to rent</a>

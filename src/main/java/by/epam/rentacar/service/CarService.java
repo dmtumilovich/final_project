@@ -11,5 +11,6 @@ public interface CarService {
     List<Car> getAllCars() throws ServiceException;
     Car getSelectedCar(int carID) throws ServiceException;
     List<Car> getCarsByFilter(CarSearchDTO carSearchDTO) throws ServiceException;
+    void addPhoto(int carID, String filename) throws ServiceException;
 
 }

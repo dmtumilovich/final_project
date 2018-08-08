@@ -48,6 +48,14 @@ public class DBSchema {
         public static final String DATE = "time";
     }
 
+    public static final class CarPhotosTable {
+        public static final String TABLE_NAME = "car_photos";
+
+        public static final String ID_PHOTO = "id_photo";
+        public static final String ID_CAR = "id_car";
+        public static final String PHOTO_URL = "photo_url";
+    }
+
     public static final class OrderListTable {
         public static final String TABLE_NAME = "order_list";
 

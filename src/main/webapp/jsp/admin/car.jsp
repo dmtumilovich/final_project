@@ -57,7 +57,18 @@
                 </tbody>
                 <tfoot>
                   <td colspan="2">
-                    
+                    <div class="row mx-auto">
+                      <c:forEach items="${car_info.car.photos}" var = "photo">
+                        <div class="col-4">
+                          <img src="../../img/uploads/cars/${photo.url}" alt="" height="145px" width="260px" class="img-thumbnail">
+                        </div>
+                      </c:forEach>
+                      <c:if test="${car_info.car.photos.size() < 3}">
+                        <div class="col-4">
+                          <button type="button" class="btn btn-md btn-success mt-5" data-toggle="modal" data-target="#add_photo">Add photo</button>
+                        </div>
+                      </c:if>
+                    </div>
                   </td>
                 </tfoot>
               </table>
@@ -127,6 +138,31 @@
             </div>
           </form>
         </div>
+      </div>
+    </div>
+
+
+    <%-- add new photo dialog --%>
+    <div class="modal fade" id="add_photo">
+      <div class="modal-dialog">
+        <form action="/upload" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="command" value="upload_car_photo">
+          <input type="hidden" name="car_id" value="${car_info.car.id}">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Add new photo</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body mx-auto">
+              <label class="btn btn-sm btn-light border mt-1">
+                Browse photo<input type="file" name="car_photo" style="display: none;" required/>
+              </label>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-success">Upload</button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
 
