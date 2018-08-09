@@ -20,37 +20,6 @@
             <jsp:include page = "/jsp/user/parts/profile_sidebar.jsp" />
           </div>
           <div class="col-10 float-left">
-            <%-- <div class="card">
-              <div class="card-header">
-                <h4 class="card-title">Orders information</h4>
-              </div>
-              <div class="card-body">
-                <table class="table">
-                  <thead>
-                    <th>Username</th>
-                    <th>Confirmed</th>
-                    <th>Rejected</th>
-                    <th>In rent</th>
-                    <th>Awaits</th>
-                    <th>Over</th>
-                    <th>Returned</th>
-                    <th>Total</th>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>einott</td>
-                      <td>1</td>
-                      <td>3</td>
-                      <td>2</td>
-                      <td>6</td>
-                      <td>4</td>
-                      <td>5</td>
-                      <td>21</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div> --%>
             <div class="card">
               <div class="card-header">
                 <h4 class="card-title">All orders</h4>
@@ -76,13 +45,42 @@
                         <td>${order_item.order.dateStart}</td>
                         <td>${order_item.order.dateEnd}</td>
                         <td>${order_item.order.totalPrice}$</td>
-                        <td>${order_item.order.status}</td>
                         <td>
-                          <form action="controller" method="post">
+                          <c:choose>
+                            <c:when test = "${order_item.order.status eq 'RENT'}">
+                              <span class="text-info">In rent</span>
+                            </c:when>
+                            <c:when test = "${order_item.order.status eq 'CONFIRMED'}">
+                              <span class="text-success">Confirmed</span>
+                            </c:when>
+                            <c:when test = "${order_item.order.status eq 'REJECTED'}">
+                              <span class="text-danger">Rejected</span>
+                            </c:when>
+                            <c:when test = "${order_item.order.status eq 'AWAITS'}">
+                              <span class="text-important">Awaits confirmation</span>
+                            </c:when>
+                            <c:when test = "${order_item.order.status eq 'OVER'}">
+                              <span class="text-warning">Rent is over</span>
+                            </c:when>
+                            <c:when test = "${order_item.order.status eq 'RETURNED'}">
+                              <span class="text-secondary">Returned</span>
+                            </c:when>
+                            <c:when test = "${order_item.order.status eq 'CANCELED'}">
+                              <span class="text-danger">Canceled</span>
+                            </c:when>
+                            <c:otherwise>
+                              <%-- ??? --%>
+                              <span>Unknown</span>
+                            </c:otherwise>
+                          </c:choose>
+                        </td>
+                        <td>
+                          <%-- <form action="controller" method="post">
                             <input type="hidden" name="command" value="user_order">
                             <input type="hidden" name="order_id" value="${order_item.order.id}">
                             <button type="submit" class="btn btn-sm btn-light border">Check</button>
-                          </form>
+                          </form> --%>
+                          <a href="/controller?command=user_order&order_id=${order_item.order.id}" class="btn btn-sm btn-light border">Check</a>
                         </td>
                       </tr>
                     </c:forEach>

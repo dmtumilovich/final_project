@@ -34,7 +34,7 @@ public class DBSchema {
         public static final String NUMBER_OF_SEATS = "number_of_seats";
         public static final String COLOR = "color";
         public static final String ENGINE_VOLUME = "engine_volume";
-        public static final String IS_AVAILABLE = "is_available";
+        public static final String IS_DELETED = "is_deleted";
         public static final String PRICE = "price";
     }
 

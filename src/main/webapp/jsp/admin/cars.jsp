@@ -49,7 +49,7 @@
                   <td>${car.commentsCount}</td>
                   <td>
                     <a href="/controller?command=get_car_info&car_id=${car.carID}" class="btn btn-sm btn-light border mr-1">View</a>
-                    <a href="#" class="btn btn-sm btn-danger">Delete</a>
+                    <%-- <a href="#" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete_car">Delete</a> --%>
                   </td>
                 </tr>
               </c:forEach>
@@ -115,6 +115,7 @@
         </div>
       </div>
     </div>
+
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script>window.jQuery || document.write('<script src="../../js/vendor/jquery-slim.min.js"><\/script>')</script>

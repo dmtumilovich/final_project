@@ -64,6 +64,9 @@
                       <c:when test = "${order.status eq 'RETURNED'}">
                         <span class="text-secondary">Returned</span>
                       </c:when>
+                      <c:when test = "${order.status eq 'CANCELED'}">
+                        <span class="text-danger">Canceled</span>
+                      </c:when>
                       <c:otherwise>
                         <%-- ??? --%>
                         <span>Unknown</span>

@@ -11,12 +11,13 @@ public class DBQueries {
     public static final String UPDATE_PASSWORD = "UPDATE user_list SET password = ? WHERE id_user = ?";
 
     //car queries
-    public static final String FIND_ALL_CARS = "SELECT car_list.id_car, brand, model , class, year_of_issue, number_of_seats, color, engine_volume, is_available, price, car_photos.id_photo, car_photos.photo_url\n" +
+    public static final String FIND_ALL_CARS = "SELECT car_list.id_car, brand, model , class, year_of_issue, number_of_seats, color, engine_volume, is_deleted, price, car_photos.id_photo, car_photos.photo_url\n" +
                                                 "FROM car_list\n" +
                                                 "LEFT JOIN car_photos\n" +
-                                                "ON car_list.id_car = car_photos.id_car";
+                                                "ON car_list.id_car = car_photos.id_car\n" +
+                                                "WHERE is_deleted = '0'";
 
-    public static final String FIND_CAR_BY_ID = "SELECT car_list.id_car, brand, model , class, year_of_issue, number_of_seats, color, engine_volume, is_available, price, car_photos.id_photo, car_photos.photo_url\n" +
+    public static final String FIND_CAR_BY_ID = "SELECT car_list.id_car, brand, model , class, year_of_issue, number_of_seats, color, engine_volume, is_deleted, price, car_photos.id_photo, car_photos.photo_url\n" +
                                                 "FROM car_list\n" +
                                                 "LEFT JOIN car_photos\n" +
                                                 "ON car_list.id_car = car_photos.id_car\n" +
@@ -29,12 +30,13 @@ public class DBQueries {
                                                             "WHERE car_list.id_car = ?\n" +
                                                             "ORDER BY time DESC";
 
-    public static final String FIND_ALL_CARS_FOR_ADMIN = "SELECT car_list.id_car, car_list.brand, car_list.model, car_list.class, car_list.price, car_list.is_available, COUNT(car_review.id_car) AS comments_count\n" +
+    public static final String FIND_ALL_CARS_FOR_ADMIN = "SELECT car_list.id_car, car_list.brand, car_list.model, car_list.class, car_list.price, car_list.is_deleted, COUNT(car_review.id_car) AS comments_count\n" +
                                                         "FROM car_list\n" +
                                                         "LEFT JOIN car_review ON car_list.id_car = car_review.id_car\n" +
+                                                        "WHERE car_list.is_deleted = '0'\n" +
                                                         "GROUP BY car_list.id_car"; // rename?
 
-    public static final String INSERT_CAR = "INSERT INTO car_list (brand, model, class, color, year_of_issue, number_of_seats, engine_volume, is_available, price) VALUES (?, ? ,?, ?, ?, ?, ?, '1', ?)"; //убрать единичку
+    public static final String INSERT_CAR = "INSERT INTO car_list (brand, model, class, color, year_of_issue, number_of_seats, engine_volume, is_deleted, price) VALUES (?, ? ,?, ?, ?, ?, ?, '0', ?)"; //убрать единичку
     public static final String UPDATE_CAR = "UPDATE car_list\n" +
                                             "SET brand = ?, model = ?, class = ?, year_of_issue = ?, number_of_seats = ?, color = ?, engine_volume = ?, is_available = ?, price = ?\n" +
                                             "WHERE id_car = ?";
@@ -49,6 +51,13 @@ public class DBQueries {
                                                 "INNER JOIN order_status\n" +
                                                 "ON order_list.id_status = order_status.id_status\n" +
                                                 "ORDER BY date_start DESC";
+
+    public static final String GET_ORDERS_BY_STATUS_ID = "SELECT order_list.id_order, id_user, id_car, date_start, date_end, total_price, order_status.status\n" +
+                                                        "FROM order_list\n" +
+                                                        "INNER JOIN order_status\n" +
+                                                        "ON order_list.id_status = order_status.id_status\n" +
+                                                        "WHERE order_list.id_status = ?\n" +
+                                                        "ORDER BY date_start DESC";
 
     public static final String GET_USER_ORDER = "SELECT order_list.*, order_status.status, car_list.*\n" +
                                                 "FROM order_list\n" +
@@ -90,10 +99,10 @@ public class DBQueries {
     public static final String INSERT_ORDER = "INSERT INTO order_list (id_user, id_car, date_start, date_end, total_price, id_status)\n" +
                                             "VALUES (?, ?, ?, ?, ?, ?)";
 
-    //review orders
+    //review queries
 
-    public static final String INSERT_REVIEW = "INSERT INTO car_review (id_car, id_user, review, time)\n" +
-                                                "VALUES (?, ?, ?, ?)";
+    public static final String INSERT_REVIEW = "INSERT INTO car_review (id_car, id_user, review, time, is_deleted)\n" +
+                                                "VALUES (?, ?, ?, ?, '0')";
 
     private DBQueries() {
 

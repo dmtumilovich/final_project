@@ -26,6 +26,7 @@ public class Controller extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String commandStr = request.getParameter(RequestParameters.KEY_COMMAND);
+        System.out.println("COMMAND: " + commandStr);
         Command command = CommandContainer.get(commandStr);
         command.execute(request, response);
 

@@ -5,7 +5,6 @@ import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestAttributes;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
 import by.epam.rentacar.domain.entity.Order;
-import by.epam.rentacar.service.AdminService;
 import by.epam.rentacar.service.OrderService;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.exception.ServiceException;
@@ -17,32 +16,25 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class CommandGetOrdersTable implements Command {
+public class CommandGetWaitingOrders implements Command {
 
-    private static final Logger logger = LogManager.getLogger(CommandGetOrdersTable.class);
+    public static final Logger logger = LogManager.getLogger(CommandGetWaitingOrders.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        String status = request.getParameter("status");
-
         List<Order> orderList = null;
-
-        AdminService adminService = ServiceFactory.getInstance().getAdminService();
         OrderService orderService = ServiceFactory.getInstance().getOrderService();
 
         try {
-            orderList = (status == null) ? orderService.getAllOrders() : orderService.getOrdersByStatus(status);
-
+            orderList = orderService.getWaitingOrders();
             request.setAttribute(RequestAttributes.KEY_ORDER_LIST, orderList);
             request.getRequestDispatcher(PageParameters.PAGE_ADMIN_ORDERS).forward(request, response);
         } catch (ServiceException e) {
-            logger.log(Level.ERROR, "Failed to get orders!", e);
+            logger.log(Level.ERROR, "Failed to get waiting orders", e);
         }
 
     }
-
 }

@@ -49,7 +49,7 @@ public class ResultSetParser {
         int numberOfSeats = rs.getInt(CarListTable.NUMBER_OF_SEATS);
         String color = rs.getString(CarListTable.COLOR);
         double engineVolume = rs.getDouble(CarListTable.ENGINE_VOLUME);
-        boolean isAvailable = rs.getBoolean(CarListTable.IS_AVAILABLE);
+        boolean isAvailable = rs.getBoolean(CarListTable.IS_DELETED);
         double price = rs.getDouble(CarListTable.PRICE);
 //        List<String> photos = new ArrayList<>();
 //
@@ -74,7 +74,7 @@ public class ResultSetParser {
         car.setNumberOfSeats(numberOfSeats);
         car.setColor(color);
         car.setEngineVolume(engineVolume);
-        car.setAvailable(isAvailable);
+        car.setDeleted(isAvailable);
         car.setPrice(price);
 //        car.setPhotos(photos);
 
@@ -144,7 +144,7 @@ public class ResultSetParser {
         Date dateEnd = rs.getDate(OrderListTable.DATE_END);
         double price = rs.getDouble(OrderListTable.TOTAL_PRICE);
         String statusStr= rs.getString(OrderStatusTable.STATUS);
-        Order.OrderStatus status = Order.OrderStatus.valueOf(statusStr.toUpperCase());
+        Order.Status status = Order.Status.valueOf(statusStr.toUpperCase());
         System.out.println("status - " + status);
 
         Order order = new Order();

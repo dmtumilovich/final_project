@@ -61,6 +61,11 @@
                       <c:forEach items="${car_info.car.photos}" var = "photo">
                         <div class="col-4">
                           <img src="../../img/uploads/cars/${photo.url}" alt="" height="145px" width="260px" class="img-thumbnail">
+                          <form action="/controller" method="post">
+                            <input type="hidden" name="command" value="delete_car_photo">
+                            <input type="hidden" name="photo_id" value="${photo.id}">
+                            <button type="submit" class="btn btn-sm btn-light border btn-block mt-1">Delete</button>
+                          </form>
                         </div>
                       </c:forEach>
                       <c:if test="${car_info.car.photos.size() < 3}">
@@ -75,7 +80,7 @@
             </div>
             <div class="card-footer">
               <div class="row float-right">
-                <button type="button" class="btn btn-md btn-danger">Delete car</button>
+                <button type="button" class="btn btn-md btn-danger" data-toggle="modal" data-target="#delete_car">Delete car</button>
                 <button type="button" class="btn btn-md btn-light border ml-2" data-toggle="modal" data-target="#edit_car">Edit info</button>
               </div>
             </div>
@@ -163,6 +168,34 @@
             </div>
           </div>
         </form>
+      </div>
+    </div>
+
+
+    <%-- delete car modal --%>
+    <div class="modal fade" id="delete_car">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="/controller" method="post">
+            <input type="hidden" name="command" value="delete_car">
+            <input type="hidden" name="car_id" value="${car_info.car.id}">
+
+            <div class="modal-header">
+              <h4 class="modal-title">Delete car</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+              Are you sure you want to delete this car?
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+              <button type="submit" class="btn btn-success ml-2">Yes</button>
+            </div>
+
+          </form>
+        </div>
       </div>
     </div>
 

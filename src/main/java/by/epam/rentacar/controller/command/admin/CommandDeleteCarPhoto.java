@@ -1,11 +1,9 @@
 package by.epam.rentacar.controller.command.admin;
 
 import by.epam.rentacar.controller.command.Command;
-import by.epam.rentacar.controller.util.constant.RequestParameters;
-import by.epam.rentacar.service.AdminService;
+import by.epam.rentacar.controller.util.constant.RequestHeader;
 import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.ServiceFactory;
-import by.epam.rentacar.service.UserService;
 import by.epam.rentacar.service.exception.ServiceException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -16,27 +14,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CommandDeleteCar implements Command {
+public class CommandDeleteCarPhoto implements Command {
 
-    private static final Logger logger = LogManager.getLogger(CommandDeleteCar.class);
-
-    private static final String PAGE_CARS = "/controller?command=show_car_table"; //rename
+    private static final Logger logger = LogManager.getLogger(CommandDeleteCarPhoto.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        int carID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_CAR));
+        int photoID = Integer.parseInt(request.getParameter("photo_id"));
+        System.out.println(photoID);
 
-        AdminService adminService = ServiceFactory.getInstance().getAdminService();
         CarService carService = ServiceFactory.getInstance().getCarService();
 
         try {
-            carService.deleteCar(carID);
-            response.sendRedirect(PAGE_CARS);
+            carService.deletePhoto(photoID);
+            String destPage = request.getHeader(RequestHeader.KEY_REFERER);
+            response.sendRedirect(destPage);
         } catch (ServiceException e) {
-            logger.log(Level.ERROR, "Failed to delete car!", e);
+            logger.log(Level.ERROR, "Failed to delete car photo", e);
         }
 
-    }
 
+    }
 }

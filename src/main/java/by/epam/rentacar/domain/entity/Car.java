@@ -12,7 +12,7 @@ public class Car {
     private int numberOfSeats;
     private String color;
     private double engineVolume;
-    private boolean isAvailable;
+    private boolean isDeleted;
     private double price;
 
     private List<Review> reviewList = new ArrayList<>();
@@ -86,12 +86,12 @@ public class Car {
         this.engineVolume = engineVolume;
     }
 
-    public boolean isAvailable() {
-        return isAvailable;
+    public boolean isDeleted() {
+        return isDeleted;
     }
 
-    public void setAvailable(boolean available) {
-        isAvailable = available;
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 
     public double getPrice() {
@@ -141,7 +141,7 @@ public class Car {
                 ", numberOfSeats=" + numberOfSeats +
                 ", color='" + color + '\'' +
                 ", engineVolume=" + engineVolume +
-                ", isAvailable=" + isAvailable +
+                ", isDeleted=" + isDeleted +
                 ", price=" + price +
                 ", reviewList=" + reviewList +
                 '}';

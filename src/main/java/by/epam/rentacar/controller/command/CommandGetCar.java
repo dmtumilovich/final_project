@@ -30,7 +30,7 @@ public class CommandGetCar implements Command {
 
         try {
 
-            car = carService.getSelectedCar(carID);
+            car = carService.getCar(carID);
             request.setAttribute(RequestAttributes.KEY_CAR, car);
             request.getRequestDispatcher(PageParameters.PAGE_CAR).forward(request, response);
 

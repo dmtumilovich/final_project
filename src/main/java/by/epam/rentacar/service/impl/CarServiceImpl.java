@@ -43,7 +43,7 @@ public class CarServiceImpl implements CarService {
         return carList;
     }
 
-    public Car getSelectedCar(int carID) throws ServiceException {
+    public Car getCar(int carID) throws ServiceException {
 
         Car car = null;
 
@@ -68,6 +68,30 @@ public class CarServiceImpl implements CarService {
         }
 
         return car;
+    }
+
+    @Override
+    public void deleteCar(int carID) throws ServiceException {
+
+        CarDAO carDAO = new CarDAOImpl();
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(carDAO);
+
+            carDAO.deleteCar(carID);
+
+            transactionHelper.commit();
+
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            e.printStackTrace();
+            throw new ServiceException("Error while deleting car", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
     }
 
     @Override
@@ -113,6 +137,30 @@ public class CarServiceImpl implements CarService {
         } catch (DAOException e) {
             transactionHelper.rollback();
             throw new ServiceException("error while adding car photo", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
+    }
+
+    @Override
+    public void deletePhoto(int photoID) throws ServiceException {
+
+        CarDAO carDAO = new CarDAOImpl();
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(carDAO);
+
+            carDAO.deletePhoto(photoID);
+
+            transactionHelper.commit();
+
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            e.printStackTrace();
+            throw new ServiceException("Error while deleting car photo", e);
         } finally {
             transactionHelper.endTransaction();
         }

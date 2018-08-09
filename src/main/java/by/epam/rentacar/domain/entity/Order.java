@@ -10,7 +10,7 @@ public class Order {
     private Date dateStart;
     private Date dateEnd;
     private double totalPrice;
-    private OrderStatus status;
+    private Status status;
 
     public Order() {
 
@@ -64,21 +64,22 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-    public OrderStatus getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(OrderStatus status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public enum OrderStatus {
+    public enum Status {
         CONFIRMED,
         REJECTED,
         AWAITS,
         RENT,
         OVER,
-        RETURNED
+        RETURNED,
+        CANCELED
     }
 
 }

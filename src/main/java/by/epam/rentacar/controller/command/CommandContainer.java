@@ -40,6 +40,9 @@ public class CommandContainer {
         commands.put("make_order", new CommandMakeOrder());
         commands.put("upload_user_photo", new CommandUploadPhoto());
         commands.put("upload_car_photo", new CommandUploadCarPhoto());
+        commands.put("update_status", new CommandUpdateStatus());
+        commands.put("waiting_orders", new CommandGetWaitingOrders());
+        commands.put("delete_car_photo", new CommandDeleteCarPhoto());
     }
 
     public static Command get(String commandStr) {

@@ -1,26 +1,23 @@
 package by.epam.rentacar.service.impl;
 
-import by.epam.rentacar.dao.CarDAO;
-import by.epam.rentacar.dao.OrderDAO;
-import by.epam.rentacar.dao.TransactionHelper;
-import by.epam.rentacar.dao.UserDAO;
+import by.epam.rentacar.dao.*;
 import by.epam.rentacar.dao.exception.DAOException;
+import by.epam.rentacar.dao.impl.AdminDAOImpl;
 import by.epam.rentacar.dao.impl.CarDAOImpl;
 import by.epam.rentacar.dao.impl.OrderDAOImpl;
 import by.epam.rentacar.dao.impl.UserDAOImpl;
-import by.epam.rentacar.domain.dto.MakeOrderDTO;
-import by.epam.rentacar.domain.dto.OrderingInfo;
-import by.epam.rentacar.domain.dto.UserOrderDTO;
-import by.epam.rentacar.domain.dto.UserOrdersDTO;
+import by.epam.rentacar.domain.dto.*;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.domain.entity.Order;
 import by.epam.rentacar.domain.entity.User;
 import by.epam.rentacar.service.OrderService;
 import by.epam.rentacar.service.exception.InvalidDateRangeException;
 import by.epam.rentacar.service.exception.ServiceException;
+import org.omg.CORBA.TRANSACTION_MODE;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -64,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
             order.setDateStart(dateStart); //проверка на нулл?
             order.setDateEnd(dateEnd);
             order.setTotalPrice(carPrice);
-            order.setStatus(Order.OrderStatus.AWAITS);
+            order.setStatus(Order.Status.AWAITS);
 
             orderDAO.makeOrder(order);
 
@@ -174,6 +171,164 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return userOrdersDTO;
+
+    }
+
+    //зачем я его написал?)))
+    @Override
+    public OrderInfoDTO getOrderInfo(int orderID) throws ServiceException {
+
+        OrderInfoDTO orderInfoDTO = null;
+
+        AdminDAO adminDAO = new AdminDAOImpl();
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(adminDAO);
+
+            orderInfoDTO = adminDAO.getOrderInfo(orderID);
+
+            transactionHelper.commit();
+
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            e.printStackTrace();
+            throw new ServiceException("Error while getting order info!", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
+        return orderInfoDTO;
+
+    }
+
+    @Override
+    public List<Order> getAllOrders() throws ServiceException {
+
+        List<Order> orders = null;
+
+        AdminDAO adminDAO = new AdminDAOImpl();
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(adminDAO);
+
+            orders = adminDAO.getOrderList();
+
+            transactionHelper.commit();
+
+        } catch (DAOException e) {
+            e.printStackTrace();
+            throw new ServiceException("Error while getting all orders", e);
+        }
+
+        return orders == null ? Collections.<Order>emptyList() : orders;
+
+    }
+
+    @Override
+    public List<Order> getOrdersByStatus(String statusName) throws ServiceException {
+
+        Order.Status status = getStatusFromString(statusName);
+        return getOrdersByStatus(status);
+
+    }
+
+    @Override
+    public List<Order> getOrdersByStatus(Order.Status status) throws ServiceException {
+
+        List<Order> orders = null;
+
+        OrderDAO orderDAO = new OrderDAOImpl();
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(orderDAO);
+
+            int statusID = orderDAO.getStatusIdByName(status);
+            orders = orderDAO.getOrdersByStatusId(statusID);
+
+            transactionHelper.commit();
+
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            throw new ServiceException("Error while getting orders by status", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
+        return orders == null ? Collections.<Order>emptyList() : orders;
+
+    }
+
+    @Override
+    public List<Order> getWaitingOrders() throws ServiceException {
+
+        return getOrdersByStatus(Order.Status.AWAITS);
+
+    }
+
+    @Override
+    public List<Order> getRejectedOrders() throws ServiceException {
+
+        return getOrdersByStatus(Order.Status.REJECTED);
+
+    }
+
+    @Override
+    public void updateStatus(int orderID, String statusName) throws ServiceException {
+
+        Order.Status status = null;
+
+        try {
+            status = Order.Status.valueOf(statusName.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            //кинуть IncorrectStatusException
+        }
+
+        updateStatus(orderID, status);
+    }
+
+    @Override
+    public void updateStatus(int orderID, Order.Status status) throws ServiceException {
+
+        OrderDAO orderDAO = new OrderDAOImpl();
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(orderDAO);
+
+            int statusID = orderDAO.getStatusIdByName(status);
+            orderDAO.updateStatus(orderID, statusID);
+
+            transactionHelper.commit();
+
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            e.printStackTrace();
+            throw new ServiceException("Error while updating status", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
+    }
+
+    private Order.Status getStatusFromString(String statusName) {
+
+        Order.Status status = null;
+
+        try {
+            status = Order.Status.valueOf(statusName.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            //кинуть IncorrectStatusException
+            System.out.println("INCORRECT STATUS");
+        }
+
+        return status;
 
     }
 }

@@ -9,8 +9,10 @@ import java.util.List;
 public interface CarService {
 
     List<Car> getAllCars() throws ServiceException;
-    Car getSelectedCar(int carID) throws ServiceException;
+    Car getCar(int carID) throws ServiceException;
+    void deleteCar(int carID) throws ServiceException;
     List<Car> getCarsByFilter(CarSearchDTO carSearchDTO) throws ServiceException;
     void addPhoto(int carID, String filename) throws ServiceException;
+    void deletePhoto(int photoID) throws ServiceException;
 
 }

@@ -106,6 +106,9 @@
                             <c:when test = "${order_info.order.status eq 'RETURNED'}">
                               <span class="text-secondary">Returned</span>
                             </c:when>
+                            <c:when test = "${order_info.order.status eq 'CANCELED'}">
+                              <span class="text-danger">Canceled</span>
+                            </c:when>
                             <c:otherwise>
                               <%-- ??? --%>
                               <span>Unknown</span>
@@ -120,7 +123,7 @@
                   <div class="row float-right">
                     <c:choose>
                       <c:when test = "${order_info.order.status eq 'AWAITS'}">
-                        <button type="button" class="btn btn-md btn-danger" data-toggle="modal" data-target="#reject_order">Cancel booking</button>
+                        <button type="button" class="btn btn-md btn-danger" data-toggle="modal" data-target="#cancel_order">Cancel booking</button>
                       </c:when>
                     </c:choose>
 
@@ -132,6 +135,32 @@
           </div>
         </div>
       </main>
+
+
+      <div class="modal fade" id="cancel_order">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <form action="/controller" method="post">
+              <input type="hidden" name="command" value="update_status">
+              <input type="hidden" name="status" value="canceled">
+              <input type="hidden" name="order_id" value="${order_info.order.id}">
+              <div class="modal-header">
+                <h4 class="modal-title">Cancel order</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+
+              <div class="modal-body">
+                Are you sure you want to cancel your order?
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                <button type="submit" class="btn btn-success ml-2">Yes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
 
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
       <script>window.jQuery || document.write('<script src="../../js/vendor/jquery-slim.min.js"><\/script>')</script>

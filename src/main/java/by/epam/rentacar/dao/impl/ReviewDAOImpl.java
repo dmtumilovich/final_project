@@ -15,6 +15,8 @@ import java.util.List;
 
 public class ReviewDAOImpl extends ReviewDAO {
 
+    private static final int DELETED = 1;
+
     @Override
     public List<Review> getCarReviews(int carID) throws DAOException {
 
@@ -28,9 +30,10 @@ public class ReviewDAOImpl extends ReviewDAO {
                                                         "FROM car_review\n" +
                                                         "LEFT JOIN user_list\n" +
                                                         "ON car_review.id_user = user_list.id_user\n" +
-                                                        "WHERE car_review.id_car = ?\n" +
+                                                        "WHERE car_review.id_car = ? AND is_deleted != ?\n" +
                                                         "ORDER BY time DESC");
             statement.setInt(1, carID);
+            statement.setInt(2, DELETED);
 
             resultSet = statement.executeQuery();
             while(resultSet.next()) {
@@ -77,8 +80,11 @@ public class ReviewDAOImpl extends ReviewDAO {
 
         try {
 
-            statement = connection.prepareStatement("DELETE FROM rent_a_car.car_review WHERE id_review = ?");
-            statement.setInt(1, reviewID);
+            statement = connection.prepareStatement("UPDATE car_review\n" +
+                                                        "SET is_deleted = ?\n" +
+                                                        "WHERE id_review = ?");
+            statement.setInt(1, DELETED);
+            statement.setInt(2, reviewID);
 
             statement.executeUpdate();
 

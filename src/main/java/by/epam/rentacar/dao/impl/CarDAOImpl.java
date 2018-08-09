@@ -67,6 +67,24 @@ public class CarDAOImpl extends CarDAO {
     }
 
     @Override
+    public void deleteCar(int carID) throws DAOException {
+
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement("UPDATE car_list\n" +
+                                                    "SET is_deleted = '1'\n" +
+                                                    "WHERE id_car = ?");
+            statement.setInt(1, carID);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DAOException("Error while setting car_list.is_deleted to 1", e); //?????
+        }
+
+    }
+
+    @Override
     public List<Car> getCarsByFilter(CarSearchDTO carSearchDTO) throws DAOException {
 
         List<Car> carList = new ArrayList<>();
@@ -91,12 +109,14 @@ public class CarDAOImpl extends CarDAO {
 //            statement.setDouble(10,carSearchDTO.getPriceTo());
 
             String searchQuery = createSearchQueryFromDTO(carSearchDTO);
+            System.out.println("QUERY:");
+            System.out.println(searchQuery);
             statement = connection.prepareStatement(searchQuery);
 
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                Car car = ResultSetParser.createCar(resultSet);
+                Car car = ResultSetParser.createCarWithPhotos(resultSet);
                 carList.add(car);
             }
         } catch (SQLException e) {
@@ -150,12 +170,32 @@ public class CarDAOImpl extends CarDAO {
 
     }
 
+    @Override
+    public void deletePhoto(int photoID) throws DAOException {
+
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement("DELETE FROM car_photos WHERE id_photo = ?");
+            statement.setInt(1, photoID);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DAOException("Error while deleting car photo", e);
+        }
+
+    }
+
     private String createSearchQueryFromDTO(CarSearchDTO carSearchDTO) {
 
         final String AND = " and ";
         final String QUOTE = "\'";
 
-        StringBuilder builder = new StringBuilder("SELECT * FROM car_list WHERE ");
+        StringBuilder builder = new StringBuilder("SELECT car_list.*, car_photos.id_photo, car_photos.photo_url\n" +
+                                                    "FROM car_list\n" +
+                                                    "LEFT JOIN car_photos\n" +
+                                                    "ON car_list.id_car = car_photos.id_car\n" +
+                                                    "WHERE ");
         if (!carSearchDTO.getCarClass().isEmpty()) {
             builder.append("class = ")
                     .append(QUOTE).append(carSearchDTO.getCarClass()).append(QUOTE)

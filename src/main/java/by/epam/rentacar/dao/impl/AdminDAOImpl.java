@@ -1,8 +1,6 @@
 package by.epam.rentacar.dao.impl;
 
 import by.epam.rentacar.dao.AdminDAO;
-import by.epam.rentacar.dao.connection.pool.ConnectionPool;
-import by.epam.rentacar.dao.connection.pool.ConnectionPoolException;
 import by.epam.rentacar.dao.exception.DAOException;
 import by.epam.rentacar.dao.util.ResultSetParser;
 import by.epam.rentacar.dao.util.constant.DBQueries;
@@ -14,7 +12,6 @@ import by.epam.rentacar.domain.dto.OrderInfoDTO;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.domain.entity.Order;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -134,7 +131,7 @@ public class AdminDAOImpl extends AdminDAO {
             statement.setInt(5, car.getNumberOfSeats());
             statement.setString(6, car.getColor());
             statement.setDouble(7, car.getEngineVolume());
-            statement.setBoolean(8, car.isAvailable());
+            statement.setBoolean(8, car.isDeleted());
             statement.setDouble(9, car.getPrice());
             statement.setInt(10, car.getId());
 
