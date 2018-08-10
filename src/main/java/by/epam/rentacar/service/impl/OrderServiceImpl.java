@@ -222,6 +222,8 @@ public class OrderServiceImpl implements OrderService {
         } catch (DAOException e) {
             e.printStackTrace();
             throw new ServiceException("Error while getting all orders", e);
+        } finally {
+            transactionHelper.endTransaction();
         }
 
         return orders == null ? Collections.<Order>emptyList() : orders;

@@ -74,11 +74,11 @@
                       </tr>
                       <tr>
                         <td>Date start:</td>
-                        <td>${order_info.order.dateStart}</td>
+                        <td><fmt:formatDate value = "${order_info.order.dateStart}" pattern = "dd.MM.yyyy hh:mm" /></td>
                       </tr>
                       <tr>
                         <td>Date end:</td>
-                        <td>${order_info.order.dateEnd}</td>
+                        <td><fmt:formatDate value = "${order_info.order.dateEnd}" pattern = "dd.MM.yyyy hh:mm" /></td>
                       </tr>
                       <tr>
                         <td>Total cost:</td>

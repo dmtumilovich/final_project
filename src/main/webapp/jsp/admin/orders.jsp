@@ -5,7 +5,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
     <title>Orders</title>
 
     <link rel="stylesheet" href="../../css/bootstrap.min.css">
@@ -42,8 +41,8 @@
                   <td>${order.id}</td>
                   <td>${order.userID}</td>
                   <td>${order.carID}</td>
-                  <td>${order.dateStart}</td>
-                  <td>${order.dateEnd}</td>
+                  <td><fmt:formatDate value = "${order.dateStart}" pattern = "dd.MM.yyyy hh:mm" /></td>
+                  <td><fmt:formatDate value = "${order.dateEnd}" pattern = "dd.MM.yyyy hh:mm" /></td>
                   <td>
                     <c:choose>
                       <c:when test = "${order.status eq 'RENT'}">
@@ -143,5 +142,10 @@
         </div>
       </div>
     </main>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="../../js/vendor/popper.min.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
   </body>
 </html>

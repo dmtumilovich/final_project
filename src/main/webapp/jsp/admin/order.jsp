@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
@@ -32,11 +33,11 @@
                   </tr>
                   <tr>
                     <td>Date start:</td>
-                    <td>${order_info.order.dateStart}</td>
+                    <td><fmt:formatDate value = "${order_info.order.dateStart}" pattern = "dd.MM.yyyy hh:mm" /></td>
                   </tr>
                   <tr>
                     <td>Date end:</td>
-                    <td>${order_info.order.dateEnd}</td>
+                    <td><fmt:formatDate value = "${order_info.order.dateEnd}" pattern = "dd.MM.yyyy hh:mm" /></td>
                   </tr>
                   <tr>
                     <td>Total cost:</td>

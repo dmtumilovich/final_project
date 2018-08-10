@@ -63,7 +63,7 @@
                           <img src="../../img/uploads/cars/${photo.url}" alt="" height="145px" width="260px" class="img-thumbnail">
                           <form action="/controller" method="post">
                             <input type="hidden" name="command" value="delete_car_photo">
-                            <input type="hidden" name="photo_id" value="${photo.id}">
+                            <input type="hidden" name="photo_id" value="${photos.id}">
                             <button type="submit" class="btn btn-sm btn-light border btn-block mt-1">Delete</button>
                           </form>
                         </div>

@@ -124,7 +124,7 @@
                       </p>
                     </div>
                     <div class="media-right font-weith-light">
-                      ${review.reviewDate}
+                      <fmt:formatDate value = "${review.reviewDate}" pattern = "dd.MM.yyyy hh:mm" />
                     </div>
                   </div>
                 </c:forEach>

@@ -5,7 +5,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+
+    <fmt:setLocale value = "${sessionScope.local}" />
+    <fmt:setBundle basename = "local" var = "loc" />
+
     <title>Cars</title>
 
     <link rel="stylesheet" href="../css/bootstrap.min.css">

@@ -123,7 +123,7 @@ public class ResultSetParser {
         String username = rs.getString(UserListTable.USERNAME);
         String userPhotoUrl = rs.getString(UserListTable.PHOTO);
         String reviewText = rs.getString(CarReviewTable.REVIEW_TEXT);
-        Date date = rs.getDate(CarReviewTable.DATE);
+        Date date = new Date(rs.getTimestamp(CarReviewTable.DATE).getTime());
 
         Review review = new Review();
         review.setId(reviewID);
@@ -140,8 +140,8 @@ public class ResultSetParser {
         int id = rs.getInt(OrderListTable.ID_ORDER);
         int userID = rs.getInt(OrderListTable.ID_USER);
         int carID = rs.getInt(OrderListTable.ID_CAR);
-        Date dateStart = rs.getDate(OrderListTable.DATE_START);
-        Date dateEnd = rs.getDate(OrderListTable.DATE_END);
+        Date dateStart = new Date(rs.getTimestamp(OrderListTable.DATE_START).getTime());
+        Date dateEnd = new Date(rs.getTimestamp(OrderListTable.DATE_END).getTime());
         double price = rs.getDouble(OrderListTable.TOTAL_PRICE);
         String statusStr= rs.getString(OrderStatusTable.STATUS);
         Order.Status status = Order.Status.valueOf(statusStr.toUpperCase());

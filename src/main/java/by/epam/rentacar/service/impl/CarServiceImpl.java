@@ -13,6 +13,7 @@ import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.exception.ServiceException;
 import com.sun.corba.se.spi.transport.TransportDefault;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +58,8 @@ public class CarServiceImpl implements CarService {
 
             car = carDAO.getCarByID(carID);
             car.setReviewList(reviewDAO.getCarReviews(carID));
+            System.out.println(car.getReviewList().get(1).getReviewDate());
+            System.out.println(new SimpleDateFormat("dd.MM.yyyy hh:mm").format(car.getReviewList().get(1).getReviewDate()));
 
             transactionHelper.commit();
         } catch (DAOException e) {
