@@ -23,4 +23,8 @@ public abstract class AbstractDAO {
         this.connection = connection;
     }
 
+    protected int calculateOffset(int page, int itemsPerPage) {
+        return (page - 1) * itemsPerPage;
+    }
+
 }

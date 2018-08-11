@@ -1,17 +1,13 @@
 package by.epam.rentacar.dao.impl;
 
 import by.epam.rentacar.dao.CarDAO;
-import by.epam.rentacar.dao.connection.pool.ConnectionPool;
-import by.epam.rentacar.dao.connection.pool.ConnectionPoolException;
 import by.epam.rentacar.dao.exception.DAOException;
 import by.epam.rentacar.dao.util.constant.DBSchema;
 import by.epam.rentacar.domain.dto.CarSearchDTO;
 import by.epam.rentacar.domain.entity.Car;
-import by.epam.rentacar.domain.entity.Review;
 import by.epam.rentacar.dao.util.ResultSetParser;
 import by.epam.rentacar.dao.util.constant.DBQueries;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,6 +37,43 @@ public class CarDAOImpl extends CarDAO {
         }
 
         return carList;
+    }
+
+    @Override
+    public List<Car> getAllNotDeleted(int page, int itemsPerPage) throws DAOException {
+
+        List<Car> carList = new ArrayList<>();
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = connection.prepareStatement("SELECT car_list.id_car, brand, model , class, year_of_issue, number_of_seats, color, engine_volume, is_deleted, price, photos.id_photo, photos.photo_url\n" +
+                                                        "FROM car_list\n" +
+                                                        "LEFT JOIN (SELECT id_photo, id_car, photo_url\n" +
+                                                        "           FROM car_photos\n" +
+                                                        "           WHERE id_photo IN (SELECT MIN(id_photo)\n" +
+                                                        "                               FROM car_photos\n" +
+                                                        "                               GROUP BY id_car)\n" +
+                                                        "                              ) photos\n" +
+                                                        "ON car_list.id_car = photos.id_car\n" +
+                                                        "WHERE is_deleted = '0'\n" +
+                                                        "GROUP BY car_list.id_car, photos.id_photo LIMIT ? OFFSET ?");
+            statement.setInt(1, itemsPerPage);
+            statement.setInt(2, (page - 1) * itemsPerPage);
+
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Car car = ResultSetParser.createCarWithPhotos(resultSet);
+                carList.add(car);
+            }
+
+        } catch (SQLException e) {
+            throw new DAOException("Error while getting cars!", e);
+        }
+
+        return carList;
+
     }
 
     public Car getCarByID(int carID) throws DAOException {
@@ -183,6 +216,32 @@ public class CarDAOImpl extends CarDAO {
             e.printStackTrace();
             throw new DAOException("Error while deleting car photo", e);
         }
+
+    }
+
+    @Override
+    public int getTotalCount() throws DAOException {
+
+        int carsCount = 0;
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = connection.prepareStatement("SELECT COUNT(id_car) AS total_count\n" +
+                                                        "FROM car_list\n" +
+                                                        "WHERE is_deleted != '1'");
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                carsCount = resultSet.getInt("total_count");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return carsCount;
 
     }
 

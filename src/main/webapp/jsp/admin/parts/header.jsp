@@ -17,7 +17,7 @@
           <a href="#" class="nav-link">Users</a>
         </li>
         <li class="nav-item">
-          <a href="/controller?command=show_car_table" class="nav-link">Cars</a>
+          <a href="/controller?command=show_car_table&page=1" class="nav-link">Cars</a>
         </li>
         <li class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" id="dropdown_language" data-toggle="dropdown">Language</a>

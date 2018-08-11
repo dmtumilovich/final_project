@@ -27,12 +27,18 @@ public class CommandGetOrders implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         int userID = (int) request.getSession().getAttribute(SessionAttributes.KEY_ID_USER);
+        String pageStr = request.getParameter(RequestParameters.KEY_PAGE);
+        int page = (pageStr == null) ? 1 : Integer.parseInt(pageStr);
 
         UserOrdersDTO userOrdersDTO = null;
         OrderService orderService = new OrderServiceImpl();
 
         try {
-            userOrdersDTO  = orderService.getUserOrders(userID);
+            userOrdersDTO  = orderService.getUserOrders(userID, page, 10);
+            int pagesCount = orderService.getUserOrdersPagesCount(userID, 10);
+
+            request.setAttribute(RequestAttributes.KEY_PAGE, page);
+            request.setAttribute(RequestAttributes.KEY_PAGE_COUNT, pagesCount);
             request.setAttribute(RequestAttributes.KEY_ORDERS_INFO, userOrdersDTO);
             request.getRequestDispatcher(PageParameters.PAGE_ORDERS).forward(request, response);
         } catch (ServiceException e) {

@@ -13,7 +13,7 @@
           <a href="/main" class="nav-link">Home</a>
         </li>
         <li class="nav-item">
-          <a href="/controller?command=show_cars" class="nav-link">Cars</a>
+          <a href="/controller?command=show_cars&page=1" class="nav-link">Cars</a>
         </li>
         <c:if test="${not empty user_id}">
           <li class="nav-item">

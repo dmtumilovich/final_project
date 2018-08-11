@@ -27,17 +27,22 @@ public class CommandGetOrdersTable implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        String status = request.getParameter("status");
+        String pageStr = request.getParameter(RequestParameters.KEY_PAGE);
+        int page = (pageStr == null) ? 1 : Integer.parseInt(pageStr);
+        String status = request.getParameter(RequestParameters.KEY_ORDER_STATUS);
 
         List<Order> orderList = null;
 
-        AdminService adminService = ServiceFactory.getInstance().getAdminService();
         OrderService orderService = ServiceFactory.getInstance().getOrderService();
 
         try {
-            orderList = (status == null) ? orderService.getAllOrders() : orderService.getOrdersByStatus(status);
+            orderList = (status == null) ? orderService.getAllOrders(page, 10) : orderService.getOrdersByStatus(status, page, 10);
+            int pagesCount = orderService.getOrdersPagesCountByStatus(10, status);
 
+            request.setAttribute(RequestAttributes.KEY_PAGE, page);
+            request.setAttribute(RequestAttributes.KEY_PAGE_COUNT, pagesCount);
             request.setAttribute(RequestAttributes.KEY_ORDER_LIST, orderList);
+            request.setAttribute(RequestAttributes.KEY_ORDER_STATUS, status);
             request.getRequestDispatcher(PageParameters.PAGE_ADMIN_ORDERS).forward(request, response);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to get orders!", e);

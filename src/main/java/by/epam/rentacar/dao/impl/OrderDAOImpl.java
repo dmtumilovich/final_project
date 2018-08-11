@@ -19,14 +19,18 @@ import java.util.List;
 public class OrderDAOImpl extends OrderDAO {
 
     @Override
-    public List<Order> getOrderList() throws DAOException {
+    public List<Order> getAllOrders(int page, int itemsPerPage) throws DAOException {
+
         List<Order> orderList = new ArrayList<>();
 
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         try {
+
             statement = connection.prepareStatement(DBQueries.GET_ALL_ORDERS);
+            statement.setInt(1, itemsPerPage);
+            statement.setInt(2, calculateOffset(page, itemsPerPage));
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -42,7 +46,7 @@ public class OrderDAOImpl extends OrderDAO {
     }
 
     @Override
-    public List<Order> getOrdersByStatusId(int statusID) throws DAOException {
+    public List<Order> getOrdersByStatusId(int statusID, int page, int itemsPerPage) throws DAOException {
 
         List<Order> orders = new ArrayList<>();
 
@@ -53,6 +57,8 @@ public class OrderDAOImpl extends OrderDAO {
 
             statement = connection.prepareStatement(DBQueries.GET_ORDERS_BY_STATUS_ID);
             statement.setInt(1, statusID);
+            statement.setInt(2, itemsPerPage);
+            statement.setInt(3, calculateOffset(page, itemsPerPage));
 
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -61,7 +67,6 @@ public class OrderDAOImpl extends OrderDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new DAOException("Error while getting orders by id", e);
         }
 
@@ -70,9 +75,55 @@ public class OrderDAOImpl extends OrderDAO {
     }
 
     @Override
-    public List<Order> getRejectedOrders() throws DAOException {
-        return null;
+    public int getTotalCount() throws DAOException {
+
+        int ordersCount = 0;
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = connection.prepareStatement("SELECT COUNT(id_order) AS orders_count\n" +
+                                                        "FROM order_list");
+
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                ordersCount = resultSet.getInt("orders_count");
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error while getting number of all orders!", e);
+        }
+
+        return ordersCount;
+
     }
+
+    @Override
+    public int getTotalCountByStatusID(int statusID) throws DAOException {
+
+        int ordersCount = 0;
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = connection.prepareStatement("SELECT COUNT(id_order) AS orders_count\n" +
+                                                        "FROM order_list\n" +
+                                                        "WHERE id_status = ?;");
+            statement.setInt(1, statusID);
+
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                ordersCount = resultSet.getInt("orders_count");
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error while getting number of orders by status id", e);
+        }
+
+        return ordersCount;
+
+    }
+
 
     @Override
     public UserOrderDTO getUserOrder(int orderID) throws DAOException {
@@ -107,7 +158,7 @@ public class OrderDAOImpl extends OrderDAO {
     }
 
     @Override
-    public List<UserOrderDTO> getUserOrders(int userID) throws DAOException {
+    public List<UserOrderDTO> getUserOrders(int userID, int page, int itemsPerPage) throws DAOException {
 
         List<UserOrderDTO> orderList = new ArrayList<>();
 
@@ -117,6 +168,8 @@ public class OrderDAOImpl extends OrderDAO {
         try {
             statement = connection.prepareStatement(DBQueries.GET_USER_ORDERS);
             statement.setInt(1, userID);
+            statement.setInt(2, itemsPerPage);
+            statement.setInt(3, calculateOffset(page, itemsPerPage));
 
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -130,10 +183,37 @@ public class OrderDAOImpl extends OrderDAO {
                 orderList.add(userOrderDTO);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("Error while getting user orders", e);
         }
 
         return orderList;
+
+    }
+
+    @Override
+    public int getUserOrdersCount(int userID) throws DAOException {
+
+        int ordersCount = 0;
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = connection.prepareStatement("SELECT COUNT(id_order) AS orders_count\n" +
+                                                        "FROM order_list\n" +
+                                                        "WHERE id_user = ?");
+            statement.setInt(1, userID);
+
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                ordersCount = resultSet.getInt("orders_count");
+            }
+
+        } catch (SQLException e) {
+            throw new DAOException("Error while getting the number of user's orders", e);
+        }
+
+        return ordersCount;
 
     }
 

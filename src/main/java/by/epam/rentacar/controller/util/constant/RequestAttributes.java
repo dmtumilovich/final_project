@@ -20,7 +20,12 @@ public class RequestAttributes {
     public static final String KEY_ORDER_LIST = "order_list";
     public static final String KEY_ORDER_INFO = "order_info";
     public static final String KEY_ORDERS_INFO = "orders_info";
+    public static final String KEY_ORDER_STATUS = "status";
     public static final String KEY_BOOKING_INFO = "booking_info";
+
+    public static final String KEY_PAGE = "page";
+    public static final String KEY_PAGE_COUNT = "page_count";
+    public static final String KEY_ITEMS_PER_PAGE = "items_per_page";
 
     private RequestAttributes() {
 

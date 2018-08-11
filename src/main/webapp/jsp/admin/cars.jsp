@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="paginator" uri="/WEB-INF/tlds/Paginator" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
@@ -32,30 +33,30 @@
                 <th>Brand</th>
                 <th>Model</th>
                 <th>Class</th>
+                <th>Color</th>
                 <th>Price</th>
-                <th>Status</th>
-                <th>Comments</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               <c:forEach items="${requestScope.car_list}" var = "car" varStatus="loop">
                 <tr>
-                  <td>${loop.index}</td>
+                  <td>${(loop.index+1)+(page-1)*10}</td>
                   <td>${car.brand}</td>
                   <td>${car.model}</td>
                   <td>${car.carClass}</td>
-                  <td>${car.price}</td>
-                  <td>${car.status}</td>
-                  <td>${car.commentsCount}</td>
+                  <td>${car.color}</td>
+                  <td>${car.price}$</td>
                   <td>
-                    <a href="/controller?command=get_car_info&car_id=${car.carID}" class="btn btn-sm btn-light border mr-1">View</a>
+                    <a href="/controller?command=get_car_info&car_id=${car.id}" class="btn btn-sm btn-light border mr-1">View</a>
                     <%-- <a href="#" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete_car">Delete</a> --%>
                   </td>
                 </tr>
               </c:forEach>
             </tbody>
           </table>
+
+          <paginator:display currentPage="${page}" totalPages="${page_count}" maxLinks="10" url="/controller?command=show_car_table&page=##" />
         </div>
       </div>
 
@@ -116,7 +117,6 @@
         </div>
       </div>
     </div>
-
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script>window.jQuery || document.write('<script src="../../js/vendor/jquery-slim.min.js"><\/script>')</script>

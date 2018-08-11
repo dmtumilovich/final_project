@@ -11,6 +11,7 @@ import by.epam.rentacar.domain.dto.CarSearchDTO;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.exception.ServiceException;
+import by.epam.rentacar.service.util.PageCounter;
 import com.sun.corba.se.spi.transport.TransportDefault;
 
 import java.text.SimpleDateFormat;
@@ -19,7 +20,7 @@ import java.util.List;
 
 public class CarServiceImpl implements CarService {
 
-    public List<Car> getAllCars() throws ServiceException {
+    public List<Car> getAllCars(int page, int itemsPerPage) throws ServiceException {
 
         List<Car> carList = new ArrayList<>();
 
@@ -44,6 +45,62 @@ public class CarServiceImpl implements CarService {
         return carList;
     }
 
+    @Override
+    public List<Car> getAllNotDeletedCars(int page, int itemsPerPage) throws ServiceException {
+
+        List<Car> carList = new ArrayList<>();
+
+        CarDAO carDAO = new CarDAOImpl();
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(carDAO);
+
+            carList = carDAO.getAllNotDeleted(page, itemsPerPage);
+
+            transactionHelper.commit();
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            e.printStackTrace();
+            throw new ServiceException("Could not find car list", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
+        return carList;
+
+    }
+
+
+    @Override
+    public int getCarsPagesCount(int itemsPerPage) throws ServiceException {
+
+        int pagesCount = 0;
+
+        CarDAO carDAO = new CarDAOImpl();
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(carDAO);
+
+            int carsCount = carDAO.getTotalCount();
+            pagesCount = PageCounter.getInstance().countPages(carsCount, itemsPerPage);
+
+            transactionHelper.commit();
+
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            throw new ServiceException("Error while counting cars pages!", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
+        return pagesCount;
+
+    }
+
     public Car getCar(int carID) throws ServiceException {
 
         Car car = null;
@@ -58,8 +115,6 @@ public class CarServiceImpl implements CarService {
 
             car = carDAO.getCarByID(carID);
             car.setReviewList(reviewDAO.getCarReviews(carID));
-            System.out.println(car.getReviewList().get(1).getReviewDate());
-            System.out.println(new SimpleDateFormat("dd.MM.yyyy hh:mm").format(car.getReviewList().get(1).getReviewDate()));
 
             transactionHelper.commit();
         } catch (DAOException e) {

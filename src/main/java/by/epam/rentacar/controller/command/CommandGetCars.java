@@ -24,13 +24,18 @@ public class CommandGetCars implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
+        int page = Integer.parseInt(request.getParameter("page"));
+
         CarService carService = ServiceFactory.getInstance().getCarService();
 
         List<Car> carList = null;
         try {
 
-            carList = carService.getAllCars();
+            carList = carService.getAllNotDeletedCars(page, 10);
+            int pageCount = carService.getCarsPagesCount(10);
             request.setAttribute(RequestAttributes.KEY_CAR_LIST, carList);
+            request.setAttribute("page", page);
+            request.setAttribute("pageCount", pageCount);
             request.getRequestDispatcher(PageParameters.PAGE_CARS).forward(request, response);
 
         } catch (ServiceException e) {

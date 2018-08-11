@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="paginator" uri="/WEB-INF/tlds/Paginator" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
@@ -38,7 +39,7 @@
                   <tbody>
                     <c:forEach items="${requestScope.orders_info.userOrderList}" var = "order_item" varStatus = "loop">
                       <tr>
-                        <td>${loop.index + 1}</td>
+                        <td>${(loop.index + 1) + (page - 1) * 10}</td>
                         <td>
                           <a href="/controller?command=show_selected_car&car_id=${order_item.order.carID}">${order_item.car.brand} ${order_item.car.model}</a>
                         </td>
@@ -114,7 +115,12 @@
                 </table>
               </div>
             </div>
+
+            <div class="mt-1">
+                <paginator:display currentPage="${page}" totalPages="${page_count}" maxLinks="10" url="/controller?command=orders&page=##" />
+            </div>
           </div>
+
         </div>
       </main>
 

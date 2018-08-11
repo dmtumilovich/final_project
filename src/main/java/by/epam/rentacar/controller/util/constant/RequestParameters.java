@@ -51,11 +51,16 @@ public class RequestParameters {
     public static final String KEY_EDIT_PRICE = "edit_price";
 
     public static final String KEY_ID_ORDER = "order_id";
+    public static final String KEY_ORDER_STATUS = "status";
     public static final String KEY_DATE_START = "date_start";
     public static final String KEY_DATE_END = "date_end";
 
     public static final String KEY_ID_REVIEW = "review_id";
     public static final String KEY_REVIEW_TEXT = "review_text";
+
+    public static final String KEY_PAGE = "page";
+    public static final String KEY_PAGE_COUNT = "page_count";
+    public static final String KEY_ITEMS_PER_PAGE = "items_per_page";
 
     private RequestParameters() {
 

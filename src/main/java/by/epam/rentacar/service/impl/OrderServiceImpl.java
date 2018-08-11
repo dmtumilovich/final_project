@@ -13,6 +13,7 @@ import by.epam.rentacar.domain.entity.User;
 import by.epam.rentacar.service.OrderService;
 import by.epam.rentacar.service.exception.InvalidDateRangeException;
 import by.epam.rentacar.service.exception.ServiceException;
+import by.epam.rentacar.service.util.PageCounter;
 import org.omg.CORBA.TRANSACTION_MODE;
 
 import java.text.ParseException;
@@ -147,7 +148,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public UserOrdersDTO getUserOrders(int userID) throws ServiceException {
+    public UserOrdersDTO getUserOrders(int userID, int page, int itemsPerPage) throws ServiceException {
 
         UserOrdersDTO userOrdersDTO = new UserOrdersDTO();
 
@@ -158,7 +159,7 @@ public class OrderServiceImpl implements OrderService {
             transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(orderDAO);
 
-            List<UserOrderDTO> userOrderList = orderDAO.getUserOrders(userID);
+            List<UserOrderDTO> userOrderList = orderDAO.getUserOrders(userID, page, itemsPerPage);
             userOrdersDTO.setOrderList(userOrderList);
 
             transactionHelper.commit();
@@ -171,6 +172,34 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return userOrdersDTO;
+
+    }
+
+    @Override
+    public int getUserOrdersPagesCount(int userID, int itemsPerPage) throws ServiceException {
+
+        int pagesCount = 0;
+
+        OrderDAO orderDAO = new OrderDAOImpl();
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(orderDAO);
+
+            int ordersCount = orderDAO.getUserOrdersCount(userID);
+            pagesCount = PageCounter.getInstance().countPages(ordersCount, itemsPerPage);
+
+            transactionHelper.commit();
+
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            throw new ServiceException("Error while getting count of user orders pages", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
+        return pagesCount;
 
     }
 
@@ -204,18 +233,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllOrders() throws ServiceException {
+    public List<Order> getAllOrders(int page, int itemsPerPage) throws ServiceException {
 
         List<Order> orders = null;
 
-        AdminDAO adminDAO = new AdminDAOImpl();
+        OrderDAO orderDAO = new OrderDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
             transactionHelper = new TransactionHelper();
-            transactionHelper.beginTransaction(adminDAO);
+            transactionHelper.beginTransaction(orderDAO);
 
-            orders = adminDAO.getOrderList();
+            orders = orderDAO.getAllOrders(page, itemsPerPage);
 
             transactionHelper.commit();
 
@@ -231,15 +260,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getOrdersByStatus(String statusName) throws ServiceException {
+    public List<Order> getOrdersByStatus(String statusName, int page, int itemsPerPage) throws ServiceException {
 
         Order.Status status = getStatusFromString(statusName);
-        return getOrdersByStatus(status);
+        return getOrdersByStatus(status, page, itemsPerPage);
 
     }
 
     @Override
-    public List<Order> getOrdersByStatus(Order.Status status) throws ServiceException {
+    public List<Order> getOrdersByStatus(Order.Status status, int page, int itemsPerPage) throws ServiceException {
 
         List<Order> orders = null;
 
@@ -251,7 +280,7 @@ public class OrderServiceImpl implements OrderService {
             transactionHelper.beginTransaction(orderDAO);
 
             int statusID = orderDAO.getStatusIdByName(status);
-            orders = orderDAO.getOrdersByStatusId(statusID);
+            orders = orderDAO.getOrdersByStatusId(statusID, page, itemsPerPage);
 
             transactionHelper.commit();
 
@@ -267,16 +296,88 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public int getAllOrdersPagesCount(int itemsPerPage) throws ServiceException {
+
+        int pagesCount = 0;
+
+        OrderDAO orderDAO = new OrderDAOImpl();
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(orderDAO);
+
+            int ordersCount = orderDAO.getTotalCount();
+            pagesCount = PageCounter.getInstance().countPages(ordersCount, itemsPerPage);
+
+            transactionHelper.commit();
+
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            throw new ServiceException("Error while counting pages of all orders!", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
+        return pagesCount;
+
+    }
+
+    @Override
+    public int getOrdersPagesCountByStatus(int itemsPerPage, String statusStr) throws ServiceException {
+
+        if (statusStr == null || statusStr.isEmpty()) {
+            return getAllOrdersPagesCount(itemsPerPage);
+        }
+
+        Order.Status status = getStatusFromString(statusStr);
+        return getOrdersPagesCountByStatus(itemsPerPage, status);
+
+    }
+
+    @Override
+    public int getOrdersPagesCountByStatus(int itemsPerPage, Order.Status status) throws ServiceException {
+
+        int pagesCount = 0;
+
+        OrderDAO orderDAO = new OrderDAOImpl();
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(orderDAO);
+
+            int statusID = orderDAO.getStatusIdByName(status);
+            int ordersCount = orderDAO.getTotalCountByStatusID(statusID);
+
+            pagesCount = PageCounter.getInstance().countPages(ordersCount, itemsPerPage);
+
+            transactionHelper.commit();
+
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            throw new ServiceException("Error while counting orders page by status id", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
+        return pagesCount;
+
+    }
+
+    @Override
     public List<Order> getWaitingOrders() throws ServiceException {
 
-        return getOrdersByStatus(Order.Status.AWAITS);
+        //return getOrdersByStatus(Order.Status.AWAITS);
+        return null;
 
     }
 
     @Override
     public List<Order> getRejectedOrders() throws ServiceException {
 
-        return getOrdersByStatus(Order.Status.REJECTED);
+        //return getOrdersByStatus(Order.Status.REJECTED);
+        return null;
 
     }
 

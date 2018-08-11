@@ -105,7 +105,7 @@ public class ResultSetParser {
             if (photo.getUrl() != null) {
                 car.addPhoto(photo);
             }
-        } while (rs.getInt(CarListTable.ID_CAR) == car.getId() && rs.next());
+        } while (rs.next() && rs.getInt(CarListTable.ID_CAR) == car.getId());
         rs.previous();
 
         return car;

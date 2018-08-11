@@ -50,14 +50,14 @@ public class DBQueries {
                                                 "FROM order_list\n" +
                                                 "INNER JOIN order_status\n" +
                                                 "ON order_list.id_status = order_status.id_status\n" +
-                                                "ORDER BY date_start DESC";
+                                                "ORDER BY date_start DESC LIMIT ? OFFSET ?";
 
     public static final String GET_ORDERS_BY_STATUS_ID = "SELECT order_list.id_order, id_user, id_car, date_start, date_end, total_price, order_status.status\n" +
                                                         "FROM order_list\n" +
                                                         "INNER JOIN order_status\n" +
                                                         "ON order_list.id_status = order_status.id_status\n" +
                                                         "WHERE order_list.id_status = ?\n" +
-                                                        "ORDER BY date_start DESC";
+                                                        "ORDER BY date_start DESC LIMIT ? OFFSET ?";
 
     public static final String GET_USER_ORDER = "SELECT order_list.*, order_status.status, car_list.*\n" +
                                                 "FROM order_list\n" +
@@ -73,7 +73,9 @@ public class DBQueries {
                                                 "ON order_list.id_car = car_list.id_car\n" +
                                                 "INNER JOIN order_status\n" +
                                                 "ON order_list.id_status = order_status.id_status\n" +
-                                                "WHERE id_user = ?";
+                                                "WHERE id_user = ?\n" +
+                                                "ORDER BY date_start DESC\n" +
+                                                "LIMIT ? OFFSET ?";
 
     public static final String GET_ORDER_INFO_FOR_ADMIN = "SELECT order_list.id_order, order_list.id_user, order_list.id_car, order_list.date_start, order_list.date_end, order_list.total_price,\n" +
                                                         "order_status.status,\n" +

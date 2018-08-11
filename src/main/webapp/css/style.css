@@ -1,3 +1,17 @@
 body {
   min-height: 75rem;
 }
+
+
+.page-item.active .page-link {
+  z-index: 1;
+  color: #fff;
+  background-color: #c0c0c0;
+  border-color: #a9a9a9;
+}
+
+.page-link {
+
+	color: #000;
+
+}
