@@ -1,23 +1,26 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="paginator" uri="/WEB-INF/tlds/Paginator" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%@ include file="/jsp/parts/bundle.jsp" %>
+
+<fmt:message bundle="${loc}" key="local.cars.text.title" var="title" />
+<fmt:message bundle="${loc}" key="local.cars.text.body-class" var="body_class" />
+<fmt:message bundle="${loc}" key="local.cars.text.body-color" var="body_color" />
+<fmt:message bundle="${loc}" key="local.cars.text.body-volume" var="body_volume" />
+<fmt:message bundle="${loc}" key="local.cars.text.body-price" var="body_price" />
+<fmt:message bundle="${loc}" key="local.cars.button.continue" var="button_continue" />
 
 <!DOCTYPE html>
 <html>
   <head>
 
-    <fmt:setLocale value = "${sessionScope.local}" />
-    <fmt:setBundle basename = "local" var = "loc" />
-
-    <title>Cars</title>
+    <title>${title}</title>
 
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/style.css">
   </head>
   <body>
-      <jsp:include page = "/jsp/parts/header.jsp" />
 
+      <%@ include file="/jsp/parts/header.jsp" %>
       <main role="main" class="container">
         <div class="row">
           <div class="col-2 float-left">
@@ -45,20 +48,20 @@
                       <table class="table">
                         <tbody>
                           <tr>
-                            <td>Class:</td>
+                            <td>${body_class}:</td>
                             <td>${car.carClass}</td>
                           </tr>
                           <tr>
-                            <td>Color:</td>
+                            <td>${body_color}:</td>
                             <td>${car.color}</td>
                           </tr>
                           <tr>
                           <tr>
-                            <td>Engine volume:</td>
+                            <td>${body_volume}:</td>
                             <td>${car.engineVolume}</td>
                           </tr>
                           <tr>
-                            <td>Price per day:</td>
+                            <td>${body_price}:</td>
                             <td>${car.price}$</td>
                           </tr>
                         </tbody>
@@ -69,7 +72,7 @@
                 </div>
                 <div class="card-footer">
                   <div class="row float-right">
-                    <a href="/controller?command=show_selected_car&car_id=${car.id}" class="btn btn-md btn-light border">Continue</a>
+                    <a href="/controller?command=show_selected_car&car_id=${car.id}" class="btn btn-md btn-light border">${button_continue}</a>
                   </div>
                 </div>
               </div>

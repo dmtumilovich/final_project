@@ -1,13 +1,28 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="paginator" uri="/WEB-INF/tlds/Paginator" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/jsp/parts/bundle.jsp" %>
+
+<fmt:message bundle="${loc}" key = "local.user-orders.text.title" var = "title" />
+<fmt:message bundle="${loc}" key = "local.user-orders.text.card-title" var = "card_title" />
+<fmt:message bundle="${loc}" key = "local.user-orders.text.card-car" var = "card_car" />
+<fmt:message bundle="${loc}" key = "local.user-orders.text.card-date-start" var = "card_date_start" />
+<fmt:message bundle="${loc}" key = "local.user-orders.text.card-date-end" var = "card_date_end" />
+<fmt:message bundle="${loc}" key = "local.user-orders.text.card-price" var = "card_price" />
+<fmt:message bundle="${loc}" key = "local.user-orders.text.card-status" var = "card_status" />
+<fmt:message bundle="${loc}" key = "local.user-orders.text.status-rent" var = "status_rent" />
+<fmt:message bundle="${loc}" key = "local.user-orders.text.status-confirmed" var = "status_confirmed" />
+<fmt:message bundle="${loc}" key = "local.user-orders.text.status-rejected" var = "status_rejected" />
+<fmt:message bundle="${loc}" key = "local.user-orders.text.status-awaits" var = "status_awaits" />
+<fmt:message bundle="${loc}" key = "local.user-orders.text.status-over" var = "status_over" />
+<fmt:message bundle="${loc}" key = "local.user-orders.text.status-returned" var = "status_returned" />
+<fmt:message bundle="${loc}" key = "local.user-orders.text.status-canceled" var = "status_canceled" />
+<fmt:message bundle="${loc}" key = "local.user-orders.text.status-unknown" var = "status_unknown" />
+<fmt:message bundle="${loc}" key = "local.user-orders.button.check" var = "button_check" />
 
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Orders | einott</title>
+    <title>${title} | einott</title>
 
     <link rel="stylesheet" href="../../css/bootstrap.min.css">
     <link rel="stylesheet" href="../../css/style.css">
@@ -23,17 +38,17 @@
           <div class="col-10 float-left">
             <div class="card">
               <div class="card-header">
-                <h4 class="card-title">All orders</h4>
+                <h4 class="card-title">${card_title}</h4>
               </div>
               <div class="card-body">
                 <table class="table">
                   <thead>
                     <th>#</th>
-                    <th>Car</th>
-                    <th>Date start</th>
-                    <th>Date end</th>
-                    <th>Price</th>
-                    <th>Status</th>
+                    <th>${card_car}</th>
+                    <th>${card_date_start}</th>
+                    <th>${card_date_end}</th>
+                    <th>${card_price}</th>
+                    <th>${card_status}</th>
                     <th></th>
                   </thead>
                   <tbody>
@@ -49,39 +64,34 @@
                         <td>
                           <c:choose>
                             <c:when test = "${order_item.order.status eq 'RENT'}">
-                              <span class="text-info">In rent</span>
+                              <span class="text-info">${status_rent}</span>
                             </c:when>
                             <c:when test = "${order_item.order.status eq 'CONFIRMED'}">
-                              <span class="text-success">Confirmed</span>
+                              <span class="text-success">${status_confirmed}</span>
                             </c:when>
                             <c:when test = "${order_item.order.status eq 'REJECTED'}">
-                              <span class="text-danger">Rejected</span>
+                              <span class="text-danger">${status_rejected}</span>
                             </c:when>
                             <c:when test = "${order_item.order.status eq 'AWAITS'}">
-                              <span class="text-important">Awaits confirmation</span>
+                              <span class="text-important">${status_awaits}</span>
                             </c:when>
                             <c:when test = "${order_item.order.status eq 'OVER'}">
-                              <span class="text-warning">Rent is over</span>
+                              <span class="text-warning">${status_over}</span>
                             </c:when>
                             <c:when test = "${order_item.order.status eq 'RETURNED'}">
-                              <span class="text-secondary">Returned</span>
+                              <span class="text-secondary">${status_returned}</span>
                             </c:when>
                             <c:when test = "${order_item.order.status eq 'CANCELED'}">
-                              <span class="text-danger">Canceled</span>
+                              <span class="text-danger">${status_canceled}</span>
                             </c:when>
                             <c:otherwise>
                               <%-- ??? --%>
-                              <span>Unknown</span>
+                              <span>${status_unknown}</span>
                             </c:otherwise>
                           </c:choose>
                         </td>
                         <td>
-                          <%-- <form action="controller" method="post">
-                            <input type="hidden" name="command" value="user_order">
-                            <input type="hidden" name="order_id" value="${order_item.order.id}">
-                            <button type="submit" class="btn btn-sm btn-light border">Check</button>
-                          </form> --%>
-                          <a href="/controller?command=user_order&order_id=${order_item.order.id}" class="btn btn-sm btn-light border">Check</a>
+                          <a href="/controller?command=user_order&order_id=${order_item.order.id}" class="btn btn-sm btn-light border">${button_check}</a>
                         </td>
                       </tr>
                     </c:forEach>

@@ -1,12 +1,27 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/jsp/parts/bundle.jsp" %>
+
+<fmt:message bundle="${loc}" key="local.car.text.title" var="title" />
+<fmt:message bundle="${loc}" key="local.car.text.card-characteristics" var="card_charactirectics" />
+<fmt:message bundle="${loc}" key="local.car.text.card-class" var="card_class" />
+<fmt:message bundle="${loc}" key="local.car.text.card-color" var="card_color" />
+<fmt:message bundle="${loc}" key="local.car.text.card-year" var="card_year" />
+<fmt:message bundle="${loc}" key="local.car.text.card-seats" var="card_seats" />
+<fmt:message bundle="${loc}" key="local.car.text.card-volume" var="card_volume" />
+<fmt:message bundle="${loc}" key="local.car.text.card-price" var="card_price" />
+<fmt:message bundle="${loc}" key="local.car.button.rent" var="button_rent" />
+<fmt:message bundle="${loc}" key="local.car.button.login" var="button_login_to_rent" />
+<fmt:message bundle="${loc}" key="local.car.text.comments-header" var="comments_header" />
+<fmt:message bundle="${loc}" key="local.car.text.comments-count" var="comments_count" />
+<fmt:message bundle="${loc}" key="local.car.button.comments-reset" var="button_reset" />
+<fmt:message bundle="${loc}" key="local.car.button.comments-send" var="button_send" />
+<fmt:message bundle="${loc}" key="local.car.button.comments-share" var="button_share" />
+<fmt:message bundle="${loc}" key="local.car.button.comments-delete" var="button_delete" />
 
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Car</title>
+    <title>${car.brand} ${car.model}</title>
 
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/style.css">
@@ -27,31 +42,31 @@
               <div class="card-body">
                 <table class="table">
                   <thead class="table-head">
-                    <h5>Characteristics</h5>
+                    <h5>${card_charactirectics}</h5>
                   </thead>
                   <tbody>
                     <tr>
-                      <td>Class:</td>
+                      <td>${card_class}:</td>
                       <td>${car.carClass}</td>
                     </tr>
                     <tr>
-                      <td>Color:</td>
+                      <td>${card_color}:</td>
                       <td>${car.color}</td>
                     </tr>
                     <tr>
-                      <td>Year:</td>
+                      <td>${card_year}:</td>
                       <td>${car.yearOfIssue}</td>
                     </tr>
                     <tr>
-                      <td>Seats:</td>
+                      <td>${card_seats}:</td>
                       <td>${car.numberOfSeats}</td>
                     </tr>
                     <tr>
-                      <td>Engine volume:</td>
+                      <td>${card_volume}:</td>
                       <td>${car.engineVolume}</td>
                     </tr>
                     <tr>
-                      <td>Price per day:</td>
+                      <td>${card_price}:</td>
                       <td>${car.price}$</td>
                     </tr>
                   </tbody>
@@ -72,10 +87,10 @@
                 <div class="row float-right">
                   <c:choose>
                     <c:when test = "${not empty user_id}">
-                      <a href="/controller?command=get_booking_info&car_id=${car.id}" class="btn btn-md btn-success">Rent now</a>
+                      <a href="/controller?command=get_booking_info&car_id=${car.id}" class="btn btn-md btn-success">${button_rent}</a>
                     </c:when>
                     <c:when test = "${empty user_id}">
-                      <a href="/signin" class="btn btn-md btn-success">Log in to rent</a>
+                      <a href="/signin" class="btn btn-md btn-success">${button_login_to_rent}</a>
                     </c:when>
                   </c:choose>
                 </div>
@@ -86,7 +101,7 @@
             <div class="row mt-5">
               <div class="col-12">
                 <div class="page-header border-bottom">
-                  <h2><small class="float-right">${requestScope.car.numberOfReviews} comments</small> Comments </h2>
+                  <h2><small class="float-right">${comments_count}: ${requestScope.car.numberOfReviews}</small> ${comments_header} </h2>
                 </div>
 
                 <div class="mb-5 px-3">
@@ -100,8 +115,8 @@
                         <textarea name="review_text" rows="3" placeholder="Your comment..." class="form-control"></textarea>
                       </div>
                       <div class="row float-right">
-                        <button type="reset" class="btn btn-md btn-light border mr-1">Reset</button>
-                        <button type="submit" class="btn btn-md btn-primary">Send</button>
+                        <button type="reset" class="btn btn-md btn-light border mr-1">${button_reset}</button>
+                        <button type="submit" class="btn btn-md btn-primary">${button_send}</button>
                       </div>
                     </form>
                   </c:if>
@@ -116,9 +131,9 @@
                       ${review.reviewText}
                       <p>
                         <small>
-                          <a href="#" class="text-dark">Share</a>
+                          <a href="#" class="text-dark">${button_share}</a>
                           <c:if test="${review.userID eq sessionScope.user_id}">
-                             - <a href="/controller?command=delete_review&review_id=${review.id}" class="text-dark">Delete</a>
+                             - <a href="/controller?command=delete_review&review_id=${review.id}" class="text-dark">${button_delete}</a>
                           </c:if>
                         </small>
                       </p>

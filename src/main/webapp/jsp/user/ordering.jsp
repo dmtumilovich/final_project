@@ -1,12 +1,33 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/jsp/parts/bundle.jsp" %>
+
+<fmt:message bundle="${loc}" key = "local.ordering.text.title" var = "title" />
+<fmt:message bundle="${loc}" key = "local.ordering.text.card-car-characteristics" var = "card_characteristics" />
+<fmt:message bundle="${loc}" key = "local.ordering.text.card-car-class" var = "card_class" />
+<fmt:message bundle="${loc}" key = "local.ordering.text.card-car-color" var = "card_color" />
+<fmt:message bundle="${loc}" key = "local.ordering.text.card-car-year" var = "card_year" />
+<fmt:message bundle="${loc}" key = "local.ordering.text.card-car-seats" var = "card_seats" />
+<fmt:message bundle="${loc}" key = "local.ordering.text.card-car-volume" var = "card_volume" />
+<fmt:message bundle="${loc}" key = "local.ordering.text.card-car-price" var = "card_price" />
+<fmt:message bundle="${loc}" key = "local.ordering.text.card-order-title" var = "card_order_title" />
+<fmt:message bundle="${loc}" key = "local.ordering.text.card-order-pickup" var = "card_pickup" />
+<fmt:message bundle="${loc}" key = "local.ordering.text.card-order-dropoff" var = "card_dropoff" />
+<fmt:message bundle="${loc}" key = "local.ordering.text.card-order-total-cost" var = "card_total_cost" />
+<fmt:message bundle="${loc}" key = "local.ordering.text.card-order-days" var = "card_days" />
+<fmt:message bundle="${loc}" key = "local.ordering.text.card-client-title" var = "card_client_title" />
+<fmt:message bundle="${loc}" key = "local.ordering.text.card-client-username" var = "card_username" />
+<fmt:message bundle="${loc}" key = "local.ordering.text.card-client-email" var = "card_email" />
+<fmt:message bundle="${loc}" key = "local.ordering.text.card-client-name" var = "card_name" />
+<fmt:message bundle="${loc}" key = "local.ordering.text.card-client-surname" var = "card_surname" />
+<fmt:message bundle="${loc}" key = "local.ordering.text.card-client-phone" var = "card_phone" />
+<fmt:message bundle="${loc}" key = "local.ordering.text.card-client-passport" var = "card_passport" />
+<fmt:message bundle="${loc}" key = "local.ordering.button.edit-profile" var = "button_edit_profile" />
+<fmt:message bundle="${loc}" key = "local.ordering.button.book" var = "button_book" />
 
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ordering</title>
+    <title>${title}</title>
 
     <link rel="stylesheet" href="../../plugin/datetimepicker/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
@@ -16,8 +37,8 @@
 
   </head>
   <body>
-      <jsp:include page = "/jsp/parts/header.jsp" />
 
+      <%@ include file="/jsp/parts/header.jsp" %>
       <main role="main" class="container">
         <div class="row">
           <div class="col-4 float-left">
@@ -28,31 +49,31 @@
               <div class="card-body">
                 <table class="table">
                   <thead class="table-head">
-                    <h5>Characteristics</h5>
+                    <h5>${card_characteristics}</h5>
                   </thead>
                   <tbody>
                     <tr>
-                      <td>Class:</td>
+                      <td>${card_class}:</td>
                       <td>${booking_info.car.carClass}</td>
                     </tr>
                     <tr>
-                      <td>Color:</td>
+                      <td>${card_color}:</td>
                       <td>${booking_info.car.color}</td>
                     </tr>
                     <tr>
-                      <td>Year:</td>
+                      <td>${card_year}:</td>
                       <td>${booking_info.car.yearOfIssue}</td>
                     </tr>
                     <tr>
-                      <td>Seats:</td>
+                      <td>${card_seats}:</td>
                       <td>${booking_info.car.numberOfSeats}</td>
                     </tr>
                     <tr>
-                      <td>Engine volume:</td>
+                      <td>${card_volume}:</td>
                       <td>${booking_info.car.engineVolume}</td>
                     </tr>
                     <tr>
-                      <td>Price per day:</td>
+                      <td>${card_price}:</td>
                       <td>${booking_info.car.price}$</td>
                     </tr>
                   </tbody>
@@ -67,12 +88,12 @@
               <input type="hidden" name="car_id" value="${booking_info.car.id}">
               <div class="card">
                 <div class="card-header">
-                  <h4 class="card-title">Order info</h4>
+                  <h4 class="card-title">${card_order_title}</h4>
                 </div>
                 <div class="card-body">
                   <%-- datetime picker --%>
                   <div class="form-group">
-                    <label for="pickup">Pick-up date:</label>
+                    <label for="pickup">${card_pickup}:</label>
                     <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
                         <span class="input-group-text">
@@ -84,7 +105,7 @@
                   </div>
 
                   <div class="form-group mt-1">
-                    <label for="dropoff">Drop-off date:</label>
+                    <label for="dropoff">${card_dropoff}:</label>
                     <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
                         <span class="input-group-text">
@@ -97,13 +118,13 @@
                 </div>
 
                 <div class="card-footer">
-                  <h5 class=""><strong>Total cost:</strong> ${booking_info.totalCost}$ <small><i>for ${booking_info.numberOfDays} days</i></small></h5>
+                  <h5 class=""><strong>${card_total_cost}:</strong> ${booking_info.totalCost}$, <small><i>${card_days}: ${booking_info.numberOfDays}</i></small></h5>
                 </div>
               </div>
 
               <div class="card mt-3">
                 <div class="card-header">
-                  <h4 class="card-title">Client data</h4>
+                  <h4 class="card-title">${card_client_title}</h4>
                 </div>
                 <div class="card-body">
                   <table class="table">
@@ -114,27 +135,27 @@
                     </c:if>
                     <tbody>
                       <tr>
-                        <td>Username:</td>
+                        <td>${card_username}:</td>
                         <td>@${booking_info.user.username}</td>
                       </tr>
                       <tr>
-                        <td>Email:</td>
+                        <td>${card_email}:</td>
                         <td>${booking_info.user.email}</td>
                       </tr>
                       <tr>
-                        <td>Name:</td>
+                        <td>${card_name}:</td>
                         <td>${booking_info.user.name}</td>
                       </tr>
                       <tr>
-                        <td>Surname:</td>
+                        <td>${card_surname}:</td>
                         <td>${booking_info.user.surname}</td>
                       </tr>
                       <tr>
-                        <td>Phone number:</td>
+                        <td>${card_phone}:</td>
                         <td>${booking_info.user.phone}</td>
                       </tr>
                       <tr>
-                        <td>Passport:</td>
+                        <td>${card_passport}:</td>
                         <td>${booking_info.user.passport}</td>
                       </tr>
                     </tbody>
@@ -142,7 +163,7 @@
                 </div>
                 <div class="card-footer">
                   <div class="float-right">
-                    <a href="/controller?command=edit_profile" class="btn btn-md btn-primary">Edit</a>
+                    <a href="/controller?command=edit_profile" class="btn btn-md btn-primary">${button_edit_profile}</a>
                   </div>
                 </div>
               </div>
@@ -150,10 +171,10 @@
               <div class="mt-3 col-6 float-right row">
                 <c:choose>
                   <c:when test="${booking_info.allUserData eq false}">
-                    <button type="submit" class="btn btn-lg btn-success btn-block disabled">Book now</button>
+                    <button type="submit" class="btn btn-lg btn-success btn-block disabled">${button_book}</button>
                   </c:when>
                   <c:otherwise>
-                    <button type="submit" class="btn btn-lg btn-success btn-block">Book now</button>
+                    <button type="submit" class="btn btn-lg btn-success btn-block">${button_book}</button>
                   </c:otherwise>
                 </c:choose>
               </div>

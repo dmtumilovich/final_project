@@ -1,25 +1,34 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%-- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> --%>
+<%-- <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> --%>
+<%-- <%@ page contentType="text/html;charset=UTF-8" language="java" %> --%>
+
+
+<%@ include file="/jsp/parts/bundle.jsp" %>
+
+<fmt:message bundle="${loc}" key="local.main.text.title" var="title" />
+<fmt:message bundle="${loc}" key="local.main.text.heading" var="heading" />
+<fmt:message bundle="${loc}" key="local.main.text.heading-description" var="description" />
+<fmt:message bundle="${loc}" key="local.main.button.see-all-cars" var="button_all_cars" />
+
 
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Rent yourself a car</title>
+    <title>${title}</title>
 
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/style.css">
   </head>
   <body>
-      <jsp:include page = "/jsp/parts/header.jsp" />
 
+      <%@ include file="/jsp/parts/header.jsp" %>
       <main role="main" class="container">
         <div class="jumbotron">
-          <h2>Rent yourself a car</h2>
-          <p class="lead">We offer you the best cars on good terms. You can see the list of all available cars.</p>
+          <h2>${heading}</h2>
+          <p class="lead">${description}</p>
           <p>
-            <a href="/controller?command=show_cars" class="btn btn-lg btn-primary">See all cars &raquo;</a>
+            <a href="/controller?command=show_cars" class="btn btn-lg btn-primary">${button_all_cars} &raquo;</a>
           </p>
         </div>
       </main>

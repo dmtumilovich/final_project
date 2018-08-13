@@ -1,16 +1,21 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%-- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="paginator" uri="/WEB-INF/tlds/Paginator" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %> --%>
+
+<%@ include file="/jsp/parts/bundle.jsp" %>
+
+<fmt:message bundle="${loc}" key="local.find.text.title" var="title" />
+<fmt:message bundle="${loc}" key="local.find.text.header-pick-dates" var="pick_dates" />
+<fmt:message bundle="${loc}" key="local.find.text.label-pickup" var="label_pickup" />
+<fmt:message bundle="${loc}" key="local.find.text.label-dropoff" var="label_dropoff" />
+<fmt:message bundle="${loc}" key="local.find.button.search" var="button_search" />
 
 <!DOCTYPE html>
 <html>
   <head>
 
-    <fmt:setLocale value = "${sessionScope.local}" />
-    <fmt:setBundle basename = "local" var = "loc" />
-
-    <title>Cars</title>
+    <title>${title}</title>
 
     <link rel="stylesheet" href="../plugin/datetimepicker/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
@@ -19,8 +24,8 @@
     <link rel="stylesheet" href="../css/style.css">
   </head>
   <body>
-      <jsp:include page = "/jsp/parts/header.jsp" />
 
+      <%@ include file="/jsp/parts/header.jsp" %>
       <main role="main" class="container">
         <div class="row">
           <div class="col-8 mx-auto">
@@ -29,12 +34,12 @@
               <input type="hidden" name="page" value="1">
               <div class="card">
                 <div class="card-header">
-                  <h4 class="card-title">Pick date and time</h4>
+                  <h4 class="card-title">${pick_dates}</h4>
                 </div>
                 <div class="card-body">
                   <%-- datetime picker --%>
                   <div class="form-group">
-                    <label for="pickup">Pick-up date:</label>
+                    <label for="pickup">${label_pickup}:</label>
                     <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
                         <span class="input-group-text">
@@ -46,7 +51,7 @@
                   </div>
 
                   <div class="form-group mt-1">
-                    <label for="dropoff">Drop-off date:</label>
+                    <label for="dropoff">${label_dropoff}:</label>
                     <div class="input-group input-group-sm">
                       <div class="input-group-prepend">
                         <span class="input-group-text">
@@ -60,7 +65,7 @@
 
                 <div class="card-footer">
                   <div class="float-right">
-                    <button type="submit" class="btn btn-md btn-success">Search</button>
+                    <button type="submit" class="btn btn-md btn-success">${button_search}</button>
                   </div>
                 </div>
               </div>
