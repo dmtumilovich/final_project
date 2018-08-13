@@ -42,8 +42,8 @@
                   <td>${order.id}</td>
                   <td>${order.userID}</td>
                   <td>${order.carID}</td>
-                  <td><fmt:formatDate value = "${order.dateStart}" pattern = "dd.MM.yyyy hh:mm" /></td>
-                  <td><fmt:formatDate value = "${order.dateEnd}" pattern = "dd.MM.yyyy hh:mm" /></td>
+                  <td><fmt:formatDate value = "${order.dateStart}" pattern = "dd.MM.yyyy HH:mm" /></td>
+                  <td><fmt:formatDate value = "${order.dateEnd}" pattern = "dd.MM.yyyy HH:mm" /></td>
                   <td>
                     <c:choose>
                       <c:when test = "${order.status eq 'RENT'}">

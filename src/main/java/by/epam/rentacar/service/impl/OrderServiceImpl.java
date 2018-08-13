@@ -14,7 +14,6 @@ import by.epam.rentacar.service.OrderService;
 import by.epam.rentacar.service.exception.InvalidDateRangeException;
 import by.epam.rentacar.service.exception.ServiceException;
 import by.epam.rentacar.service.util.PageCounter;
-import org.omg.CORBA.TRANSACTION_MODE;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,7 +23,7 @@ import java.util.List;
 
 public class OrderServiceImpl implements OrderService {
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 
     @Override
     public void makeOrder(MakeOrderDTO makeOrderDTO) throws ServiceException {
@@ -36,8 +35,7 @@ public class OrderServiceImpl implements OrderService {
             dateStart = dateFormat.parse(makeOrderDTO.getDateStart());
             dateEnd = dateFormat.parse(makeOrderDTO.getDateEnd());
         } catch (ParseException e) {
-            e.printStackTrace();
-            throw new ServiceException("Error occurred while parsing date");
+            throw new ServiceException("Error occurred while parsing date", e);
         }
 
         if (dateStart.after(dateEnd) || (dateEnd.getTime() - dateStart.getTime() < 24*60*60*1000)) {
@@ -53,6 +51,10 @@ public class OrderServiceImpl implements OrderService {
             transactionHelper.beginTransaction(carDAO, orderDAO);
 
             double carPrice = carDAO.getPriceByCarID(makeOrderDTO.getCarID());
+            //calculate days
+            int numberOfDays = (int)Math.ceil((dateEnd.getTime() - dateStart.getTime()) / (1000*60*60*24));
+            //calculate total cost
+            double totalCost = numberOfDays * carPrice;
 
             System.out.println("CAR PRICE: " + carPrice);
 
@@ -61,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
             order.setCarID(makeOrderDTO.getCarID());
             order.setDateStart(dateStart); //проверка на нулл?
             order.setDateEnd(dateEnd);
-            order.setTotalPrice(carPrice);
+            order.setTotalPrice(totalCost);
             order.setStatus(Order.Status.AWAITS);
 
             orderDAO.makeOrder(order);
@@ -80,10 +82,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderingInfo getOrderingInfo(int carID, int userID) throws ServiceException {
+    public OrderingInfo getBookingInfo(int carID, int userID, String dateStartStr, String dateEndStr) throws ServiceException {
+
+        Date dateStart = null;
+        Date dateEnd = null;
+
+        try {
+            dateStart = dateFormat.parse(dateStartStr);
+            dateEnd = dateFormat.parse(dateEndStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            throw new ServiceException("Error occurred while parsing date");
+        }
 
         UserDAO userDAO = new UserDAOImpl();
         CarDAO carDAO = new CarDAOImpl();
+        OrderDAO orderDAO = new OrderDAOImpl();
 
         OrderingInfo orderingInfo = new OrderingInfo();
 
@@ -91,10 +105,15 @@ public class OrderServiceImpl implements OrderService {
 
         try {
             transactionHelper = new TransactionHelper();
-            transactionHelper.beginTransaction(userDAO, carDAO);
+            transactionHelper.beginTransaction(userDAO, carDAO, orderDAO);
 
             Car car = carDAO.getCarByID(carID);
             User user = userDAO.getUserById(userID);
+
+            //calculate days
+            int numberOfDays = (int)Math.ceil((dateEnd.getTime() - dateStart.getTime()) / (1000*60*60*24));
+            //calculate total cost
+            double totalCost = numberOfDays * car.getPrice();
 
             if (user.getName() == null || user.getName().isEmpty()
                     || user.getSurname() == null || user.getSurname().isEmpty()
@@ -105,6 +124,8 @@ public class OrderServiceImpl implements OrderService {
 
             orderingInfo.setCar(car);
             orderingInfo.setUser(user);
+            orderingInfo.setNumberOfDays(numberOfDays);
+            orderingInfo.setTotalCost(totalCost);
 
             transactionHelper.commit();
         } catch (DAOException e) {
@@ -362,22 +383,6 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return pagesCount;
-
-    }
-
-    @Override
-    public List<Order> getWaitingOrders() throws ServiceException {
-
-        //return getOrdersByStatus(Order.Status.AWAITS);
-        return null;
-
-    }
-
-    @Override
-    public List<Order> getRejectedOrders() throws ServiceException {
-
-        //return getOrdersByStatus(Order.Status.REJECTED);
-        return null;
 
     }
 

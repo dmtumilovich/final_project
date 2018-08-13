@@ -8,6 +8,9 @@
     <meta charset="utf-8">
     <title>Ordering</title>
 
+    <link rel="stylesheet" href="../../plugin/datetimepicker/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../../css/bootstrap.min.css">
     <link rel="stylesheet" href="../../css/style.css">
 
@@ -56,6 +59,7 @@
                 </table>
               </div>
             </div>
+
           </div>
           <div class="col-8 float-left">
             <form action="/controller" method="post">
@@ -63,48 +67,37 @@
               <input type="hidden" name="car_id" value="${booking_info.car.id}">
               <div class="card">
                 <div class="card-header">
-                  <h4 class="card-title">Pick date and time</h4>
+                  <h4 class="card-title">Order info</h4>
                 </div>
                 <div class="card-body">
                   <%-- datetime picker --%>
                   <div class="form-group">
-                    <label for="pickup_input">Pick-up date:</label>
-                    <div class="input-group date" id="pickup" data-target-input="nearest">
-                      <input type="text" name="date_start" class="form-control form-control-sm datetimepicker-input" data-target="#pickup" required/>
-                      <div class="input-group-append" data-target="#pickup" data-toggle="datetimepicker">
-                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    <label for="pickup">Pick-up date:</label>
+                    <div class="input-group input-group-sm">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <i class="far fa-calendar-alt"></i>
+                        </span>
                       </div>
-                    </div>
-
-                    <label for="dropoff_input">Drop-off date:</label>
-                    <div class="input-group date" id="dropoff" data-target-input="nearest">
-                      <input id="dropoff_input" type="text" name="date_end" class="form-control form-control-sm datetimepicker-input" data-target="#dropoff" required>
-                      <div class="input-group-append" data-target="#dropoff" data-toggle="datetimepicker">
-                        <div class="input-group-text">
-                          <i class="fa fa-calendar"></i>
-                        </div>
-                      </div>
+                      <input type="text" class="form-control form-control-sm" value="${date_start}" disabled>
                     </div>
                   </div>
-                  <%-- ??? --%>
-                  <script type="text/javascript">
-                    $(function () {
-                      $('#pickup').datetimepicker({
-                          locale: 'ru'
-                      });
-                    });
-                  </script>
-                  <script type="text/javascript">
-                    $(function () {
-                      $('#dropoff').datetimepicker({
-                          locale: 'ru'
-                      });
-                    });
-                  </script>
+
+                  <div class="form-group mt-1">
+                    <label for="dropoff">Drop-off date:</label>
+                    <div class="input-group input-group-sm">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <i class="far fa-calendar-alt"></i>
+                        </span>
+                      </div>
+                      <input type="text" class="form-control form-control-sm" value="${date_end}" disabled>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="card-footer">
-                  <h5 class=""><strong>Total cost:</strong> 160$ <small><i>for 2 days</i></small></h5>
+                  <h5 class=""><strong>Total cost:</strong> ${booking_info.totalCost}$ <small><i>for ${booking_info.numberOfDays} days</i></small></h5>
                 </div>
               </div>
 
@@ -212,14 +205,21 @@
         </div>
       </main>
 
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+
+      <script src="../../js/bootstrap-datetimepicker.min.js"></script>
+      <script src="../../js/script.js"></script>
+
+      <%-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --%>
+      <%-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script> --%>
+      <%-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script> --%>
+      <%-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" /> --%>
 
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
       <script>window.jQuery || document.write('<script src="../../js/vendor/jquery-slim.min.js"><\/script>')</script>
       <script src="../../js/vendor/popper.min.js"></script>
       <script src="../../js/bootstrap.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js" type="text/javascript"></script>
+      <script src="../../plugin/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+      <script src="../../js/script.js"></script>
   </body>
 </html>

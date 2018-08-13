@@ -8,17 +8,22 @@ import by.epam.rentacar.dao.exception.DAOException;
 import by.epam.rentacar.dao.impl.CarDAOImpl;
 import by.epam.rentacar.dao.impl.ReviewDAOImpl;
 import by.epam.rentacar.domain.dto.CarSearchDTO;
+import by.epam.rentacar.domain.dto.FindCarsDTO;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.exception.ServiceException;
 import by.epam.rentacar.service.util.PageCounter;
 import com.sun.corba.se.spi.transport.TransportDefault;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CarServiceImpl implements CarService {
+
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 
     public List<Car> getAllCars(int page, int itemsPerPage) throws ServiceException {
 
@@ -93,6 +98,89 @@ public class CarServiceImpl implements CarService {
         } catch (DAOException e) {
             transactionHelper.rollback();
             throw new ServiceException("Error while counting cars pages!", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
+        return pagesCount;
+
+    }
+
+    @Override
+    public List<Car> getCarsByDateRangeAndClass(FindCarsDTO findCarsDTO, int page, int itemsPerPage) throws ServiceException {
+
+        String carClass = findCarsDTO.getCarClass();
+
+        Date dateStart = null;
+        Date dateEnd = null;
+
+        try {
+            dateStart = dateFormat.parse(findCarsDTO.getDateStart());
+            dateEnd = dateFormat.parse(findCarsDTO.getDateEnd());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            throw new ServiceException("Error occurred while parsing date");
+        }
+
+        List<Car> cars = new ArrayList<>();
+
+        CarDAO carDAO = new CarDAOImpl();
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(carDAO);
+
+            cars = (carClass == null || carClass.isEmpty()) ? carDAO.getAllByDateRange(dateStart, dateEnd, page, itemsPerPage) :
+                                                             carDAO.getAllByDateRangeAndClass(carClass, dateStart, dateEnd, page, itemsPerPage);
+
+            transactionHelper.commit();
+
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            throw new ServiceException("Error while getting cars by date range", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
+        return cars;
+
+    }
+
+    @Override
+    public int getCarsPagesCount(FindCarsDTO findCarsDTO, int itemsPerPage) throws ServiceException {
+
+        String carClass = findCarsDTO.getCarClass();
+
+        Date dateStart = null;
+        Date dateEnd = null;
+
+        try {
+            dateStart = dateFormat.parse(findCarsDTO.getDateStart());
+            dateEnd = dateFormat.parse(findCarsDTO.getDateEnd());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            throw new ServiceException("Error occurred while parsing date");
+        }
+
+        int pagesCount = 0;
+
+        CarDAO carDAO = new CarDAOImpl();
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(carDAO);
+
+            int carsCount = (carClass == null || carClass.isEmpty()) ? carDAO.getTotalCountByDateRange(dateStart, dateEnd) :
+                                                                       carDAO.getTotalCountByDateRangeAndClass(carClass, dateStart, dateEnd);
+            pagesCount = PageCounter.getInstance().countPages(carsCount, itemsPerPage);
+
+            transactionHelper.commit();
+
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            throw new ServiceException("Error while getting count of cars pages", e);
         } finally {
             transactionHelper.endTransaction();
         }

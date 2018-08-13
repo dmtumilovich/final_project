@@ -5,6 +5,7 @@ import by.epam.rentacar.dao.exception.DAOException;
 import by.epam.rentacar.dao.util.ResultSetParser;
 import by.epam.rentacar.dao.util.constant.DBQueries;
 import by.epam.rentacar.dao.util.constant.DBSchema;
+import by.epam.rentacar.domain.dto.OrderingInfo;
 import by.epam.rentacar.domain.dto.UserOrderDTO;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.domain.entity.Order;
@@ -14,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class OrderDAOImpl extends OrderDAO {
@@ -284,6 +286,40 @@ public class OrderDAOImpl extends OrderDAO {
             e.printStackTrace();
             throw new DAOException("Error while updating status", e);
         }
+
+    }
+
+    @Override
+    public List<OrderingInfo.DateRange> getBusyDates(int carID) throws DAOException {
+
+        List<OrderingInfo.DateRange> busyDates = new ArrayList<>();
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = connection.prepareStatement("SELECT order_list.date_start, order_list.date_end\n" +
+                                                        "FROM order_list\n" +
+                                                        "WHERE id_car = ?");
+            statement.setInt(1, carID);
+
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Timestamp dateStartTS = resultSet.getTimestamp(DBSchema.OrderListTable.DATE_START);
+                Timestamp dateEndTS = resultSet.getTimestamp(DBSchema.OrderListTable.DATE_END);
+
+                Date dateStart = new Date(dateEndTS.getTime());
+                Date dateEnd = new Date(dateStart.getTime());
+
+                OrderingInfo.DateRange dateRange = new OrderingInfo.DateRange(dateStart ,dateEnd);
+                busyDates.add(dateRange);
+            }
+
+        } catch (SQLException e) {
+            throw new DAOException("Error while getting busy dates!", e);
+        }
+
+        return busyDates;
 
     }
 }

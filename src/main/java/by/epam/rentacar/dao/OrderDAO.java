@@ -22,4 +22,6 @@ public abstract class OrderDAO extends AbstractDAO {
     public abstract int getStatusIdByName(Order.Status status) throws DAOException;
     public abstract void updateStatus(int orderID, int statusID) throws DAOException;
 
+    public abstract List<OrderingInfo.DateRange> getBusyDates(int carID) throws DAOException;
+
 }

@@ -4,14 +4,18 @@ import by.epam.rentacar.dao.CarDAO;
 import by.epam.rentacar.dao.exception.DAOException;
 import by.epam.rentacar.dao.util.constant.DBSchema;
 import by.epam.rentacar.domain.dto.CarSearchDTO;
+import by.epam.rentacar.domain.dto.FindCarsDTO;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.dao.util.ResultSetParser;
 import by.epam.rentacar.dao.util.constant.DBQueries;
+import com.mysql.cj.api.mysqla.result.Resultset;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CarDAOImpl extends CarDAO {
@@ -70,6 +74,91 @@ public class CarDAOImpl extends CarDAO {
 
         } catch (SQLException e) {
             throw new DAOException("Error while getting cars!", e);
+        }
+
+        return carList;
+
+    }
+
+    @Override
+    public List<Car> getAllByDateRange(Date dateStart, Date dateEnd, int page, int itemsPerPage) throws DAOException {
+
+        List<Car> carList = new ArrayList<>();
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = connection.prepareStatement("SELECT car_list.id_car, brand, model , class, year_of_issue, number_of_seats, color, engine_volume, is_deleted, price, photos.id_photo, photos.photo_url\n" +
+                                                        "FROM car_list\n" +
+                                                        "LEFT JOIN (SELECT id_photo, id_car, photo_url\n" +
+                                                        "FROM car_photos\n" +
+                                                        "WHERE id_photo IN (SELECT MIN(id_photo)\n" +
+                                                        "FROM car_photos\n" +
+                                                        "GROUP BY id_car)\n" +
+                                                        ") photos\n" +
+                                                        "ON car_list.id_car = photos.id_car\n" +
+                                                        "WHERE is_deleted = '0' AND car_list.id_car NOT IN (SELECT DISTINCT order_list.id_car \n" +
+                                                        "FROM order_list\n" +
+                                                        "WHERE ((? BETWEEN date_start AND date_end) \n" +
+                                                        "OR (? BETWEEN date_start AND date_end)) AND (id_status = '1' or id_status = '3' or id_status = '4')\n" +
+                                                        ")\n" +
+                                                        "GROUP BY car_list.id_car, photos.id_photo LIMIT ? OFFSET ?");
+            statement.setTimestamp(1, new Timestamp(dateStart.getTime()));
+            statement.setTimestamp(2, new Timestamp(dateEnd.getTime()));
+            statement.setInt(3, itemsPerPage);
+            statement.setInt(4, calculateOffset(page, itemsPerPage));
+
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Car car = ResultSetParser.createCarWithPhotos(resultSet);
+                carList.add(car);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error while getting cars by date range!", e);
+        }
+
+        return carList;
+
+    }
+
+    @Override
+    public List<Car> getAllByDateRangeAndClass(String carClass, Date dateStart, Date dateEnd, int page, int itemsPerPage) throws DAOException {
+
+        List<Car> carList = new ArrayList<>();
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = connection.prepareStatement("SELECT car_list.id_car, brand, model , class, year_of_issue, number_of_seats, color, engine_volume, is_deleted, price, photos.id_photo, photos.photo_url\n" +
+                                                        "FROM car_list\n" +
+                                                        "LEFT JOIN (SELECT id_photo, id_car, photo_url\n" +
+                                                        "FROM car_photos\n" +
+                                                        "WHERE id_photo IN (SELECT MIN(id_photo)\n" +
+                                                        "FROM car_photos\n" +
+                                                        "GROUP BY id_car)\n" +
+                                                        ") photos\n" +
+                                                        "ON car_list.id_car = photos.id_car\n" +
+                                                        "WHERE is_deleted = '0' AND class = ? AND car_list.id_car NOT IN (SELECT DISTINCT order_list.id_car \n" +
+                                                        "FROM order_list\n" +
+                                                        "WHERE ((? BETWEEN date_start AND date_end) \n" +
+                                                        "OR (? BETWEEN date_start AND date_end)) AND (id_status = '1' or id_status = '3' or id_status = '4')\n" +
+                                                        ")\n" +
+                                                        "GROUP BY car_list.id_car, photos.id_photo LIMIT ? OFFSET ?");
+            statement.setString(1, carClass);
+            statement.setTimestamp(2, new Timestamp(dateStart.getTime()));
+            statement.setTimestamp(3, new Timestamp(dateEnd.getTime()));
+            statement.setInt(4, itemsPerPage);
+            statement.setInt(5, calculateOffset(page, itemsPerPage));
+
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Car car = ResultSetParser.createCarWithPhotos(resultSet);
+                carList.add(car);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error while getting cars by date range and class!", e);
         }
 
         return carList;
@@ -239,6 +328,70 @@ public class CarDAOImpl extends CarDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+
+        return carsCount;
+
+    }
+
+    @Override
+    public int getTotalCountByDateRange(Date dateStart, Date dateEnd) throws DAOException {
+
+        int carsCount = 0;
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = connection.prepareStatement("SELECT COUNT(car_list.id_car) AS cars_count\n" +
+                                                        "FROM car_list\n" +
+                                                        "WHERE is_deleted = '0' AND car_list.id_car NOT IN (SELECT DISTINCT order_list.id_car \n" +
+                                                        "FROM order_list\n" +
+                                                        "WHERE ((? BETWEEN date_start AND date_end) \n" +
+                                                        "OR (? BETWEEN date_start AND date_end)) AND (id_status = '1' or id_status = '3' or id_status = '4')\n" +
+                                                        ")");
+            statement.setTimestamp(1, new Timestamp(dateStart.getTime()));
+            statement.setTimestamp(2, new Timestamp(dateEnd.getTime()));
+
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                carsCount = resultSet.getInt("cars_count");
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error while counting cars by date range", e);
+        }
+
+        return carsCount;
+
+    }
+
+    @Override
+    public int getTotalCountByDateRangeAndClass(String carClass, Date dateStart, Date dateEnd) throws DAOException {
+
+        int carsCount = 0;
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = connection.prepareStatement("SELECT COUNT(car_list.id_car) AS cars_count\n" +
+                                                        "FROM car_list\n" +
+                                                        "WHERE is_deleted = '0' AND class = ? AND car_list.id_car NOT IN (SELECT DISTINCT order_list.id_car \n" +
+                                                        "FROM order_list\n" +
+                                                        "WHERE ((? BETWEEN date_start AND date_end)\n" +
+                                                        "OR (? BETWEEN date_start AND date_end))\n" +
+                                                        "AND (id_status = '1' or id_status = '3' or id_status = '4')\n" +
+                                                        ");");
+            statement.setString(1, carClass);
+            statement.setTimestamp(2, new Timestamp(dateStart.getTime()));
+            statement.setTimestamp(3, new Timestamp(dateEnd.getTime()));
+
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                carsCount = resultSet.getInt("cars_count");
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error while counting cars by date range", e);
         }
 
         return carsCount;

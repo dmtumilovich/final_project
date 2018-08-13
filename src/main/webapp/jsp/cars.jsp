@@ -164,7 +164,7 @@
         <c:forEach items="${requestScope.car_list}" var = "car" varStatus="loop">
           <div class="panel panel-info">
             <div class="panel-heading">
-              <h5 class="panel-title text-center"><a href="/controller?command=show_selected_car&car_id=${car.id}">${car.brand} ${car.model}</a></h5>
+              <h5 class="panel-title text-center"><a href="/controller?command=show_selected_car&car_id=${car.id}&date_start=${date_start}&date_end=${date_end}">${car.brand} ${car.model}</a></h5>
             </div>
 
 

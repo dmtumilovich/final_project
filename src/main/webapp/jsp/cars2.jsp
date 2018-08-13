@@ -75,7 +75,16 @@
               </div>
             </c:forEach>
 
-            <paginator:display maxLinks="10" currentPage="${page}" totalPages="${pageCount}" url="/controller?command=show_cars&page=##" />
+            <c:choose>
+              <c:when test = "${not empty car_class}">
+                <c:url value="/controller?command=show_cars&car_class=${car_class}&date_start=${date_start}&date_end=${date_end}&page=##" var="url" />
+              </c:when>
+              <c:otherwise>
+                <c:url value="/controller?command=show_cars&date_start=${date_start}&date_end=${date_end}&page=##" var="url" />
+              </c:otherwise>
+            </c:choose>
+
+            <paginator:display maxLinks="10" currentPage="${page}" totalPages="${pageCount}" url="${url}" />
 
           </div>
         </div>

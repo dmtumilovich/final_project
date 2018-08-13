@@ -43,8 +43,8 @@
                         <td>
                           <a href="/controller?command=show_selected_car&car_id=${order_item.order.carID}">${order_item.car.brand} ${order_item.car.model}</a>
                         </td>
-                        <td><fmt:formatDate value = "${order_item.order.dateStart}" pattern = "dd.MM.yyyy hh:mm" /></td>
-                        <td><fmt:formatDate value = "${order_item.order.dateEnd}" pattern = "dd.MM.yyyy hh:mm" /></td>
+                        <td><fmt:formatDate value = "${order_item.order.dateStart}" pattern = "dd.MM.yyyy HH:mm" /></td>
+                        <td><fmt:formatDate value = "${order_item.order.dateEnd}" pattern = "dd.MM.yyyy HH:mm" /></td>
                         <td>${order_item.order.totalPrice}$</td>
                         <td>
                           <c:choose>

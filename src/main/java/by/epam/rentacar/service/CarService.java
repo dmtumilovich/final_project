@@ -1,6 +1,7 @@
 package by.epam.rentacar.service;
 
 import by.epam.rentacar.domain.dto.CarSearchDTO;
+import by.epam.rentacar.domain.dto.FindCarsDTO;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.exception.ServiceException;
 
@@ -11,6 +12,10 @@ public interface CarService {
     List<Car> getAllCars(int page, int itemsPerPage) throws ServiceException;
     List<Car> getAllNotDeletedCars(int page, int itemsPerPage) throws ServiceException;
     int getCarsPagesCount(int itemsPerPage) throws ServiceException;
+
+    List<Car> getCarsByDateRangeAndClass(FindCarsDTO findCarsDTO, int page, int itemsPerPage) throws ServiceException;
+    int getCarsPagesCount(FindCarsDTO findCarsDTO, int itemsPerPage) throws ServiceException;
+
     Car getCar(int carID) throws ServiceException;
     void deleteCar(int carID) throws ServiceException;
     List<Car> getCarsByFilter(CarSearchDTO carSearchDTO) throws ServiceException;

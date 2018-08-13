@@ -41,7 +41,7 @@ public class CommandUploadPhoto implements Command {
 
         try {
             userService.setPhoto(userID, filename);
-            logger.log(Level.DEBUG, "user with id=" + userID + " has changed his photo!");
+            logger.log(Level.DEBUG, "User with id=" + userID + " has changed his photo!");
             String destPage = request.getHeader(RequestHeader.KEY_REFERER);
             response.sendRedirect(destPage);
         } catch (ServiceException e) {
