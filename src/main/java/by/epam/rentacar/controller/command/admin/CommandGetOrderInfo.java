@@ -1,11 +1,10 @@
 package by.epam.rentacar.controller.command.admin;
 
-import by.epam.rentacar.controller.command.Command;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestAttributes;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
 import by.epam.rentacar.domain.dto.OrderInfoDTO;
-import by.epam.rentacar.service.AdminService;
+import by.epam.rentacar.service.OrderService;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.exception.ServiceException;
 import org.apache.logging.log4j.Level;
@@ -31,12 +30,12 @@ public class CommandGetOrderInfo extends AdminCommand {
 
         int orderID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_ORDER));
 
-        AdminService adminService = ServiceFactory.getInstance().getAdminService();
+        OrderService orderService = ServiceFactory.getInstance().getOrderService();
 
         OrderInfoDTO orderInfo = null;
 
         try {
-            orderInfo = adminService.getOrderInfo(orderID);
+            orderInfo = orderService.getOrderInfo(orderID);
 
             request.setAttribute(RequestAttributes.KEY_ORDER_INFO, orderInfo);
             request.getRequestDispatcher(PageParameters.PAGE_ADMIN_ORDER).forward(request, response);

@@ -22,7 +22,7 @@
         <div class="col-10 float-left">
           <div class="card">
             <div class="card-header">
-              <h4 class="card-title">${car_info.car.brand} ${car_info.car.model}</h4>
+              <h4 class="card-title">${car.brand} ${car.model}</h4>
             </div>
             <div class="card-body">
               <table class="table">
@@ -32,33 +32,33 @@
                 <tbody>
                   <tr>
                     <td>Class:</td>
-                    <td>${car_info.car.carClass}</td>
+                    <td>${car.carClass}</td>
                   </tr>
                   <tr>
                     <td>Color:</td>
-                    <td>${car_info.car.color}</td>
+                    <td>${car.color}</td>
                   </tr>
                   <tr>
                     <td>Year:</td>
-                    <td>${car_info.car.yearOfIssue}</td>
+                    <td>${car.yearOfIssue}</td>
                   </tr>
                   <tr>
                     <td>Seats:</td>
-                    <td>${car_info.car.numberOfSeats}</td>
+                    <td>${car.numberOfSeats}</td>
                   </tr>
                   <tr>
                     <td>Engine volume:</td>
-                    <td>${car_info.car.engineVolume}</td>
+                    <td>${car.engineVolume}</td>
                   </tr>
                   <tr>
                     <td>Price per day:</td>
-                    <td>${car_info.car.price}</td>
+                    <td>${car.price}</td>
                   </tr>
                 </tbody>
                 <tfoot>
                   <td colspan="2">
                     <div class="row mx-auto">
-                      <c:forEach items="${car_info.car.photos}" var = "photo">
+                      <c:forEach items="${car.photos}" var = "photo">
                         <div class="col-4">
                           <img src="../../img/uploads/cars/${photo.url}" alt="" height="145px" width="260px" class="img-thumbnail">
                           <form action="/controller" method="post">
@@ -68,7 +68,7 @@
                           </form>
                         </div>
                       </c:forEach>
-                      <c:if test="${car_info.car.photos.size() < 3}">
+                      <c:if test="${car.photos.size() < 3}">
                         <div class="col-4">
                           <button type="button" class="btn btn-md btn-success mt-5" data-toggle="modal" data-target="#add_photo">Add photo</button>
                         </div>
@@ -95,7 +95,7 @@
         <div class="modal-content">
           <form action="/controller" method="post">
             <input type="hidden" name="command" value="edit_car">
-            <input type="hidden" name="car_id" value="${car_info.car.id}">
+            <input type="hidden" name="car_id" value="${car.id}">
             <div class="modal-header">
               <h4 class="modal-title">Edit car info</h4>
               <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -105,35 +105,35 @@
               <table class="table table-borderless">
                 <tr>
                   <td>Brand:</td>
-                  <td><input type="text" name="edit_brand" class = "form-control form-control-sm" value="${car_info.car.brand}" required /></td>
+                  <td><input type="text" name="edit_brand" class = "form-control form-control-sm" value="${car.brand}" required /></td>
                 </tr>
                 <tr>
                   <td>Model:</td>
-                  <td><input type="text" name="edit_model" class = "form-control form-control-sm" value="${car_info.car.model}" required /></td>
+                  <td><input type="text" name="edit_model" class = "form-control form-control-sm" value="${car.model}" required /></td>
                 </tr>
                 <tr>
                   <td>Class:</td>
-                  <td><input type="text" name="edit_class" class = "form-control form-control-sm" value="${car_info.car.carClass}" required /></td>
+                  <td><input type="text" name="edit_class" class = "form-control form-control-sm" value="${car.carClass}" required /></td>
                 </tr>
                 <tr>
                   <td>Color:</td>
-                  <td><input type="text" name="edit_color" class = "form-control form-control-sm" value="${car_info.car.color}" required /></td>
+                  <td><input type="text" name="edit_color" class = "form-control form-control-sm" value="${car.color}" required /></td>
                 </tr>
                 <tr>
                   <td>Year:</td>
-                  <td><input type="text" name="edit_year" class = "form-control form-control-sm" value="${car_info.car.yearOfIssue}" required /></td>
+                  <td><input type="text" name="edit_year" class = "form-control form-control-sm" value="${car.yearOfIssue}" required /></td>
                 </tr>
                 <tr>
                   <td>Seats:</td>
-                  <td><input type="text" name="edit_seats" class = "form-control form-control-sm" value="${car_info.car.numberOfSeats}" required /></td>
+                  <td><input type="text" name="edit_seats" class = "form-control form-control-sm" value="${car.numberOfSeats}" required /></td>
                 </tr>
                 <tr>
                   <td>Engine volume:</td>
-                  <td><input type="text" name="edit_engine_volume" class = "form-control form-control-sm" value="${car_info.car.engineVolume}" required /></td>
+                  <td><input type="text" name="edit_engine_volume" class = "form-control form-control-sm" value="${car.engineVolume}" required /></td>
                 </tr>
                 <tr>
                   <td>Price:</td>
-                  <td><input type="text" name="edit_price" class = "form-control form-control-sm" value="${car_info.car.price}" required /></td>
+                  <td><input type="text" name="edit_price" class = "form-control form-control-sm" value="${car.price}" required /></td>
                 </tr>
               </table>
             </div>
@@ -152,7 +152,7 @@
       <div class="modal-dialog">
         <form action="/upload" method="post" enctype="multipart/form-data">
           <input type="hidden" name="command" value="upload_car_photo">
-          <input type="hidden" name="car_id" value="${car_info.car.id}">
+          <input type="hidden" name="car_id" value="${car.id}">
           <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title">Add new photo</h4>
@@ -178,7 +178,7 @@
         <div class="modal-content">
           <form action="/controller" method="post">
             <input type="hidden" name="command" value="delete_car">
-            <input type="hidden" name="car_id" value="${car_info.car.id}">
+            <input type="hidden" name="car_id" value="${car.id}">
 
             <div class="modal-header">
               <h4 class="modal-title">Delete car</h4>

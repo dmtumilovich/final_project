@@ -3,7 +3,7 @@ package by.epam.rentacar.domain.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Car {
+public class Car extends Entity {
     private int id;
     private String brand;
     private String model;

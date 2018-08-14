@@ -34,6 +34,7 @@ public class CommandDeleteCarPhoto extends AdminCommand {
 
         try {
             carService.deletePhoto(photoID);
+
             String destPage = request.getHeader(RequestHeader.KEY_REFERER);
             response.sendRedirect(destPage);
         } catch (ServiceException e) {

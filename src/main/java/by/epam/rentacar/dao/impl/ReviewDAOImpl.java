@@ -18,7 +18,73 @@ public class ReviewDAOImpl extends ReviewDAO {
     private static final int DELETED = 1;
 
     @Override
-    public List<Review> getCarReviews(int carID) throws DAOException {
+    public void add(Review review) throws DAOException {
+
+        PreparedStatement statement = null;
+
+        try {
+
+            statement = connection.prepareStatement(DBQueries.INSERT_REVIEW);
+            statement.setInt(1, review.getCarID());
+            statement.setInt(2, review.getUserID());
+            statement.setString(3, review.getReviewText());
+            Timestamp timestamp = new Timestamp(review.getReviewDate().getTime());
+            statement.setTimestamp(4, timestamp);
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DAOException("Error while inserting review to the db!", e);
+        }
+
+    }
+
+    @Override
+    public void update(Review obj) throws DAOException {
+        throw new UnsupportedOperationException("Invalid operation for reviewDAO");
+    }
+
+    @Override
+    public void delete(int reviewID) {
+
+        PreparedStatement statement;
+
+        try {
+
+            statement = connection.prepareStatement(DBQueries.DELETE_REVIEW);
+            statement.setInt(1, DELETED);
+            statement.setInt(2, reviewID);
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public Review getByID(int id) throws DAOException {
+        throw new UnsupportedOperationException("Invalid operation for reviewDAO");
+    }
+
+    @Override
+    public List<Review> getAll() throws DAOException {
+        throw new UnsupportedOperationException("Invalid operation for reviewDAO");
+    }
+
+    @Override
+    public List<Review> getAll(int page, int itemsPerPage) throws DAOException {
+        throw new UnsupportedOperationException("Invalid operation for reviewDAO");
+    }
+
+    @Override
+    public int getTotalCount() throws DAOException {
+        throw new UnsupportedOperationException("Invalid operation for reviewDAO");
+    }
+
+    @Override
+    public List<Review> getAllByCarID(int carID) throws DAOException {
 
         List<Review> reviewList = new ArrayList<>();
 
@@ -26,12 +92,7 @@ public class ReviewDAOImpl extends ReviewDAO {
         ResultSet resultSet = null;
 
         try {
-            statement = connection.prepareStatement("SELECT id_review, car_review.id_user, review, time, user_list.username, user_list.photo\n" +
-                                                        "FROM car_review\n" +
-                                                        "LEFT JOIN user_list\n" +
-                                                        "ON car_review.id_user = user_list.id_user\n" +
-                                                        "WHERE car_review.id_car = ? AND is_deleted != ?\n" +
-                                                        "ORDER BY time DESC");
+            statement = connection.prepareStatement(DBQueries.GET_ALL_REVIEWS_BY_CAR_ID);
             statement.setInt(1, carID);
             statement.setInt(2, DELETED);
 
@@ -47,50 +108,6 @@ public class ReviewDAOImpl extends ReviewDAO {
         }
 
         return reviewList;
-
-    }
-
-    @Override
-    public void addReview(AddReviewDTO reviewDTO) {
-
-        PreparedStatement statement = null;
-
-        try {
-
-            statement = connection.prepareStatement(DBQueries.INSERT_REVIEW);
-            statement.setInt(1, reviewDTO.getCarID());
-            statement.setInt(2, reviewDTO.getUserID());
-            statement.setString(3, reviewDTO.getReviewText());
-            Timestamp timestamp = new Timestamp(reviewDTO.getReviewDate().getTime());
-            statement.setTimestamp(4, timestamp);
-
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    //переделать
-    @Override
-    public void deleteReview(int reviewID) {
-
-        PreparedStatement statement;
-
-        try {
-
-            statement = connection.prepareStatement("UPDATE car_review\n" +
-                                                        "SET is_deleted = ?\n" +
-                                                        "WHERE id_review = ?");
-            statement.setInt(1, DELETED);
-            statement.setInt(2, reviewID);
-
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
     }
 }

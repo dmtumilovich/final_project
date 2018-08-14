@@ -110,19 +110,19 @@
                     <tbody>
                       <tr>
                         <td>Username:</td>
-                        <td>@${order_info.username}</td>
+                        <td>@${order_info.user.username}</td>
                       </tr>
                       <tr>
                         <td>Name:</td>
-                        <td>${order_info.name}</td>
+                        <td>${order_info.user.name}</td>
                       </tr>
                       <tr>
                         <td>Surname:</td>
-                        <td>${order_info.surname}</td>
+                        <td>${order_info.user.surname}</td>
                       </tr>
                       <tr>
                         <td>Phone:</td>
-                        <td>${order_info.phone}</td>
+                        <td>${order_info.user.phone}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -144,19 +144,19 @@
                     <tbody>
                       <tr>
                         <td>Brand:</td>
-                        <td>${order_info.brand}</td>
+                        <td>${order_info.car.brand}</td>
                       </tr>
                       <tr>
                         <td>Model:</td>
-                        <td>${order_info.model}</td>
+                        <td>${order_info.car.model}</td>
                       </tr>
                       <tr>
                         <td>Class:</td>
-                        <td>${order_info.carClass}</td>
+                        <td>${order_info.car.carClass}</td>
                       </tr>
                       <tr>
                         <td>Price per day:</td>
-                        <td>${order_info.price}$</td>
+                        <td>${order_info.car.price}$</td>
                       </tr>
                     </tbody>
                   </table>

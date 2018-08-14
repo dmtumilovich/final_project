@@ -1,10 +1,10 @@
 package by.epam.rentacar.controller.command.admin;
 
-import by.epam.rentacar.controller.command.Command;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
 import by.epam.rentacar.domain.dto.AddCarDTO;
-import by.epam.rentacar.service.AdminService;
+import by.epam.rentacar.domain.entity.Car;
+import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.exception.ServiceException;
 import org.apache.logging.log4j.Level;
@@ -30,11 +30,11 @@ public class CommandAddCar extends AdminCommand {
             return;
         }
 
-        AdminService adminService = ServiceFactory.getInstance().getAdminService();
-        AddCarDTO addCarDTO = parseRequest(request);
+        CarService carService = ServiceFactory.getInstance().getCarService();
+        Car car = parseRequest(request);
 
         try {
-            adminService.addCar(addCarDTO);
+            carService.addCar(car);
             response.sendRedirect(PAGE_CARS);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to add car!", e);
@@ -42,7 +42,7 @@ public class CommandAddCar extends AdminCommand {
 
     }
 
-    private AddCarDTO parseRequest(HttpServletRequest request) {
+    private Car parseRequest(HttpServletRequest request) {
 
         String brand = request.getParameter(RequestParameters.KEY_ADD_BRAND);
         String model = request.getParameter(RequestParameters.KEY_ADD_MODEL);
@@ -53,17 +53,17 @@ public class CommandAddCar extends AdminCommand {
         double engineVolume = Double.parseDouble(request.getParameter(RequestParameters.KEY_ADD_ENGINE_VOLUME));
         double price = Double.parseDouble(request.getParameter(RequestParameters.KEY_ADD_PRICE));
 
-        AddCarDTO addCarDTO = new AddCarDTO();
-        addCarDTO.setBrand(brand);
-        addCarDTO.setModel(model);
-        addCarDTO.setCarClass(carClass);
-        addCarDTO.setColor(color);
-        addCarDTO.setYearOfIssue(yearOfIssue);
-        addCarDTO.setNumberOfSeats(numberOfSeats);
-        addCarDTO.setEngineVolume(engineVolume);
-        addCarDTO.setPrice(price);
+        Car car = new Car();
+        car.setBrand(brand);
+        car.setModel(model);
+        car.setCarClass(carClass);
+        car.setColor(color);
+        car.setYearOfIssue(yearOfIssue);
+        car.setNumberOfSeats(numberOfSeats);
+        car.setEngineVolume(engineVolume);
+        car.setPrice(price);
 
-        return addCarDTO;
+        return car;
 
     }
 }

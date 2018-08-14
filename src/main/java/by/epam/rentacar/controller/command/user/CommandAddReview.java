@@ -1,10 +1,10 @@
 package by.epam.rentacar.controller.command.user;
 
-import by.epam.rentacar.controller.command.Command;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestHeader;
 import by.epam.rentacar.controller.util.constant.SessionAttributes;
 import by.epam.rentacar.domain.dto.AddReviewDTO;
+import by.epam.rentacar.domain.entity.Review;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
 import by.epam.rentacar.service.exception.ServiceException;
@@ -29,10 +29,10 @@ public class CommandAddReview extends UserCommand {
             return;
         }
 
-        AddReviewDTO addReviewDTO = parseRequest(request);
+        Review review = parseRequest(request);
 
         try {
-            ServiceFactory.getInstance().getReviewService().addReview(addReviewDTO);
+            ServiceFactory.getInstance().getReviewService().addReview(review);
 
             String page = request.getHeader(RequestHeader.KEY_REFERER);
             response.sendRedirect(page);
@@ -42,18 +42,18 @@ public class CommandAddReview extends UserCommand {
 
     }
 
-    private AddReviewDTO parseRequest(HttpServletRequest request) {
+    private Review parseRequest(HttpServletRequest request) {
 
         int userID = (int) request.getSession().getAttribute(SessionAttributes.KEY_ID_USER);
         int carID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_CAR));
         String reviewText = request.getParameter(RequestParameters.KEY_REVIEW_TEXT);
 
-        AddReviewDTO addReviewDTO = new AddReviewDTO();
-        addReviewDTO.setCarID(carID);
-        addReviewDTO.setUserID(userID);
-        addReviewDTO.setReviewText(reviewText);
+        Review review = new Review();
+        review.setCarID(carID);
+        review.setUserID(userID);
+        review.setReviewText(reviewText);
 
-        return addReviewDTO;
+        return review;
 
     }
 }

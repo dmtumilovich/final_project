@@ -1,6 +1,6 @@
 package by.epam.rentacar.domain.entity;
 
-public class User {
+public class User extends Entity {
 
     private int id;
     private String username;

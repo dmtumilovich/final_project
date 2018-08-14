@@ -1,19 +1,16 @@
 package by.epam.rentacar.service.impl;
 
 import by.epam.rentacar.dao.CarDAO;
-import by.epam.rentacar.dao.DAOFactory;
 import by.epam.rentacar.dao.ReviewDAO;
 import by.epam.rentacar.dao.TransactionHelper;
 import by.epam.rentacar.dao.exception.DAOException;
 import by.epam.rentacar.dao.impl.CarDAOImpl;
 import by.epam.rentacar.dao.impl.ReviewDAOImpl;
-import by.epam.rentacar.domain.dto.CarSearchDTO;
 import by.epam.rentacar.domain.dto.FindCarsDTO;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.exception.ServiceException;
 import by.epam.rentacar.service.util.PageCounter;
-import com.sun.corba.se.spi.transport.TransportDefault;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,12 +33,11 @@ public class CarServiceImpl implements CarService {
             transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(carDAO);
 
-            carList = carDAO.getAllCars();
+            carList = carDAO.getAll(page, itemsPerPage);
 
             transactionHelper.commit();
         } catch (DAOException e) {
             transactionHelper.rollback();
-            e.printStackTrace();
             throw new ServiceException("Could not find car list", e);
         } finally {
             transactionHelper.endTransaction();
@@ -67,7 +63,6 @@ public class CarServiceImpl implements CarService {
             transactionHelper.commit();
         } catch (DAOException e) {
             transactionHelper.rollback();
-            e.printStackTrace();
             throw new ServiceException("Could not find car list", e);
         } finally {
             transactionHelper.endTransaction();
@@ -90,7 +85,7 @@ public class CarServiceImpl implements CarService {
             transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(carDAO);
 
-            int carsCount = carDAO.getTotalCount();
+            int carsCount = carDAO.getTotalNotDeletedCount();
             pagesCount = PageCounter.getInstance().countPages(carsCount, itemsPerPage);
 
             transactionHelper.commit();
@@ -131,8 +126,8 @@ public class CarServiceImpl implements CarService {
             transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(carDAO);
 
-            cars = (carClass == null || carClass.isEmpty()) ? carDAO.getAllByDateRange(dateStart, dateEnd, page, itemsPerPage) :
-                                                             carDAO.getAllByDateRangeAndClass(carClass, dateStart, dateEnd, page, itemsPerPage);
+            cars = (carClass == null || carClass.isEmpty()) ? carDAO.getAllNotDeletedByDateRange(dateStart, dateEnd, page, itemsPerPage) :
+                                                             carDAO.getAllNotDeletedByDateRangeAndClass(carClass, dateStart, dateEnd, page, itemsPerPage);
 
             transactionHelper.commit();
 
@@ -201,19 +196,63 @@ public class CarServiceImpl implements CarService {
             transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(carDAO, reviewDAO);
 
-            car = carDAO.getCarByID(carID);
-            car.setReviewList(reviewDAO.getCarReviews(carID));
+            car = carDAO.getByID(carID);
+            car.setReviewList(reviewDAO.getAllByCarID(carID));
 
             transactionHelper.commit();
         } catch (DAOException e) {
             transactionHelper.rollback();
-            e.printStackTrace();
             throw new ServiceException("Could not find the car", e);
         } finally {
             transactionHelper.endTransaction();
         }
 
         return car;
+    }
+
+    @Override
+    public void addCar(Car car) throws ServiceException {
+
+        CarDAO carDAO = new CarDAOImpl();
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(carDAO);
+
+            carDAO.add(car);
+
+            transactionHelper.commit();
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            throw new ServiceException("Error while adding car!", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
+    }
+
+    @Override
+    public void editCar(Car car) throws ServiceException {
+
+        CarDAO carDAO = new CarDAOImpl();
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(carDAO);
+
+            carDAO.update(car);
+
+            transactionHelper.commit();
+
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            throw new ServiceException("Error while editing car!", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
     }
 
     @Override
@@ -226,44 +265,17 @@ public class CarServiceImpl implements CarService {
             transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(carDAO);
 
-            carDAO.deleteCar(carID);
+            carDAO.delete(carID);
 
             transactionHelper.commit();
 
         } catch (DAOException e) {
             transactionHelper.rollback();
-            e.printStackTrace();
             throw new ServiceException("Error while deleting car", e);
         } finally {
             transactionHelper.endTransaction();
         }
 
-    }
-
-    @Override
-    public List<Car> getCarsByFilter(CarSearchDTO carSearchDTO) throws ServiceException {
-
-        List<Car> carList = new ArrayList<>();
-
-        CarDAO carDAO = new CarDAOImpl();
-        TransactionHelper transactionHelper = null;
-
-        try {
-            transactionHelper = new TransactionHelper();
-            transactionHelper.beginTransaction(carDAO);
-
-            carList = carDAO.getCarsByFilter(carSearchDTO);
-
-            transactionHelper.commit();
-        } catch (DAOException e) {
-            transactionHelper.rollback();
-            e.printStackTrace();
-            throw new ServiceException("Could not find cars by filter");
-        } finally {
-            transactionHelper.endTransaction();
-        }
-
-        return carList;
     }
 
     @Override
@@ -305,7 +317,6 @@ public class CarServiceImpl implements CarService {
 
         } catch (DAOException e) {
             transactionHelper.rollback();
-            e.printStackTrace();
             throw new ServiceException("Error while deleting car photo", e);
         } finally {
             transactionHelper.endTransaction();

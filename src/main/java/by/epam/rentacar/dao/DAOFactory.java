@@ -1,13 +1,9 @@
 package by.epam.rentacar.dao;
 
 import by.epam.rentacar.dao.connection.pool.ConnectionPool;
-import by.epam.rentacar.dao.connection.pool.ConnectionPoolException;
-import by.epam.rentacar.dao.impl.AdminDAOImpl;
 import by.epam.rentacar.dao.impl.CarDAOImpl;
 import by.epam.rentacar.dao.impl.ReviewDAOImpl;
 import by.epam.rentacar.dao.impl.UserDAOImpl;
-
-import java.sql.Connection;
 
 public class DAOFactory {
 
@@ -18,7 +14,6 @@ public class DAOFactory {
     private UserDAO userDAO;
     private CarDAO carDAO;
     private ReviewDAO reviewDAO;
-    private AdminDAO adminDAO;
 
     public UserDAO getUserDAO() {
         return userDAO;
@@ -32,10 +27,6 @@ public class DAOFactory {
         return reviewDAO;
     }
 
-    public AdminDAO getAdminDAO() {
-        return adminDAO;
-    }
-
     public static DAOFactory getInstance() {
         return instance;
     }
@@ -45,7 +36,6 @@ public class DAOFactory {
         userDAO = new UserDAOImpl();
         carDAO = new CarDAOImpl();
         reviewDAO = new ReviewDAOImpl();
-        adminDAO = new AdminDAOImpl();
 
     }
 

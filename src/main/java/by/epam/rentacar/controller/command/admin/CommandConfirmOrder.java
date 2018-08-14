@@ -1,10 +1,9 @@
 package by.epam.rentacar.controller.command.admin;
 
-import by.epam.rentacar.controller.command.Command;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestHeader;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
-import by.epam.rentacar.service.AdminService;
+import by.epam.rentacar.service.OrderService;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.exception.ServiceException;
 import org.apache.logging.log4j.Level;
@@ -30,10 +29,11 @@ public class CommandConfirmOrder extends AdminCommand {
 
         int orderID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_ORDER));
 
-        AdminService adminService = ServiceFactory.getInstance().getAdminService();
+        OrderService orderService = ServiceFactory.getInstance().getOrderService();
 
         try {
-            adminService.confirmOrder(orderID);
+
+            orderService.confirmOrder(orderID);
 
             String destPage = request.getHeader(RequestHeader.KEY_REFERER);
             response.sendRedirect(destPage);

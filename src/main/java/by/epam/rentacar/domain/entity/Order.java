@@ -2,7 +2,7 @@ package by.epam.rentacar.domain.entity;
 
 import java.util.Date;
 
-public class Order {
+public class Order extends Entity {
 
     private int id;
     private int userID;

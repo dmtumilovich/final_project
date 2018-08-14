@@ -161,35 +161,15 @@ public class ResultSetParser {
 
     public static OrderInfoDTO createOrderInfoDTO(ResultSet rs) throws SQLException {
 
-        int userID = rs.getInt(OrderListTable.ID_USER);
-        String username = rs.getString(UserListTable.USERNAME);
-        String name = rs.getString(UserListTable.NAME);
-        String surname = rs.getString(UserListTable.SURNAME);
-        String phone = rs.getString(UserListTable.PHONE_NUMBER);
-
-        int carID = rs.getInt(OrderListTable.ID_CAR);
-        String brand = rs.getString(CarListTable.BRAND);
-        String model = rs.getString(CarListTable.MODEL);
-        String carClass = rs.getString(CarListTable.CLASS);
-        double price = rs.getDouble(CarListTable.PRICE);
-
         Order order = createOrder(rs);
+        User user = createUser(rs);
+        Car car = createCar(rs);
 
         OrderInfoDTO orderInfoDTO = new OrderInfoDTO();
 
         orderInfoDTO.setOrder(order);
-
-        orderInfoDTO.setUserID(userID);
-        orderInfoDTO.setUsername(username);
-        orderInfoDTO.setName(name);
-        orderInfoDTO.setSurname(surname);
-        orderInfoDTO.setPhone(phone);
-
-        orderInfoDTO.setCarID(carID);
-        orderInfoDTO.setBrand(brand);
-        orderInfoDTO.setModel(model);
-        orderInfoDTO.setCarClass(carClass);
-        orderInfoDTO.setPrice(price);
+        orderInfoDTO.setUser(user);
+        orderInfoDTO.setCar(car);
 
         return orderInfoDTO;
 

@@ -1,19 +1,19 @@
 package by.epam.rentacar.service.impl;
 
-import by.epam.rentacar.dao.DAOFactory;
 import by.epam.rentacar.dao.ReviewDAO;
 import by.epam.rentacar.dao.TransactionHelper;
 import by.epam.rentacar.dao.exception.DAOException;
 import by.epam.rentacar.dao.impl.ReviewDAOImpl;
-import by.epam.rentacar.domain.dto.AddReviewDTO;
+import by.epam.rentacar.domain.entity.Review;
 import by.epam.rentacar.service.ReviewService;
+import by.epam.rentacar.service.exception.ServiceException;
 
 import java.util.Date;
 
 public class ReviewServiceImpl implements ReviewService {
 
     @Override
-    public void addReview(AddReviewDTO reviewDTO) {
+    public void addReview(Review review) throws ServiceException {
 
         ReviewDAO reviewDAO = new ReviewDAOImpl();
         TransactionHelper transactionHelper = null;
@@ -23,15 +23,15 @@ public class ReviewServiceImpl implements ReviewService {
             transactionHelper.beginTransaction(reviewDAO);
 
             Date reviewDate = new Date();
-            reviewDTO.setReviewDate(reviewDate);
+            review.setReviewDate(reviewDate);
 
-            reviewDAO.addReview(reviewDTO);
+            reviewDAO.add(review);
 
             transactionHelper.commit();
 
         } catch (DAOException e) {
             transactionHelper.rollback();
-            e.printStackTrace();
+            throw new ServiceException("Error while adding review!", e);
         } finally {
             transactionHelper.endTransaction();
         }
@@ -39,7 +39,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void deleteReview(int reviewID) {
+    public void deleteReview(int reviewID) throws ServiceException {
 
         ReviewDAO reviewDAO = new ReviewDAOImpl();
         TransactionHelper transactionHelper = null;
@@ -48,12 +48,12 @@ public class ReviewServiceImpl implements ReviewService {
             transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(reviewDAO);
 
-            reviewDAO.deleteReview(reviewID);
+            reviewDAO.delete(reviewID);
 
             transactionHelper.commit();
         } catch (DAOException e) {
             transactionHelper.rollback();
-            e.printStackTrace();
+            throw new ServiceException("Error while deleting review!", e);
         } finally {
             transactionHelper.endTransaction();
         }

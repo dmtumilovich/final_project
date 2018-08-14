@@ -2,10 +2,11 @@ package by.epam.rentacar.domain.entity;
 
 import java.util.Date;
 
-public class Review {
+public class Review extends Entity {
 
     private int id;
     private int userID;
+    private int carID;
     private String username;
     private String userPhotoUrl;
     private String reviewText;
@@ -29,6 +30,14 @@ public class Review {
 
     public void setUserID(int userID) {
         this.userID = userID;
+    }
+
+    public int getCarID() {
+        return carID;
+    }
+
+    public void setCarID(int carID) {
+        this.carID = carID;
     }
 
     public String getUsername() {

@@ -5,6 +5,7 @@ import by.epam.rentacar.dao.exception.DAOException;
 import by.epam.rentacar.dao.util.ResultSetParser;
 import by.epam.rentacar.dao.util.constant.DBQueries;
 import by.epam.rentacar.dao.util.constant.DBSchema;
+import by.epam.rentacar.domain.dto.OrderInfoDTO;
 import by.epam.rentacar.domain.dto.OrderingInfo;
 import by.epam.rentacar.domain.dto.UserOrderDTO;
 import by.epam.rentacar.domain.entity.Car;
@@ -21,7 +22,51 @@ import java.util.List;
 public class OrderDAOImpl extends OrderDAO {
 
     @Override
-    public List<Order> getAllOrders(int page, int itemsPerPage) throws DAOException {
+    public void add(Order order) throws DAOException {
+
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(DBQueries.INSERT_ORDER);
+            statement.setInt(1, order.getUserID());
+            statement.setInt(2, order.getCarID());
+            Timestamp dateStart = new Timestamp(order.getDateStart().getTime());
+            Timestamp dateEnd = new Timestamp(order.getDateEnd().getTime());
+            statement.setTimestamp(3, dateStart);
+            statement.setTimestamp(4, dateEnd);
+            statement.setDouble(5, order.getTotalPrice());
+            statement.setInt(6, 3);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DAOException("error while inserting order", e);
+        }
+
+    }
+
+    @Override
+    public void update(Order obj) throws DAOException {
+        throw new UnsupportedOperationException("Invalid operation for orderDAO!");
+    }
+
+    @Override
+    public void delete(int id) throws DAOException {
+        throw new UnsupportedOperationException("Invalid operation for orderDAO!");
+    }
+
+    //сделать и использовать вместо getUserOrder этот метод и другие
+    @Override
+    public Order getByID(int id) throws DAOException {
+        throw new UnsupportedOperationException("Invalid operation for orderDAO!");
+    }
+
+    @Override
+    public List<Order> getAll() throws DAOException {
+        throw new UnsupportedOperationException("Invalid operation for orderDAO!");
+    }
+
+    @Override
+    public List<Order> getAll(int page, int itemsPerPage) throws DAOException {
 
         List<Order> orderList = new ArrayList<>();
 
@@ -41,14 +86,14 @@ public class OrderDAOImpl extends OrderDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("Error while getting all orders", e);
         }
 
         return orderList;
     }
 
     @Override
-    public List<Order> getOrdersByStatusId(int statusID, int page, int itemsPerPage) throws DAOException {
+    public List<Order> getAllByStatusId(int statusID, int page, int itemsPerPage) throws DAOException {
 
         List<Order> orders = new ArrayList<>();
 
@@ -85,8 +130,7 @@ public class OrderDAOImpl extends OrderDAO {
         ResultSet resultSet = null;
 
         try {
-            statement = connection.prepareStatement("SELECT COUNT(id_order) AS orders_count\n" +
-                                                        "FROM order_list");
+            statement = connection.prepareStatement(DBQueries.GET_COUNT_OF_ALL_ORDERS);
 
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -109,9 +153,7 @@ public class OrderDAOImpl extends OrderDAO {
         ResultSet resultSet = null;
 
         try {
-            statement = connection.prepareStatement("SELECT COUNT(id_order) AS orders_count\n" +
-                                                        "FROM order_list\n" +
-                                                        "WHERE id_status = ?;");
+            statement = connection.prepareStatement(DBQueries.GET_COUNT_OF_ALL_ORDERS_BY_STATUS_ID);
             statement.setInt(1, statusID);
 
             resultSet = statement.executeQuery();
@@ -125,7 +167,6 @@ public class OrderDAOImpl extends OrderDAO {
         return ordersCount;
 
     }
-
 
     @Override
     public UserOrderDTO getUserOrder(int orderID) throws DAOException {
@@ -152,13 +193,16 @@ public class OrderDAOImpl extends OrderDAO {
 
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("Error while getting order by user ID", e);
         }
 
         return userOrderDTO;
 
     }
 
+    /////////////////////////////////////////////////////////////////////////
+
+    //getOrdersByUserID
     @Override
     public List<UserOrderDTO> getUserOrders(int userID, int page, int itemsPerPage) throws DAOException {
 
@@ -201,9 +245,7 @@ public class OrderDAOImpl extends OrderDAO {
         ResultSet resultSet = null;
 
         try {
-            statement = connection.prepareStatement("SELECT COUNT(id_order) AS orders_count\n" +
-                                                        "FROM order_list\n" +
-                                                        "WHERE id_user = ?");
+            statement = connection.prepareStatement(DBQueries.GET_COUNT_OF_USER_ORDERS);
             statement.setInt(1, userID);
 
             resultSet = statement.executeQuery();
@@ -220,26 +262,27 @@ public class OrderDAOImpl extends OrderDAO {
     }
 
     @Override
-    public void makeOrder(Order order) throws DAOException {
+    public OrderInfoDTO getOrderAndUserInfo(int orderID) throws DAOException {
+
+        OrderInfoDTO orderInfoDTO = null;
 
         PreparedStatement statement = null;
+        ResultSet resultSet = null;
 
         try {
-            statement = connection.prepareStatement(DBQueries.INSERT_ORDER);
-            statement.setInt(1, order.getUserID());
-            statement.setInt(2, order.getCarID());
-            Timestamp dateStart = new Timestamp(order.getDateStart().getTime());
-            Timestamp dateEnd = new Timestamp(order.getDateEnd().getTime());
-            statement.setTimestamp(3, dateStart);
-            statement.setTimestamp(4, dateEnd);
-            statement.setDouble(5, order.getTotalPrice());
-            statement.setInt(6, 3);
-            statement.executeUpdate();
+            statement = connection.prepareStatement(DBQueries.GET_ORDER_INFO_FOR_ADMIN);
+            statement.setInt(1, orderID);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                orderInfoDTO = ResultSetParser.createOrderInfoDTO(resultSet);
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DAOException("error while inserting order", e);
         }
+
+        return orderInfoDTO;
 
     }
 
@@ -252,7 +295,7 @@ public class OrderDAOImpl extends OrderDAO {
         ResultSet resultSet = null;
 
         try {
-            statement = connection.prepareStatement("SELECT id_status FROM order_status WHERE status = ?");
+            statement = connection.prepareStatement(DBQueries.GET_STATUS_ID_BY_NAME);
             statement.setString(1, status.toString().toLowerCase());
 
             resultSet = statement.executeQuery();
@@ -261,7 +304,6 @@ public class OrderDAOImpl extends OrderDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new DAOException("Error while getting status id", e);
         }
 
@@ -275,51 +317,15 @@ public class OrderDAOImpl extends OrderDAO {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("UPDATE order_list\n" +
-                                                        "SET id_status = ?\n" +
-                                                        "WHERE id_order = ?");
+            statement = connection.prepareStatement(DBQueries.UPDATE_ORDER_STATUS);
             statement.setInt(1, statusID);
             statement.setInt(2, orderID);
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new DAOException("Error while updating status", e);
         }
 
     }
 
-    @Override
-    public List<OrderingInfo.DateRange> getBusyDates(int carID) throws DAOException {
-
-        List<OrderingInfo.DateRange> busyDates = new ArrayList<>();
-
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-
-        try {
-            statement = connection.prepareStatement("SELECT order_list.date_start, order_list.date_end\n" +
-                                                        "FROM order_list\n" +
-                                                        "WHERE id_car = ?");
-            statement.setInt(1, carID);
-
-            resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Timestamp dateStartTS = resultSet.getTimestamp(DBSchema.OrderListTable.DATE_START);
-                Timestamp dateEndTS = resultSet.getTimestamp(DBSchema.OrderListTable.DATE_END);
-
-                Date dateStart = new Date(dateEndTS.getTime());
-                Date dateEnd = new Date(dateStart.getTime());
-
-                OrderingInfo.DateRange dateRange = new OrderingInfo.DateRange(dateStart ,dateEnd);
-                busyDates.add(dateRange);
-            }
-
-        } catch (SQLException e) {
-            throw new DAOException("Error while getting busy dates!", e);
-        }
-
-        return busyDates;
-
-    }
 }

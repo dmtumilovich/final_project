@@ -2,7 +2,6 @@ package by.epam.rentacar.service.impl;
 
 import by.epam.rentacar.dao.*;
 import by.epam.rentacar.dao.exception.DAOException;
-import by.epam.rentacar.dao.impl.AdminDAOImpl;
 import by.epam.rentacar.dao.impl.CarDAOImpl;
 import by.epam.rentacar.dao.impl.OrderDAOImpl;
 import by.epam.rentacar.dao.impl.UserDAOImpl;
@@ -66,13 +65,12 @@ public class OrderServiceImpl implements OrderService {
             order.setTotalPrice(totalCost);
             order.setStatus(Order.Status.AWAITS);
 
-            orderDAO.makeOrder(order);
+            orderDAO.add(order);
 
             transactionHelper.commit();
 
         } catch (DAOException e) {
             transactionHelper.rollback();
-            e.printStackTrace();
             throw new ServiceException("error while making an order", e);
         } finally {
             transactionHelper.endTransaction();
@@ -107,8 +105,8 @@ public class OrderServiceImpl implements OrderService {
             transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(userDAO, carDAO, orderDAO);
 
-            Car car = carDAO.getCarByID(carID);
-            User user = userDAO.getUserById(userID);
+            Car car = carDAO.getByID(carID);
+            User user = userDAO.getByID(userID);
 
             //calculate days
             int numberOfDays = (int)Math.ceil((dateEnd.getTime() - dateStart.getTime()) / (1000*60*60*24));
@@ -130,7 +128,6 @@ public class OrderServiceImpl implements OrderService {
             transactionHelper.commit();
         } catch (DAOException e) {
             transactionHelper.rollback();
-            e.printStackTrace();
             throw new ServiceException("Error while getting ordering info", e);
         } finally {
             transactionHelper.endTransaction();
@@ -158,7 +155,6 @@ public class OrderServiceImpl implements OrderService {
 
         } catch (DAOException e) {
             transactionHelper.rollback();
-            e.printStackTrace();
             throw new ServiceException("error while getting user order info", e);
         } finally {
             transactionHelper.endTransaction();
@@ -187,7 +183,6 @@ public class OrderServiceImpl implements OrderService {
 
         } catch (DAOException e) {
             transactionHelper.rollback();
-            e.printStackTrace();
         } finally {
             transactionHelper.endTransaction();
         }
@@ -224,35 +219,6 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-    //зачем я его написал?)))
-    @Override
-    public OrderInfoDTO getOrderInfo(int orderID) throws ServiceException {
-
-        OrderInfoDTO orderInfoDTO = null;
-
-        AdminDAO adminDAO = new AdminDAOImpl();
-        TransactionHelper transactionHelper = null;
-
-        try {
-            transactionHelper = new TransactionHelper();
-            transactionHelper.beginTransaction(adminDAO);
-
-            orderInfoDTO = adminDAO.getOrderInfo(orderID);
-
-            transactionHelper.commit();
-
-        } catch (DAOException e) {
-            transactionHelper.rollback();
-            e.printStackTrace();
-            throw new ServiceException("Error while getting order info!", e);
-        } finally {
-            transactionHelper.endTransaction();
-        }
-
-        return orderInfoDTO;
-
-    }
-
     @Override
     public List<Order> getAllOrders(int page, int itemsPerPage) throws ServiceException {
 
@@ -265,12 +231,11 @@ public class OrderServiceImpl implements OrderService {
             transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(orderDAO);
 
-            orders = orderDAO.getAllOrders(page, itemsPerPage);
+            orders = orderDAO.getAll(page, itemsPerPage);
 
             transactionHelper.commit();
 
         } catch (DAOException e) {
-            e.printStackTrace();
             throw new ServiceException("Error while getting all orders", e);
         } finally {
             transactionHelper.endTransaction();
@@ -301,7 +266,7 @@ public class OrderServiceImpl implements OrderService {
             transactionHelper.beginTransaction(orderDAO);
 
             int statusID = orderDAO.getStatusIdByName(status);
-            orders = orderDAO.getOrdersByStatusId(statusID, page, itemsPerPage);
+            orders = orderDAO.getAllByStatusId(statusID, page, itemsPerPage);
 
             transactionHelper.commit();
 
@@ -387,6 +352,33 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public OrderInfoDTO getOrderInfo(int orderID) throws ServiceException {
+
+        OrderInfoDTO orderInfoDTO = null;
+
+        OrderDAO orderDAO = new OrderDAOImpl();
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(orderDAO);
+
+            orderInfoDTO = orderDAO.getOrderAndUserInfo(orderID);
+
+            transactionHelper.commit();
+
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            throw new ServiceException("Error while getting order and car info!", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
+        return orderInfoDTO;
+
+    }
+
+    @Override
     public void updateStatus(int orderID, String statusName) throws ServiceException {
 
         Order.Status status = null;
@@ -417,8 +409,33 @@ public class OrderServiceImpl implements OrderService {
 
         } catch (DAOException e) {
             transactionHelper.rollback();
-            e.printStackTrace();
             throw new ServiceException("Error while updating status", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
+    }
+
+    @Override
+    public void confirmOrder(int orderID) throws ServiceException {
+
+        //добавить валидацию(если есть другие заказы на эту дату)
+
+        OrderDAO orderDAO = new OrderDAOImpl();
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(orderDAO);
+
+            int statusConfirmedID = orderDAO.getStatusIdByName(Order.Status.CONFIRMED);
+            orderDAO.updateStatus(orderID, statusConfirmedID);
+
+            transactionHelper.commit();
+
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            throw new ServiceException("Error while confirming order!", e);
         } finally {
             transactionHelper.endTransaction();
         }

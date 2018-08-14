@@ -9,7 +9,6 @@ public class ServiceFactory {
     private final UserService userService = new UserServiceImpl();
     private final CarService carService = new CarServiceImpl();
     private final ReviewService reviewService = new ReviewServiceImpl();
-    private final AdminService adminService = new AdminServiceImpl();
     private final OrderService orderService = new OrderServiceImpl();
 
     public UserService getUserService() {
@@ -22,10 +21,6 @@ public class ServiceFactory {
 
     public ReviewService getReviewService() {
         return reviewService;
-    }
-
-    public AdminService getAdminService() {
-        return adminService;
     }
 
     public OrderService getOrderService() {

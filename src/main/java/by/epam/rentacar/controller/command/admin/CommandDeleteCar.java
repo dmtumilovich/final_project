@@ -1,12 +1,9 @@
 package by.epam.rentacar.controller.command.admin;
 
-import by.epam.rentacar.controller.command.Command;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
-import by.epam.rentacar.service.AdminService;
 import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.ServiceFactory;
-import by.epam.rentacar.service.UserService;
 import by.epam.rentacar.service.exception.ServiceException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -33,7 +30,6 @@ public class CommandDeleteCar extends AdminCommand {
 
         int carID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_CAR));
 
-        AdminService adminService = ServiceFactory.getInstance().getAdminService();
         CarService carService = ServiceFactory.getInstance().getCarService();
 
         try {

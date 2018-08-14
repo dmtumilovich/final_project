@@ -6,10 +6,8 @@ import by.epam.rentacar.domain.entity.Review;
 
 import java.util.List;
 
-public abstract class ReviewDAO extends AbstractDAO {
+public abstract class ReviewDAO extends AbstractDAO<Review> {
 
-    public abstract List<Review> getCarReviews(int carID) throws DAOException;
-    public abstract void addReview(AddReviewDTO reviewDTO);
-    public abstract void deleteReview(int reviewID);
+    public abstract List<Review> getAllByCarID(int carID) throws DAOException;
 
 }

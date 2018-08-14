@@ -1,11 +1,11 @@
 package by.epam.rentacar.controller.command.admin;
 
-import by.epam.rentacar.controller.command.Command;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestAttributes;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
 import by.epam.rentacar.domain.dto.CarInfoDTO;
-import by.epam.rentacar.service.AdminService;
+import by.epam.rentacar.domain.entity.Car;
+import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.exception.ServiceException;
 import org.apache.logging.log4j.Level;
@@ -31,13 +31,13 @@ public class CommandGetCarInfo extends AdminCommand {
 
         int carID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_CAR));
 
-        AdminService adminService = ServiceFactory.getInstance().getAdminService();
-        CarInfoDTO carInfoDTO = null;
+        CarService carService = ServiceFactory.getInstance().getCarService();
+        Car car = null;
 
         try {
-            carInfoDTO = adminService.getCarInfo(carID);
+            car = carService.getCar(carID);
 
-            request.setAttribute(RequestAttributes.KEY_CAR_INFO, carInfoDTO);
+            request.setAttribute(RequestAttributes.KEY_CAR, car);
             request.getRequestDispatcher(PageParameters.PAGE_ADMIN_CAR).forward(request, response);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to get car info!", e);

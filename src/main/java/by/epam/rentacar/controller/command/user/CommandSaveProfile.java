@@ -1,6 +1,5 @@
 package by.epam.rentacar.controller.command.user;
 
-import by.epam.rentacar.controller.command.Command;
 import by.epam.rentacar.domain.dto.EditProfileDTO;
 import by.epam.rentacar.domain.entity.User;
 import by.epam.rentacar.service.ServiceFactory;
@@ -16,7 +15,6 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class CommandSaveProfile extends UserCommand {
@@ -31,12 +29,12 @@ public class CommandSaveProfile extends UserCommand {
             return;
         }
 
-        EditProfileDTO editProfileDTO = parseRequest(request);
+        User user = parseRequest(request);
         UserService userService = ServiceFactory.getInstance().getUserService();
 
         try {
 
-            if(userService.editProfile(editProfileDTO)) {
+            if(userService.editProfile(user)) {
                 request.setAttribute("profile_edited", true);
                 request.getRequestDispatcher("/controller?command=profile").forward(request, response);
             }
@@ -46,7 +44,7 @@ public class CommandSaveProfile extends UserCommand {
         }
     }
 
-    private EditProfileDTO parseRequest(HttpServletRequest request) {
+    private User parseRequest(HttpServletRequest request) {
 
         int userID = (int) request.getSession().getAttribute(SessionAttributes.KEY_ID_USER);
 
@@ -55,14 +53,14 @@ public class CommandSaveProfile extends UserCommand {
         String editPhone = request.getParameter(RequestParameters.KEY_EDIT_PHONE);
         String editPassport = request.getParameter(RequestParameters.KEY_EDIT_PASSPORT);
 
-        EditProfileDTO editProfileDTO = new EditProfileDTO();
-        editProfileDTO.setUserID(userID);
-        editProfileDTO.setName(editName);
-        editProfileDTO.setSurname(editSurname);
-        editProfileDTO.setPhone(editPhone);
-        editProfileDTO.setPassport(editPassport);
+        User user = new User();
+        user.setId(userID);
+        user.setName(editName);
+        user.setSurname(editSurname);
+        user.setPhone(editPhone);
+        user.setPassport(editPassport);
 
-        return editProfileDTO;
+        return user;
 
     }
 }
