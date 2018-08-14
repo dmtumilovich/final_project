@@ -19,12 +19,17 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-public class CommandSaveProfile implements Command {
+public class CommandSaveProfile extends UserCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandSaveProfile.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        if(!identifyUser(request)) {
+            response.sendRedirect(PageParameters.PAGE_SIGNIN);
+            return;
+        }
 
         EditProfileDTO editProfileDTO = parseRequest(request);
         UserService userService = ServiceFactory.getInstance().getUserService();

@@ -1,6 +1,7 @@
 package by.epam.rentacar.controller.command.user;
 
 import by.epam.rentacar.controller.command.Command;
+import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestHeader;
 import by.epam.rentacar.controller.util.constant.SessionAttributes;
 import by.epam.rentacar.service.ServiceFactory;
@@ -20,7 +21,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
-public class CommandUploadPhoto implements Command {
+public class CommandUploadPhoto extends UserCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandUploadPhoto.class);
 
@@ -28,6 +29,11 @@ public class CommandUploadPhoto implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        if(!identifyUser(request)) {
+            response.sendRedirect(PageParameters.PAGE_SIGNIN);
+            return;
+        }
 
         int userID = (int) request.getSession().getAttribute(SessionAttributes.KEY_ID_USER);
         Part filePart = request.getPart("user_photo");

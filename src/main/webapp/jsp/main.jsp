@@ -28,7 +28,7 @@
           <h2>${heading}</h2>
           <p class="lead">${description}</p>
           <p>
-            <a href="/controller?command=show_cars" class="btn btn-lg btn-primary">${button_all_cars} &raquo;</a>
+            <a href="/find" class="btn btn-lg btn-primary">${button_all_cars} &raquo;</a>
           </p>
         </div>
       </main>

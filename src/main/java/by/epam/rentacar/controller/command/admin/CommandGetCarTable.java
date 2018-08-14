@@ -22,12 +22,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 //rename
-public class CommandGetCarTable implements Command {
+public class CommandGetCarTable extends AdminCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandGetCarTable.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        if(!identifyAdmin(request)) {
+            response.sendRedirect(PageParameters.PAGE_MAIN);
+            return;
+        }
 
         String pageStr = request.getParameter(RequestParameters.KEY_PAGE);
         int page = (pageStr == null) ? 1 : Integer.parseInt(pageStr);

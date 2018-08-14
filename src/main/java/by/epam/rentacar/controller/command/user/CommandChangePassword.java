@@ -17,12 +17,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CommandChangePassword implements Command {
+public class CommandChangePassword extends UserCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandChangePassword.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        if(!identifyUser(request)) {
+            response.sendRedirect(PageParameters.PAGE_SIGNIN);
+            return;
+        }
 
         ChangePasswordDTO changePasswordDTO = parseRequest(request);
 

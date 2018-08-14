@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.text.*;
 import java.util.Date;
 
-public class CommandMakeOrder implements Command {
+public class CommandMakeOrder extends UserCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandMakeOrder.class);
 
@@ -31,6 +31,11 @@ public class CommandMakeOrder implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        if(!identifyUser(request)) {
+            response.sendRedirect(PageParameters.PAGE_SIGNIN);
+            return;
+        }
 
         MakeOrderDTO makeOrderDTO = parseRequest(request);
         OrderService orderService = ServiceFactory.getInstance().getOrderService();

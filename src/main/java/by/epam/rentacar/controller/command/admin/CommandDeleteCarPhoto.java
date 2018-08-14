@@ -1,6 +1,7 @@
 package by.epam.rentacar.controller.command.admin;
 
 import by.epam.rentacar.controller.command.Command;
+import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestHeader;
 import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.ServiceFactory;
@@ -14,12 +15,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CommandDeleteCarPhoto implements Command {
+public class CommandDeleteCarPhoto extends AdminCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandDeleteCarPhoto.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        if(!identifyAdmin(request)) {
+            response.sendRedirect(PageParameters.PAGE_MAIN);
+            return;
+        }
 
         int photoID = Integer.parseInt(request.getParameter("photo_id"));
         System.out.println(photoID);

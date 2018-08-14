@@ -17,12 +17,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CommandGetCarInfo implements Command {
+public class CommandGetCarInfo extends AdminCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandGetCarInfo.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        if(!identifyAdmin(request)) {
+            response.sendRedirect(PageParameters.PAGE_MAIN);
+            return;
+        }
 
         int carID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_CAR));
 

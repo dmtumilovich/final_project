@@ -17,12 +17,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CommandGetOrder implements Command {
+public class CommandGetOrder extends UserCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandGetOrder.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        if(!identifyUser(request)) {
+            response.sendRedirect(PageParameters.PAGE_SIGNIN);
+            return;
+        }
 
         int orderID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_ORDER));
 

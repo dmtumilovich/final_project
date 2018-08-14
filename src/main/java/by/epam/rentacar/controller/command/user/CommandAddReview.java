@@ -1,6 +1,7 @@
 package by.epam.rentacar.controller.command.user;
 
 import by.epam.rentacar.controller.command.Command;
+import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestHeader;
 import by.epam.rentacar.controller.util.constant.SessionAttributes;
 import by.epam.rentacar.domain.dto.AddReviewDTO;
@@ -16,12 +17,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CommandAddReview implements Command {
+public class CommandAddReview extends UserCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandAddReview.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        if(!identifyUser(request)) {
+            response.sendRedirect(PageParameters.PAGE_SIGNIN);
+            return;
+        }
 
         AddReviewDTO addReviewDTO = parseRequest(request);
 

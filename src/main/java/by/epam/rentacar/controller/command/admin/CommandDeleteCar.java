@@ -1,6 +1,7 @@
 package by.epam.rentacar.controller.command.admin;
 
 import by.epam.rentacar.controller.command.Command;
+import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
 import by.epam.rentacar.service.AdminService;
 import by.epam.rentacar.service.CarService;
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CommandDeleteCar implements Command {
+public class CommandDeleteCar extends AdminCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandDeleteCar.class);
 
@@ -24,6 +25,11 @@ public class CommandDeleteCar implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        if(!identifyAdmin(request)) {
+            response.sendRedirect(PageParameters.PAGE_MAIN);
+            return;
+        }
 
         int carID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_CAR));
 

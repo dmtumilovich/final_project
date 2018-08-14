@@ -19,12 +19,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CommandGetOrders implements Command {
+public class CommandGetOrders extends UserCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandGetOrders.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        if(!identifyUser(request)) {
+            response.sendRedirect(PageParameters.PAGE_SIGNIN);
+            return;
+        }
 
         int userID = (int) request.getSession().getAttribute(SessionAttributes.KEY_ID_USER);
         String pageStr = request.getParameter(RequestParameters.KEY_PAGE);

@@ -17,12 +17,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CommandGetEditProfile implements Command {
+public class CommandGetEditProfile extends UserCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandGetEditProfile.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        if(!identifyUser(request)) {
+            response.sendRedirect(PageParameters.PAGE_SIGNIN);
+            return;
+        }
 
         int userID = (int) request.getSession().getAttribute(SessionAttributes.KEY_ID_USER);
 

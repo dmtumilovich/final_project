@@ -20,12 +20,17 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-public class CommandGetBookingInfo implements Command {
+public class CommandGetBookingInfo extends UserCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandGetBookingInfo.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        if(!identifyUser(request)) {
+            response.sendRedirect(PageParameters.PAGE_SIGNIN);
+            return;
+        }
 
         int userID = (int) request.getSession().getAttribute(SessionAttributes.KEY_ID_USER);
         int carID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_CAR));

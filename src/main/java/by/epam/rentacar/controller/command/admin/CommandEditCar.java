@@ -1,6 +1,7 @@
 package by.epam.rentacar.controller.command.admin;
 
 import by.epam.rentacar.controller.command.Command;
+import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.AdminService;
@@ -15,12 +16,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CommandEditCar implements Command {
+public class CommandEditCar extends AdminCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandEditCar.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        if(!identifyAdmin(request)) {
+            response.sendRedirect(PageParameters.PAGE_MAIN);
+            return;
+        }
 
         AdminService adminService = ServiceFactory.getInstance().getAdminService();
         Car car = parseRequest(request);

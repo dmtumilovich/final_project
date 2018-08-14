@@ -1,6 +1,7 @@
 package by.epam.rentacar.controller.command.user;
 
 import by.epam.rentacar.controller.command.Command;
+import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestHeader;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
@@ -14,12 +15,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CommandDeleteReview implements Command {
+public class CommandDeleteReview extends UserCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandDeleteReview.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        if(!identifyUser(request)) {
+            response.sendRedirect(PageParameters.PAGE_SIGNIN);
+            return;
+        }
 
         int reviewID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_REVIEW));
 
