@@ -5,6 +5,7 @@ import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestAttributes;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
 import by.epam.rentacar.controller.util.constant.SessionAttributes;
+import by.epam.rentacar.domain.dto.UserOrderDTO;
 import by.epam.rentacar.domain.dto.UserOrdersDTO;
 import by.epam.rentacar.domain.entity.User;
 import by.epam.rentacar.service.OrderService;
@@ -18,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 public class CommandGetOrders extends UserCommand {
 
@@ -35,16 +37,15 @@ public class CommandGetOrders extends UserCommand {
         String pageStr = request.getParameter(RequestParameters.KEY_PAGE);
         int page = (pageStr == null) ? 1 : Integer.parseInt(pageStr);
 
-        UserOrdersDTO userOrdersDTO = null;
         OrderService orderService = new OrderServiceImpl();
 
         try {
-            userOrdersDTO  = orderService.getUserOrders(userID, page, 10);
+            List<UserOrderDTO> userOrders = orderService.getUserOrders(userID, page, 10);
             int pagesCount = orderService.getUserOrdersPagesCount(userID, 10);
 
             request.setAttribute(RequestAttributes.KEY_PAGE, page);
             request.setAttribute(RequestAttributes.KEY_PAGE_COUNT, pagesCount);
-            request.setAttribute(RequestAttributes.KEY_ORDERS_INFO, userOrdersDTO);
+            request.setAttribute(RequestAttributes.KEY_ORDER_LIST, userOrders);
             request.getRequestDispatcher(PageParameters.PAGE_ORDERS).forward(request, response);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to get user orders!", e);

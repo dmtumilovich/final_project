@@ -52,7 +52,7 @@
                     <th></th>
                   </thead>
                   <tbody>
-                    <c:forEach items="${requestScope.orders_info.userOrderList}" var = "order_item" varStatus = "loop">
+                    <c:forEach items="${requestScope.order_list}" var = "order_item" varStatus = "loop">
                       <tr>
                         <td>${(loop.index + 1) + (page - 1) * 10}</td>
                         <td>

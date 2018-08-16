@@ -1,6 +1,7 @@
 package by.epam.rentacar.service.impl;
 
 import by.epam.rentacar.dao.CarDAO;
+import by.epam.rentacar.dao.DAOFactory;
 import by.epam.rentacar.dao.ReviewDAO;
 import by.epam.rentacar.dao.TransactionHelper;
 import by.epam.rentacar.dao.exception.DAOException;
@@ -10,23 +11,27 @@ import by.epam.rentacar.domain.dto.FindCarsDTO;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.exception.ServiceException;
+import by.epam.rentacar.service.util.DateParser;
 import by.epam.rentacar.service.util.PageCounter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class CarServiceImpl implements CarService {
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+    private static final DAOFactory daoFactory = DAOFactory.getInstance();
+
+    private static final CarDAO carDAO = daoFactory.getCarDAO();
+    private static final ReviewDAO reviewDAO = daoFactory.getReviewDAO();
 
     public List<Car> getAllCars(int page, int itemsPerPage) throws ServiceException {
 
-        List<Car> carList = new ArrayList<>();
+        List<Car> carList;
 
-        CarDAO carDAO = new CarDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -49,9 +54,8 @@ public class CarServiceImpl implements CarService {
     @Override
     public List<Car> getAllNotDeletedCars(int page, int itemsPerPage) throws ServiceException {
 
-        List<Car> carList = new ArrayList<>();
+        List<Car> carList;
 
-        CarDAO carDAO = new CarDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -76,9 +80,8 @@ public class CarServiceImpl implements CarService {
     @Override
     public int getCarsPagesCount(int itemsPerPage) throws ServiceException {
 
-        int pagesCount = 0;
+        int pagesCount;
 
-        CarDAO carDAO = new CarDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -86,7 +89,7 @@ public class CarServiceImpl implements CarService {
             transactionHelper.beginTransaction(carDAO);
 
             int carsCount = carDAO.getTotalNotDeletedCount();
-            pagesCount = PageCounter.getInstance().countPages(carsCount, itemsPerPage);
+            pagesCount = PageCounter.countPages(carsCount, itemsPerPage);
 
             transactionHelper.commit();
 
@@ -106,20 +109,11 @@ public class CarServiceImpl implements CarService {
 
         String carClass = findCarsDTO.getCarClass();
 
-        Date dateStart = null;
-        Date dateEnd = null;
+        Date dateStart = DateParser.parse(findCarsDTO.getDateStart());
+        Date dateEnd = DateParser.parse(findCarsDTO.getDateEnd());
 
-        try {
-            dateStart = dateFormat.parse(findCarsDTO.getDateStart());
-            dateEnd = dateFormat.parse(findCarsDTO.getDateEnd());
-        } catch (ParseException e) {
-            e.printStackTrace();
-            throw new ServiceException("Error occurred while parsing date");
-        }
+        List<Car> cars;
 
-        List<Car> cars = new ArrayList<>();
-
-        CarDAO carDAO = new CarDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -147,20 +141,11 @@ public class CarServiceImpl implements CarService {
 
         String carClass = findCarsDTO.getCarClass();
 
-        Date dateStart = null;
-        Date dateEnd = null;
+        Date dateStart = DateParser.parse(findCarsDTO.getDateStart());
+        Date dateEnd = DateParser.parse(findCarsDTO.getDateEnd());
 
-        try {
-            dateStart = dateFormat.parse(findCarsDTO.getDateStart());
-            dateEnd = dateFormat.parse(findCarsDTO.getDateEnd());
-        } catch (ParseException e) {
-            e.printStackTrace();
-            throw new ServiceException("Error occurred while parsing date");
-        }
+        int pagesCount;
 
-        int pagesCount = 0;
-
-        CarDAO carDAO = new CarDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -169,7 +154,7 @@ public class CarServiceImpl implements CarService {
 
             int carsCount = (carClass == null || carClass.isEmpty()) ? carDAO.getTotalCountByDateRange(dateStart, dateEnd) :
                                                                        carDAO.getTotalCountByDateRangeAndClass(carClass, dateStart, dateEnd);
-            pagesCount = PageCounter.getInstance().countPages(carsCount, itemsPerPage);
+            pagesCount = PageCounter.countPages(carsCount, itemsPerPage);
 
             transactionHelper.commit();
 
@@ -186,13 +171,12 @@ public class CarServiceImpl implements CarService {
 
     public Car getCar(int carID) throws ServiceException {
 
-        Car car = null;
+        Car car;
 
-        CarDAO carDAO = new CarDAOImpl();
-        ReviewDAO reviewDAO = new ReviewDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
+
             transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(carDAO, reviewDAO);
 
@@ -213,7 +197,6 @@ public class CarServiceImpl implements CarService {
     @Override
     public void addCar(Car car) throws ServiceException {
 
-        CarDAO carDAO = new CarDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -235,7 +218,6 @@ public class CarServiceImpl implements CarService {
     @Override
     public void editCar(Car car) throws ServiceException {
 
-        CarDAO carDAO = new CarDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -258,7 +240,6 @@ public class CarServiceImpl implements CarService {
     @Override
     public void deleteCar(int carID) throws ServiceException {
 
-        CarDAO carDAO = new CarDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -281,7 +262,6 @@ public class CarServiceImpl implements CarService {
     @Override
     public void addPhoto(int carID, String filename) throws ServiceException {
 
-        CarDAO carDAO = new CarDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -304,7 +284,6 @@ public class CarServiceImpl implements CarService {
     @Override
     public void deletePhoto(int photoID) throws ServiceException {
 
-        CarDAO carDAO = new CarDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {

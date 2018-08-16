@@ -2,9 +2,6 @@ package by.epam.rentacar.service.impl;
 
 import by.epam.rentacar.dao.*;
 import by.epam.rentacar.dao.exception.DAOException;
-import by.epam.rentacar.dao.impl.CarDAOImpl;
-import by.epam.rentacar.dao.impl.OrderDAOImpl;
-import by.epam.rentacar.dao.impl.UserDAOImpl;
 import by.epam.rentacar.domain.dto.*;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.domain.entity.Order;
@@ -12,37 +9,32 @@ import by.epam.rentacar.domain.entity.User;
 import by.epam.rentacar.service.OrderService;
 import by.epam.rentacar.service.exception.InvalidDateRangeException;
 import by.epam.rentacar.service.exception.ServiceException;
+import by.epam.rentacar.service.util.DateParser;
 import by.epam.rentacar.service.util.PageCounter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class OrderServiceImpl implements OrderService {
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+    private static final DAOFactory daoFactory = DAOFactory.getInstance();
+
+    private static final OrderDAO orderDAO = daoFactory.getOrderDAO();
+    private static final CarDAO carDAO = daoFactory.getCarDAO();
+    private static final UserDAO userDAO = daoFactory.getUserDAO();
 
     @Override
     public void makeOrder(MakeOrderDTO makeOrderDTO) throws ServiceException {
 
-        Date dateStart = null;
-        Date dateEnd = null;
+        Date dateStart = DateParser.parse(makeOrderDTO.getDateStart());
+        Date dateEnd = DateParser.parse(makeOrderDTO.getDateEnd());
 
-        try {
-            dateStart = dateFormat.parse(makeOrderDTO.getDateStart());
-            dateEnd = dateFormat.parse(makeOrderDTO.getDateEnd());
-        } catch (ParseException e) {
-            throw new ServiceException("Error occurred while parsing date", e);
-        }
-
+        //validation
         if (dateStart.after(dateEnd) || (dateEnd.getTime() - dateStart.getTime() < 24*60*60*1000)) {
             throw new InvalidDateRangeException("invalid date range");
         }
 
-        CarDAO carDAO = new CarDAOImpl();
-        OrderDAO orderDAO = new OrderDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -82,20 +74,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderingInfo getBookingInfo(int carID, int userID, String dateStartStr, String dateEndStr) throws ServiceException {
 
-        Date dateStart = null;
-        Date dateEnd = null;
-
-        try {
-            dateStart = dateFormat.parse(dateStartStr);
-            dateEnd = dateFormat.parse(dateEndStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            throw new ServiceException("Error occurred while parsing date");
-        }
-
-        UserDAO userDAO = new UserDAOImpl();
-        CarDAO carDAO = new CarDAOImpl();
-        OrderDAO orderDAO = new OrderDAOImpl();
+        Date dateStart = DateParser.parse(dateStartStr);
+        Date dateEnd = DateParser.parse(dateEndStr);
 
         OrderingInfo orderingInfo = new OrderingInfo();
 
@@ -140,9 +120,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public UserOrderDTO getUserOrder(int orderID) throws ServiceException {
 
-        UserOrderDTO userOrderDTO = null;
+        UserOrderDTO userOrderDTO;
 
-        OrderDAO orderDAO = new OrderDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -165,19 +144,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public UserOrdersDTO getUserOrders(int userID, int page, int itemsPerPage) throws ServiceException {
+    public List<UserOrderDTO> getUserOrders(int userID, int page, int itemsPerPage) throws ServiceException {
 
-        UserOrdersDTO userOrdersDTO = new UserOrdersDTO();
+        List<UserOrderDTO> userOrderList = null;
 
         TransactionHelper transactionHelper = null;
-        OrderDAO orderDAO = new OrderDAOImpl();
 
         try {
             transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(orderDAO);
 
-            List<UserOrderDTO> userOrderList = orderDAO.getUserOrders(userID, page, itemsPerPage);
-            userOrdersDTO.setOrderList(userOrderList);
+            userOrderList = orderDAO.getUserOrders(userID, page, itemsPerPage);
 
             transactionHelper.commit();
 
@@ -187,16 +164,15 @@ public class OrderServiceImpl implements OrderService {
             transactionHelper.endTransaction();
         }
 
-        return userOrdersDTO;
+        return userOrderList;
 
     }
 
     @Override
     public int getUserOrdersPagesCount(int userID, int itemsPerPage) throws ServiceException {
 
-        int pagesCount = 0;
+        int pagesCount;
 
-        OrderDAO orderDAO = new OrderDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -204,7 +180,7 @@ public class OrderServiceImpl implements OrderService {
             transactionHelper.beginTransaction(orderDAO);
 
             int ordersCount = orderDAO.getUserOrdersCount(userID);
-            pagesCount = PageCounter.getInstance().countPages(ordersCount, itemsPerPage);
+            pagesCount = PageCounter.countPages(ordersCount, itemsPerPage);
 
             transactionHelper.commit();
 
@@ -222,9 +198,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getAllOrders(int page, int itemsPerPage) throws ServiceException {
 
-        List<Order> orders = null;
+        List<Order> orders;
 
-        OrderDAO orderDAO = new OrderDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -256,9 +231,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getOrdersByStatus(Order.Status status, int page, int itemsPerPage) throws ServiceException {
 
-        List<Order> orders = null;
+        List<Order> orders;
 
-        OrderDAO orderDAO = new OrderDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -284,9 +258,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public int getAllOrdersPagesCount(int itemsPerPage) throws ServiceException {
 
-        int pagesCount = 0;
+        int pagesCount;
 
-        OrderDAO orderDAO = new OrderDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -294,7 +267,7 @@ public class OrderServiceImpl implements OrderService {
             transactionHelper.beginTransaction(orderDAO);
 
             int ordersCount = orderDAO.getTotalCount();
-            pagesCount = PageCounter.getInstance().countPages(ordersCount, itemsPerPage);
+            pagesCount = PageCounter.countPages(ordersCount, itemsPerPage);
 
             transactionHelper.commit();
 
@@ -324,9 +297,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public int getOrdersPagesCountByStatus(int itemsPerPage, Order.Status status) throws ServiceException {
 
-        int pagesCount = 0;
+        int pagesCount;
 
-        OrderDAO orderDAO = new OrderDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -336,7 +308,7 @@ public class OrderServiceImpl implements OrderService {
             int statusID = orderDAO.getStatusIdByName(status);
             int ordersCount = orderDAO.getTotalCountByStatusID(statusID);
 
-            pagesCount = PageCounter.getInstance().countPages(ordersCount, itemsPerPage);
+            pagesCount = PageCounter.countPages(ordersCount, itemsPerPage);
 
             transactionHelper.commit();
 
@@ -354,9 +326,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderInfoDTO getOrderInfo(int orderID) throws ServiceException {
 
-        OrderInfoDTO orderInfoDTO = null;
+        OrderInfoDTO orderInfoDTO;
 
-        OrderDAO orderDAO = new OrderDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -395,7 +366,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void updateStatus(int orderID, Order.Status status) throws ServiceException {
 
-        OrderDAO orderDAO = new OrderDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -421,7 +391,6 @@ public class OrderServiceImpl implements OrderService {
 
         //добавить валидацию(если есть другие заказы на эту дату)
 
-        OrderDAO orderDAO = new OrderDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {

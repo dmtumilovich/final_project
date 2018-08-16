@@ -1,5 +1,6 @@
 package by.epam.rentacar.service.impl;
 
+import by.epam.rentacar.dao.DAOFactory;
 import by.epam.rentacar.dao.TransactionHelper;
 import by.epam.rentacar.dao.UserDAO;
 import by.epam.rentacar.dao.exception.DAOException;
@@ -16,6 +17,9 @@ import java.nio.charset.StandardCharsets;
 
 public class UserServiceImpl implements UserService {
 
+    private static final DAOFactory daoFactory = DAOFactory.getInstance();
+    private static final UserDAO userDAO = daoFactory.getUserDAO();
+
     public User login(SigninDTO signinDTO) throws ServiceException {
 
         User user = null;
@@ -23,10 +27,10 @@ public class UserServiceImpl implements UserService {
         String username = signinDTO.getUsername();
         String hashedPassword = hashPassword(signinDTO.getPassword());
 
-        UserDAO userDAO = new UserDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
+
             transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(userDAO);
 
@@ -58,7 +62,6 @@ public class UserServiceImpl implements UserService {
         //если валидация прошла:
         String hashedPassword = hashPassword(password);
 
-        UserDAO userDAO = new UserDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -87,7 +90,6 @@ public class UserServiceImpl implements UserService {
     public User getUser(int userID) throws ServiceException {
 
         User user = null;
-        UserDAO userDAO = new UserDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -110,7 +112,6 @@ public class UserServiceImpl implements UserService {
 
     public boolean editProfile(User user) throws ServiceException {
 
-        UserDAO userDAO = new UserDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -135,7 +136,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changePassword(ChangePasswordDTO changePasswordDTO) throws ServiceException {
 
-        UserDAO userDAO = new UserDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -163,7 +163,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void setPhoto(int userID, String filename) throws ServiceException {
 
-        UserDAO userDAO = new UserDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {

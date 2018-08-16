@@ -1,5 +1,6 @@
 package by.epam.rentacar.service.impl;
 
+import by.epam.rentacar.dao.DAOFactory;
 import by.epam.rentacar.dao.ReviewDAO;
 import by.epam.rentacar.dao.TransactionHelper;
 import by.epam.rentacar.dao.exception.DAOException;
@@ -12,10 +13,12 @@ import java.util.Date;
 
 public class ReviewServiceImpl implements ReviewService {
 
+    private static final DAOFactory daoFactory = DAOFactory.getInstance();
+    private static final ReviewDAO reviewDAO = daoFactory.getReviewDAO();
+
     @Override
     public void addReview(Review review) throws ServiceException {
 
-        ReviewDAO reviewDAO = new ReviewDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {
@@ -41,7 +44,6 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void deleteReview(int reviewID) throws ServiceException {
 
-        ReviewDAO reviewDAO = new ReviewDAOImpl();
         TransactionHelper transactionHelper = null;
 
         try {

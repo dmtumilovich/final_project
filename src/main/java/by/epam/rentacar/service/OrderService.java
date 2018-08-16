@@ -4,7 +4,6 @@ import by.epam.rentacar.domain.dto.*;
 import by.epam.rentacar.domain.entity.Order;
 import by.epam.rentacar.service.exception.ServiceException;
 
-import java.util.Date;
 import java.util.List;
 
 public interface OrderService {
@@ -22,7 +21,7 @@ public interface OrderService {
     OrderingInfo getBookingInfo(int carID, int userID, String dateStart, String dateEnd) throws ServiceException;
 
     UserOrderDTO getUserOrder(int orderID) throws ServiceException;
-    UserOrdersDTO getUserOrders(int userID, int page, int itemsPerPage) throws ServiceException;
+    List<UserOrderDTO> getUserOrders(int userID, int page, int itemsPerPage) throws ServiceException;
 
     int getUserOrdersPagesCount(int userID, int itemsPerPage) throws ServiceException;
 

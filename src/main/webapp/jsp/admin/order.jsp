@@ -82,14 +82,6 @@
               <div class="row float-right">
                 <c:choose>
                   <c:when test = "${order_info.order.status eq 'AWAITS'}">
-                    <%-- <form action="/controller" method="post">
-                      <input type="hidden" name="command" value="reject_order">
-                      <button type="submit" class="btn btn-md btn-danger">Reject</button>
-                    </form>
-                    <form action="/controller" method="post">
-                        <input type="hidden" name="command" value="confirm_order">
-                        <button type="submit" class="btn btn-md btn-success ml-2">Confirm</button>
-                    </form> --%>
                     <button type="button" class="btn btn-md btn-danger" data-toggle="modal" data-target="#reject_order">Reject</button>
                     <button type="button" class="btn btn-md btn-success ml-2" data-toggle="modal" data-target="#confirm_order">Confirm</button>
                   </c:when>

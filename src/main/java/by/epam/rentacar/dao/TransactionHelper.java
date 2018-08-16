@@ -20,7 +20,7 @@ public class TransactionHelper {
         try {
             connection = ConnectionPool.getInstance().takeConnection();
         } catch (ConnectionPoolException e) {
-            throw new DAOException("error while getting connection from pool", e);
+            throw new DAOException("Error while getting connection from pool", e);
         }
     }
 
@@ -40,7 +40,7 @@ public class TransactionHelper {
     public void endTransaction() {
         try {
             connection.setAutoCommit(false);
-            connection.close(); //или через пул?
+            connection.close();
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Failed to end transaction!", e);
         }
@@ -62,4 +62,5 @@ public class TransactionHelper {
             logger.log(Level.ERROR, "Failed to rollback transaction!", e);
         }
     }
+
 }
