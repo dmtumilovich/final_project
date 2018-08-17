@@ -1,12 +1,9 @@
 package by.epam.rentacar.dao.impl;
 
 import by.epam.rentacar.dao.ReviewDAO;
-import by.epam.rentacar.dao.connection.pool.ConnectionPool;
-import by.epam.rentacar.dao.connection.pool.ConnectionPoolException;
 import by.epam.rentacar.dao.exception.DAOException;
 import by.epam.rentacar.dao.util.ResultSetParser;
 import by.epam.rentacar.dao.util.constant.DBQueries;
-import by.epam.rentacar.domain.dto.AddReviewDTO;
 import by.epam.rentacar.domain.entity.Review;
 
 import java.sql.*;

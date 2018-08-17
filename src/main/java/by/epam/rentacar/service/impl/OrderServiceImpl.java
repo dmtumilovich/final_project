@@ -7,14 +7,17 @@ import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.domain.entity.Order;
 import by.epam.rentacar.domain.entity.User;
 import by.epam.rentacar.service.OrderService;
+import by.epam.rentacar.service.exception.CarNotAvailableException;
 import by.epam.rentacar.service.exception.InvalidDateRangeException;
 import by.epam.rentacar.service.exception.ServiceException;
 import by.epam.rentacar.service.util.DateParser;
 import by.epam.rentacar.service.util.PageCounter;
+import by.epam.rentacar.service.validation.Validator;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class OrderServiceImpl implements OrderService {
 
@@ -24,15 +27,16 @@ public class OrderServiceImpl implements OrderService {
     private static final CarDAO carDAO = daoFactory.getCarDAO();
     private static final UserDAO userDAO = daoFactory.getUserDAO();
 
+    private static final long DAY_IN_MILLIS = TimeUnit.DAYS.toMillis(1);
+
     @Override
     public void makeOrder(MakeOrderDTO makeOrderDTO) throws ServiceException {
 
         Date dateStart = DateParser.parse(makeOrderDTO.getDateStart());
         Date dateEnd = DateParser.parse(makeOrderDTO.getDateEnd());
 
-        //validation
-        if (dateStart.after(dateEnd) || (dateEnd.getTime() - dateStart.getTime() < 24*60*60*1000)) {
-            throw new InvalidDateRangeException("invalid date range");
+        if(!Validator.isDateRangeValid(dateStart, dateEnd)) {
+            throw new InvalidDateRangeException("Invalid date range!");
         }
 
         TransactionHelper transactionHelper = null;
@@ -41,17 +45,19 @@ public class OrderServiceImpl implements OrderService {
             transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(carDAO, orderDAO);
 
-            double carPrice = carDAO.getPriceByCarID(makeOrderDTO.getCarID());
-            //calculate days
-            int numberOfDays = (int)Math.ceil((dateEnd.getTime() - dateStart.getTime()) / (1000*60*60*24));
-            //calculate total cost
-            double totalCost = numberOfDays * carPrice;
+            int carID = makeOrderDTO.getCarID();
+            if(!orderDAO.isCarAvailable(carID, dateStart, dateEnd)) {
+                throw new CarNotAvailableException("Car is busy for this date range");
+            }
 
-            System.out.println("CAR PRICE: " + carPrice);
+            double carPrice = carDAO.getPriceByCarID(makeOrderDTO.getCarID());
+            double totalCost = calculateTotalCost(carPrice, dateStart, dateEnd);
+
+            System.out.println("TOTAL COST: " + totalCost);
 
             Order order = new Order();
             order.setUserID(makeOrderDTO.getUserID());
-            order.setCarID(makeOrderDTO.getCarID());
+            order.setCarID(carID);
             order.setDateStart(dateStart); //проверка на нулл?
             order.setDateEnd(dateEnd);
             order.setTotalPrice(totalCost);
@@ -409,6 +415,18 @@ public class OrderServiceImpl implements OrderService {
             transactionHelper.endTransaction();
         }
 
+    }
+
+    private double calculateTotalCost(double price, Date dateStart, Date dateEnd) {
+        return calculateTotalCost(price, calculateCountOfDays(dateStart, dateEnd));
+    }
+
+    private double calculateTotalCost(double price, int numberOfDays) {
+        return price * numberOfDays;
+    }
+
+    private int calculateCountOfDays(Date dateStart, Date dateEnd) {
+        return (int) Math.ceil((dateEnd.getTime() - dateStart.getTime()) / (DAY_IN_MILLIS));
     }
 
     private Order.Status getStatusFromString(String statusName) {

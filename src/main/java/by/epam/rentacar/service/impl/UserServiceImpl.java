@@ -4,13 +4,13 @@ import by.epam.rentacar.dao.DAOFactory;
 import by.epam.rentacar.dao.TransactionHelper;
 import by.epam.rentacar.dao.UserDAO;
 import by.epam.rentacar.dao.exception.DAOException;
-import by.epam.rentacar.dao.impl.UserDAOImpl;
 import by.epam.rentacar.domain.dto.ChangePasswordDTO;
 import by.epam.rentacar.domain.dto.SigninDTO;
 import by.epam.rentacar.domain.dto.SignupDTO;
 import by.epam.rentacar.domain.entity.User;
 import by.epam.rentacar.service.UserService;
-import by.epam.rentacar.service.exception.ServiceException;
+import by.epam.rentacar.service.exception.*;
+import by.epam.rentacar.service.validation.Validator;
 import com.google.common.hash.Hashing;
 
 import java.nio.charset.StandardCharsets;
@@ -22,18 +22,20 @@ public class UserServiceImpl implements UserService {
 
     public User login(SigninDTO signinDTO) throws ServiceException {
 
-        User user = null;
-
-        String username = signinDTO.getUsername();
-        String hashedPassword = hashPassword(signinDTO.getPassword());
+        if(!Validator.isSigninDataValid(signinDTO)) {
+            throw new InvalidInputDataException("Invalid sign in data!");
+        }
 
         TransactionHelper transactionHelper = null;
+        User user;
 
         try {
 
             transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(userDAO);
 
+            String username = signinDTO.getUsername();
+            String hashedPassword = hashPassword(signinDTO.getPassword());
             user = userDAO.findUserByUsernameAndPassword(username, hashedPassword);
 
             transactionHelper.commit();
@@ -51,25 +53,37 @@ public class UserServiceImpl implements UserService {
 
     public User signup(SignupDTO signupDTO) throws ServiceException {
 
-        User user = null;
-
-        String username = signupDTO.getUsername();
-        String email = signupDTO.getEmail();
         String password = signupDTO.getPassword();
         String confirmPassword = signupDTO.getConfirmPassword();
 
-        //валидация
-        //если валидация прошла:
-        String hashedPassword = hashPassword(password);
+        if(!Validator.isSignupDataValid(signupDTO)) {
+            throw new InvalidInputDataException("Invalid sign up data!");
+        }
+
+        if(!Validator.isPasswordsEqual(password, confirmPassword)) {
+            throw new PasswordsNotEqualException("Passwords are not equal!");
+        }
 
         TransactionHelper transactionHelper = null;
+        User user;
 
         try {
 
             transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(userDAO);
 
-            //isUsernameAlreadyExists and isEmailAlreadyExists
+            String username = signupDTO.getUsername();
+            String email = signupDTO.getEmail();
+
+            if (userDAO.isUsernameAlreadyExists(username)) {
+                throw new UsernameAlreadyExistsException("Username is already exists!");
+            }
+
+            if (userDAO.isEmailAlreadyExists(email)) {
+                throw new EmailAlreadyExistsException("Email is already exists!");
+            }
+
+            String hashedPassword = hashPassword(password);
 
             userDAO.add(username, email, hashedPassword);
             user = userDAO.findUserByUsername(username);
@@ -111,6 +125,10 @@ public class UserServiceImpl implements UserService {
     }
 
     public boolean editProfile(User user) throws ServiceException {
+
+        if (!Validator.isEditProfileDataValid(user)) {
+            throw new InvalidInputDataException("Invalid edit profile data!");
+        }
 
         TransactionHelper transactionHelper = null;
 

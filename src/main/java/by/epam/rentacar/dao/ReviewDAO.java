@@ -1,7 +1,6 @@
 package by.epam.rentacar.dao;
 
 import by.epam.rentacar.dao.exception.DAOException;
-import by.epam.rentacar.domain.dto.AddReviewDTO;
 import by.epam.rentacar.domain.entity.Review;
 
 import java.util.List;

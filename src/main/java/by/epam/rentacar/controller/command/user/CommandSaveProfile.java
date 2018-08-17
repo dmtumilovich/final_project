@@ -1,6 +1,5 @@
 package by.epam.rentacar.controller.command.user;
 
-import by.epam.rentacar.domain.dto.EditProfileDTO;
 import by.epam.rentacar.domain.entity.User;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.UserService;

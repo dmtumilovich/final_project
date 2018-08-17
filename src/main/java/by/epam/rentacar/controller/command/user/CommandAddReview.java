@@ -3,7 +3,6 @@ package by.epam.rentacar.controller.command.user;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestHeader;
 import by.epam.rentacar.controller.util.constant.SessionAttributes;
-import by.epam.rentacar.domain.dto.AddReviewDTO;
 import by.epam.rentacar.domain.entity.Review;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.controller.util.constant.RequestParameters;

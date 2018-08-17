@@ -2,7 +2,6 @@ package by.epam.rentacar.dao.impl;
 
 import by.epam.rentacar.dao.UserDAO;
 import by.epam.rentacar.dao.exception.DAOException;
-import by.epam.rentacar.domain.dto.EditProfileDTO;
 import by.epam.rentacar.domain.entity.User;
 import by.epam.rentacar.dao.util.ResultSetParser;
 import by.epam.rentacar.dao.util.constant.DBQueries;
@@ -118,8 +117,9 @@ public class UserDAOImpl extends UserDAO {
 
         try {
 
-            statement = connection.prepareStatement(DBQueries.FIND_USER_BY_USERNAME);
+            statement = connection.prepareStatement(DBQueries.FIND_USER_BY_USERNAME_AND_PASSWORD);
             statement.setString(1, username);
+            statement.setString(2, password);
 
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -211,12 +211,49 @@ public class UserDAOImpl extends UserDAO {
 
     @Override
     public boolean isUsernameAlreadyExists(String username) throws DAOException {
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+
+            statement = connection.prepareStatement("SELECT id_user FROM user_list WHERE username = ?");
+            statement.setString(1, username);
+
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            throw new DAOException("Error while checking is username already exists!", e);
+        }
+
         return false;
     }
 
     @Override
     public boolean isEmailAlreadyExists(String email) throws DAOException {
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+
+            statement = connection.prepareStatement("SELECT id_user FROM user_list WHERE email = ?");
+            statement.setString(1, email);
+
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            throw new DAOException("Error while checking is email exists!", e);
+        }
+
         return false;
+
     }
 
     @Override

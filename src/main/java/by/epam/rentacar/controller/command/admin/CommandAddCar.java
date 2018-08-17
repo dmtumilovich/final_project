@@ -1,8 +1,9 @@
 package by.epam.rentacar.controller.command.admin;
 
 import by.epam.rentacar.controller.util.constant.PageParameters;
+import by.epam.rentacar.controller.util.constant.RequestAttributes;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
-import by.epam.rentacar.domain.dto.AddCarDTO;
+import by.epam.rentacar.domain.dto.CarDTO;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.ServiceFactory;
@@ -31,7 +32,7 @@ public class CommandAddCar extends AdminCommand {
         }
 
         CarService carService = ServiceFactory.getInstance().getCarService();
-        Car car = parseRequest(request);
+        CarDTO car = parseRequest(request);
 
         try {
             carService.addCar(car);
@@ -42,18 +43,20 @@ public class CommandAddCar extends AdminCommand {
 
     }
 
-    private Car parseRequest(HttpServletRequest request) {
+    private CarDTO parseRequest(HttpServletRequest request) {
 
+        String id = request.getParameter(RequestParameters.KEY_ID_CAR);
         String brand = request.getParameter(RequestParameters.KEY_ADD_BRAND);
         String model = request.getParameter(RequestParameters.KEY_ADD_MODEL);
         String carClass = request.getParameter(RequestParameters.KEY_ADD_CLASS);
         String color = request.getParameter(RequestParameters.KEY_ADD_COLOR);
-        int yearOfIssue = Integer.parseInt(request.getParameter(RequestParameters.KEY_ADD_YEAR));
-        int numberOfSeats = Integer.parseInt(request.getParameter(RequestParameters.KEY_ADD_SEATS));
-        double engineVolume = Double.parseDouble(request.getParameter(RequestParameters.KEY_ADD_ENGINE_VOLUME));
-        double price = Double.parseDouble(request.getParameter(RequestParameters.KEY_ADD_PRICE));
+        String yearOfIssue = request.getParameter(RequestParameters.KEY_ADD_YEAR);
+        String numberOfSeats = request.getParameter(RequestParameters.KEY_ADD_SEATS);
+        String engineVolume = request.getParameter(RequestParameters.KEY_ADD_ENGINE_VOLUME);
+        String price = request.getParameter(RequestParameters.KEY_ADD_PRICE);
 
-        Car car = new Car();
+        CarDTO car = new CarDTO();
+        car.setId(id);
         car.setBrand(brand);
         car.setModel(model);
         car.setCarClass(carClass);

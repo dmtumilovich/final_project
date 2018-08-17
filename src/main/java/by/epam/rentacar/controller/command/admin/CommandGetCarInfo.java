@@ -3,7 +3,6 @@ package by.epam.rentacar.controller.command.admin;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestAttributes;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
-import by.epam.rentacar.domain.dto.CarInfoDTO;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.ServiceFactory;

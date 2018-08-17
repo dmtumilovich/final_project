@@ -4,11 +4,13 @@ import by.epam.rentacar.domain.dto.SigninDTO;
 import by.epam.rentacar.domain.entity.User;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.UserService;
+import by.epam.rentacar.service.exception.InvalidInputDataException;
 import by.epam.rentacar.service.exception.ServiceException;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestAttributes;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
 import by.epam.rentacar.controller.util.constant.SessionAttributes;
+import com.sun.media.sound.InvalidDataException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,7 +36,7 @@ public class CommandSignin implements Command {
         try {
             user = userService.login(signinDTO);
 
-            if(user != null) {
+            if (user != null) {
                 int userID = user.getId();
                 User.Role role = user.getRole();
 
@@ -45,10 +47,13 @@ public class CommandSignin implements Command {
                 String destPage = (role == User.Role.ADMIN) ? PageParameters.PAGE_ADMIN_PANEL : PageParameters.PAGE_MAIN;
                 response.sendRedirect(request.getContextPath() + destPage);
             } else {
-                request.setAttribute(RequestAttributes.KEY_INCORRECT_DATA, true);
+                request.setAttribute(RequestAttributes.KEY_ERROR_MESSAGE, "Wrong username or password!");
                 request.getRequestDispatcher(PageParameters.PAGE_SIGNIN).forward(request, response);
             }
 
+        } catch (InvalidInputDataException e) {
+            request.setAttribute(RequestAttributes.KEY_ERROR_MESSAGE, "Check the data you entered!");
+            request.getRequestDispatcher(PageParameters.PAGE_SIGNIN).forward(request, response);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Signing in failed!", e);
         }

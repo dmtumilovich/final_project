@@ -1,5 +1,6 @@
 package by.epam.rentacar.service;
 
+import by.epam.rentacar.domain.dto.CarDTO;
 import by.epam.rentacar.domain.dto.FindCarsDTO;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.exception.ServiceException;
@@ -17,8 +18,8 @@ public interface CarService {
 
     Car getCar(int carID) throws ServiceException;
 
-    void addCar(Car car) throws ServiceException;
-    void editCar(Car car) throws ServiceException;
+    void addCar(CarDTO carDTO) throws ServiceException;
+    void editCar(CarDTO carDTO) throws ServiceException;
     void deleteCar(int carID) throws ServiceException;
 
     void addPhoto(int carID, String filename) throws ServiceException;

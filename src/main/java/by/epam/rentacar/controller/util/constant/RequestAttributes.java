@@ -8,6 +8,7 @@ public class RequestAttributes {
 //    public static final String KEY_EMAIL_IS_ALREADY_TAKEN = "email_taken";
 //    public static final String KEY_PASSWORD_MISSMATCH = "password_missmatch";
 
+    public static final String KEY_ERROR_MESSAGE = "error_message";
     public static final String KEY_SIGNUP_FAILED = "signup_failed";
     public static final String KEY_SIGNUP_FAILED_MESSAGE = "error_message_key";
 

@@ -45,17 +45,16 @@
           <input type="password" name="password" id="inputPassword" class="form-control mb-1" placeholder="${hint_password}" required>
 
           <label for="inputPassword2" class="sr-only">${hint_confirm_password}</label>
-          <input type="password" name="password2" id="inputPassword2" class="form-control mb-2" placeholder="${hint_confirm_password}" required>
+          <input type="password" name="confirm_password" id="inputPassword2" class="form-control mb-2" placeholder="${hint_confirm_password}" required>
 
           <label for="inputEmail" class="sr-only">${hint_email}</label>
           <input type="email" name="email" id="inputEmail" class="form-control mb-2" placeholder="${hint_email}" required>
 
           <button class="btn btn-lg btn-secondary btn-block" type="submit">${button_signup}</button>
 
-          <c:if test = "${signup_failed eq true}">
-            <div class="alert alert-danger text-center">
-              <strong>${message_error}</strong>
-              <fmt:message bundle = "${loc}" key = "${error_message_key}" />
+          <c:if test = "${not empty error_message}">
+            <div class="alert alert-danger text-center mt-1">
+              ${error_message}
             </div>
           </c:if>
         </form>

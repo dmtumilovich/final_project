@@ -44,25 +44,12 @@ public class SignupDTO {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof SignupDTO)) return false;
-
-        SignupDTO signupDTO = (SignupDTO) o;
-
-        if (username != null ? !username.equals(signupDTO.username) : signupDTO.username != null) return false;
-        if (password != null ? !password.equals(signupDTO.password) : signupDTO.password != null) return false;
-        if (confirmPassword != null ? !confirmPassword.equals(signupDTO.confirmPassword) : signupDTO.confirmPassword != null)
-            return false;
-        return email != null ? email.equals(signupDTO.email) : signupDTO.email == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = username != null ? username.hashCode() : 0;
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (confirmPassword != null ? confirmPassword.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        return result;
+    public String toString() {
+        return "SignupDTO{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", confirmPassword='" + confirmPassword + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

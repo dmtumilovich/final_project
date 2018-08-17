@@ -7,12 +7,16 @@ import by.epam.rentacar.dao.TransactionHelper;
 import by.epam.rentacar.dao.exception.DAOException;
 import by.epam.rentacar.dao.impl.CarDAOImpl;
 import by.epam.rentacar.dao.impl.ReviewDAOImpl;
+import by.epam.rentacar.domain.dto.CarDTO;
 import by.epam.rentacar.domain.dto.FindCarsDTO;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.CarService;
+import by.epam.rentacar.service.exception.InvalidDateRangeException;
+import by.epam.rentacar.service.exception.InvalidInputDataException;
 import by.epam.rentacar.service.exception.ServiceException;
 import by.epam.rentacar.service.util.DateParser;
 import by.epam.rentacar.service.util.PageCounter;
+import by.epam.rentacar.service.validation.Validator;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -112,6 +116,10 @@ public class CarServiceImpl implements CarService {
         Date dateStart = DateParser.parse(findCarsDTO.getDateStart());
         Date dateEnd = DateParser.parse(findCarsDTO.getDateEnd());
 
+        if(!Validator.isDateRangeValid(dateStart, dateEnd)) {
+            throw new InvalidDateRangeException("Invalid date range!");
+        }
+
         List<Car> cars;
 
         TransactionHelper transactionHelper = null;
@@ -143,6 +151,10 @@ public class CarServiceImpl implements CarService {
 
         Date dateStart = DateParser.parse(findCarsDTO.getDateStart());
         Date dateEnd = DateParser.parse(findCarsDTO.getDateEnd());
+
+        if(!Validator.isDateRangeValid(dateStart, dateEnd)) {
+            throw new InvalidDateRangeException("Invalid date range!");
+        }
 
         int pagesCount;
 
@@ -195,7 +207,21 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void addCar(Car car) throws ServiceException {
+    public void addCar(CarDTO carDTO) throws ServiceException {
+
+        if(!Validator.isCarDataValid(carDTO)) {
+            throw new InvalidInputDataException("Invalid car data!");
+        }
+
+        Car car = new Car(); //builder and method
+        car.setBrand(carDTO.getBrand());
+        car.setModel(carDTO.getModel());
+        car.setCarClass(carDTO.getCarClass());
+        car.setColor(carDTO.getColor());
+        car.setYearOfIssue(Integer.parseInt(carDTO.getYearOfIssue()));
+        car.setNumberOfSeats(Integer.parseInt(carDTO.getNumberOfSeats()));
+        car.setEngineVolume(Double.parseDouble(carDTO.getEngineVolume()));
+        car.setPrice(Double.parseDouble(carDTO.getPrice()));
 
         TransactionHelper transactionHelper = null;
 
@@ -216,7 +242,24 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void editCar(Car car) throws ServiceException {
+    public void editCar(CarDTO carDTO) throws ServiceException {
+
+        if(!Validator.isCarDataValid(carDTO)) {
+            throw new InvalidInputDataException("Invalid car data!");
+        }
+
+        Car car = new Car(); //builder and method
+        car.setId(Integer.parseInt(carDTO.getId()));
+        car.setBrand(carDTO.getBrand());
+        car.setModel(carDTO.getModel());
+        car.setCarClass(carDTO.getCarClass());
+        car.setColor(carDTO.getColor());
+        car.setYearOfIssue(Integer.parseInt(carDTO.getYearOfIssue()));
+        car.setNumberOfSeats(Integer.parseInt(carDTO.getNumberOfSeats()));
+        car.setEngineVolume(Double.parseDouble(carDTO.getEngineVolume()));
+        car.setPrice(Double.parseDouble(carDTO.getPrice()));
+
+        System.out.println(car);
 
         TransactionHelper transactionHelper = null;
 

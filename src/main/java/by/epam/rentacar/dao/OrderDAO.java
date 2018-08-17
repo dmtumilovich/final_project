@@ -6,6 +6,7 @@ import by.epam.rentacar.domain.dto.OrderingInfo;
 import by.epam.rentacar.domain.dto.UserOrderDTO;
 import by.epam.rentacar.domain.entity.Order;
 
+import java.util.Date;
 import java.util.List;
 
 public abstract class OrderDAO extends AbstractDAO<Order> {
@@ -20,5 +21,7 @@ public abstract class OrderDAO extends AbstractDAO<Order> {
 
     public abstract int getStatusIdByName(Order.Status status) throws DAOException;
     public abstract void updateStatus(int orderID, int statusID) throws DAOException;
+
+    public abstract boolean isCarAvailable(int carID, Date dateStart, Date dateEnd) throws DAOException;
 
 }

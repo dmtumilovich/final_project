@@ -39,9 +39,9 @@
 
           <button class="btn btn-lg btn-secondary btn-block" type="submit">${button_signin}</button>
 
-          <c:if test = "${incorrect_data eq true}">
+          <c:if test = "${not empty error_message}">
             <div class="alert alert-danger text-center mt-1">
-              <strong>${message_error}</strong> ${message_incorrect}
+              ${error_message}
             </div>
           </c:if>
 

@@ -3,12 +3,9 @@ package by.epam.rentacar.dao.impl;
 import by.epam.rentacar.dao.CarDAO;
 import by.epam.rentacar.dao.exception.DAOException;
 import by.epam.rentacar.dao.util.constant.DBSchema;
-import by.epam.rentacar.domain.dto.CarSearchDTO;
-import by.epam.rentacar.domain.dto.FindCarsDTO;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.dao.util.ResultSetParser;
 import by.epam.rentacar.dao.util.constant.DBQueries;
-import com.mysql.cj.api.mysqla.result.Resultset;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

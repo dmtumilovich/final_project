@@ -5,8 +5,9 @@ public class DBQueries {
     //user queries
     public static final String FIND_USER_BY_ID = "SELECT user_list.id_user, user_list.username, user_list.password, user_list.email, user_list.name, user_list.surname, user_list.phone_number, user_list.passport, user_list.photo, user_role.role FROM user_list INNER JOIN user_role ON user_list.id_role = user_role.id_role WHERE id_user = ?";
     public static final String FIND_USER_BY_USERNAME = "SELECT user_list.id_user, user_list.username, user_list.password, user_list.email, user_list.name, user_list.surname, user_list.phone_number, user_list.passport, user_list.photo, user_role.role FROM user_list INNER JOIN user_role ON user_list.id_role = user_role.id_role WHERE username = ?";
+    public static final String FIND_USER_BY_USERNAME_AND_PASSWORD = "SELECT user_list.id_user, user_list.username, user_list.password, user_list.email, user_list.name, user_list.surname, user_list.phone_number, user_list.passport, user_list.photo, user_role.role FROM user_list INNER JOIN user_role ON user_list.id_role = user_role.id_role WHERE username = ? AND password = ?";
     public static final String FIND_USER_ID_BY_USERNAME = "SELECT id_user FROM user_list WHERE username = ?";
-    public static final String ADD_USER = "INSERT INTO user_list (username, password, email, id_role) VALUES (?, ?, ?, '2')";
+    public static final String ADD_USER = "INSERT INTO user_list (username, password, email, id_role, photo) VALUES (?, ?, ?, '2', 'no_avatar.png')";
     public static final String UPDATE_USER_INFO = "UPDATE user_list SET name = ?, surname = ?, phone_number = ?, passport = ? WHERE id_user = ?";
     public static final String FIND_PASSWORD_BY_USERNAME = "SELECT password FROM user_list WHERE username = ?";
     public static final String UPDATE_PASSWORD = "UPDATE user_list SET password = ? WHERE id_user = ?";
@@ -40,7 +41,7 @@ public class DBQueries {
                                                                         "WHERE is_deleted = '0' AND car_list.id_car NOT IN (SELECT DISTINCT order_list.id_car \n" +
                                                                                                                             "FROM order_list\n" +
                                                                                                                             "WHERE ((? BETWEEN date_start AND date_end) \n" +
-                                                                                                                            "OR (? BETWEEN date_start AND date_end)) AND (id_status = '1' or id_status = '3' or id_status = '4')\n" +
+                                                                                                                            "OR (? BETWEEN date_start AND date_end)) AND (id_status = '1' or id_status = '4')\n" +
                                                                                                                             ")\n" +
                                                                         "GROUP BY car_list.id_car, photos.id_photo LIMIT ? OFFSET ?";
 
@@ -56,7 +57,7 @@ public class DBQueries {
                                                                                     "WHERE is_deleted = '0' AND class = ? AND car_list.id_car NOT IN (SELECT DISTINCT order_list.id_car \n" +
                                                                                                                                                     "FROM order_list\n" +
                                                                                                                                                     "WHERE ((? BETWEEN date_start AND date_end) \n" +
-                                                                                                                                                    "OR (? BETWEEN date_start AND date_end)) AND (id_status = '1' or id_status = '3' or id_status = '4')\n" +
+                                                                                                                                                    "OR (? BETWEEN date_start AND date_end)) AND (id_status = '1' or id_status = '4')\n" +
                                                                                                                                                     ")\n" +
                                                                                     "GROUP BY car_list.id_car, photos.id_photo LIMIT ? OFFSET ?";
 
@@ -69,7 +70,7 @@ public class DBQueries {
                                                                             "WHERE is_deleted = '0' AND car_list.id_car NOT IN (SELECT DISTINCT order_list.id_car \n" +
                                                                             "FROM order_list\n" +
                                                                             "WHERE ((? BETWEEN date_start AND date_end) \n" +
-                                                                            "OR (? BETWEEN date_start AND date_end)) AND (id_status = '1' or id_status = '3' or id_status = '4')\n" +
+                                                                            "OR (? BETWEEN date_start AND date_end)) AND (id_status = '1' or id_status = '4')\n" +
                                                                             ")";
 
     public static final String GET_COUNT_OF_NOT_DELETED_CARS_BY_DATE_RANGE_AND_CLASS = "SELECT COUNT(car_list.id_car) AS cars_count\n" +
@@ -78,7 +79,7 @@ public class DBQueries {
                                                                                         "FROM order_list\n" +
                                                                                         "WHERE ((? BETWEEN date_start AND date_end)\n" +
                                                                                         "OR (? BETWEEN date_start AND date_end))\n" +
-                                                                                        "AND (id_status = '1' or id_status = '3' or id_status = '4')\n" +
+                                                                                        "AND (id_status = '1' or id_status = '4')\n" +
                                                                                         ");";
 
     public static final String FIND_CAR_BY_ID = "SELECT car_list.id_car, brand, model , class, year_of_issue, number_of_seats, color, engine_volume, is_deleted, price, car_photos.id_photo, car_photos.photo_url\n" +
