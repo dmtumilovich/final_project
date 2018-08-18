@@ -17,6 +17,7 @@
 <fmt:message bundle="${loc}" key = "local.user-orders.text.status-canceled" var = "status_canceled" />
 <fmt:message bundle="${loc}" key = "local.user-orders.text.status-unknown" var = "status_unknown" />
 <fmt:message bundle="${loc}" key = "local.user-orders.button.check" var = "button_check" />
+<fmt:message bundle="${loc}" key = "local.text.success" var = "success" />
 
 <!DOCTYPE html>
 <html>
@@ -36,6 +37,13 @@
             <jsp:include page = "/jsp/user/parts/profile_sidebar.jsp" />
           </div>
           <div class="col-10 float-left">
+            <c:if test = "${not empty success_message}">
+              <div class="alert alert-success alert-dismissible show fade mb-2">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>${success}</strong> <fmt:message bundle = "${loc}" key = "${success_message}" />
+              </div>
+              <c:remove var = "success_message" scope = "session" />
+            </c:if>
             <div class="card">
               <div class="card-header">
                 <h4 class="card-title">${card_title}</h4>

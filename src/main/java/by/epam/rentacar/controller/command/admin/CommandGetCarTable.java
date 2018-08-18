@@ -35,10 +35,9 @@ public class CommandGetCarTable extends AdminCommand {
         int page = (pageStr == null) ? 1 : Integer.parseInt(pageStr);
 
         CarService carService = ServiceFactory.getInstance().getCarService();
-        List<Car> carList = new ArrayList<>();
 
         try {
-            carList = carService.getAllNotDeletedCars(page, 10);
+            List<Car> carList = carService.getAllNotDeletedCars(page, 10);
             int pageCount = carService.getCarsPagesCount(10);
 
             request.setAttribute(RequestAttributes.KEY_PAGE, page);

@@ -6,8 +6,7 @@
 <fmt:message bundle = "${loc}" key = "local.signin.text.password" var = "hint_password" />
 <fmt:message bundle = "${loc}" key = "local.signin.button.signin" var = "button_signin" />
 <fmt:message bundle = "${loc}" key = "local.signin.button.registration" var = "button_registration" />
-<fmt:message bundle = "${loc}" key = "local.signin.text.error" var = "message_error" />
-<fmt:message bundle = "${loc}" key = "local.signin.text.incorrect" var = "message_incorrect" />
+<fmt:message bundle="${loc}" key="local.text.error" var = "error" />
 
 <!doctype html>
 <html>
@@ -41,8 +40,9 @@
 
           <c:if test = "${not empty error_message}">
             <div class="alert alert-danger text-center mt-1">
-              ${error_message}
+              <strong>${error}</strong> <fmt:message bundle = "${loc}" key = "${error_message}" />
             </div>
+            <c:remove var = "error_message" scope = "session" />
           </c:if>
 
         </form>

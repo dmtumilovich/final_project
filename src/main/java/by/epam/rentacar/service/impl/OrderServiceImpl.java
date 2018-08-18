@@ -403,6 +403,9 @@ public class OrderServiceImpl implements OrderService {
             transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(orderDAO);
 
+            Order order = orderDAO.getByID(orderID);
+            orderDAO.rejectOrdersIntersectingDateRange(orderID, order.getCarID(), order.getDateStart(), order.getDateEnd());
+
             int statusConfirmedID = orderDAO.getStatusIdByName(Order.Status.CONFIRMED);
             orderDAO.updateStatus(orderID, statusConfirmedID);
 

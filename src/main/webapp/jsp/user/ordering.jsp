@@ -22,6 +22,7 @@
 <fmt:message bundle="${loc}" key = "local.ordering.text.card-client-passport" var = "card_passport" />
 <fmt:message bundle="${loc}" key = "local.ordering.button.edit-profile" var = "button_edit_profile" />
 <fmt:message bundle="${loc}" key = "local.ordering.button.book" var = "button_book" />
+<fmt:message bundle="${loc}" key = "local.text.error" var = "error" />
 
 <!DOCTYPE html>
 <html>
@@ -168,7 +169,7 @@
                 </div>
               </div>
 
-              <div class="mt-3 col-6 float-right row">
+              <div class="mt-2 col-6 float-right row">
                 <c:choose>
                   <c:when test="${booking_info.allUserData eq false}">
                     <button type="submit" class="btn btn-lg btn-success btn-block disabled">${button_book}</button>
@@ -178,6 +179,14 @@
                   </c:otherwise>
                 </c:choose>
               </div>
+
+              <c:if test = "${not empty error_message}">
+                <div class="alert alert-danger alert-dismissible show fade mt-2">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <strong>${error}</strong> <fmt:message bundle = "${loc}" key = "${error_message}" />
+                </div>
+                <c:remove var = "error_message" scope = "session" />
+              </c:if>
             </form>
 
 

@@ -23,16 +23,21 @@ public class CommandSignup implements Command {
 
     private static final Logger logger = LogManager.getLogger(CommandSignup.class);
 
-    private static final String MESSAGE_USERNAME_EXISTS = "local.signup.text.username-exists";
-    private static final String MESSAGE_EMAIL_EXISTS = "local.signup.text.email-exists";
+    private static final String MESSAGE_USERNAME_EXISTS = "local.signup.error.username-exists";
+    private static final String MESSAGE_EMAIL_EXISTS = "local.signup.error.email-exists";
+    private static final String MESSAGE_INVALID_DATA = "local.signup.error.invalid-data";
+    private static final String MESSAGE_PASSWORDS_NOT_EQUAL = "local.signup.error.passwords-not-equal";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         SignupDTO signupDTO = parseRequest(request);
-        System.out.println(signupDTO);
+
         UserService userService = ServiceFactory.getInstance().getUserService();
         User user = null;
+
+        HttpSession session = request.getSession();
+        String destPage = PageParameters.PAGE_SIGNUP;
 
         try {
 
@@ -43,28 +48,25 @@ public class CommandSignup implements Command {
                 int userID = user.getId();
                 User.Role role = user.getRole();
 
-                HttpSession session = request.getSession();
                 session.setAttribute(SessionAttributes.KEY_ID_USER, userID);
                 session.setAttribute(SessionAttributes.KEY_ROLE, role);
-                response.sendRedirect(request.getContextPath() + PageParameters.PAGE_MAIN);
+                destPage = PageParameters.PAGE_MAIN;
             }
 
         } catch (UsernameAlreadyExistsException e) {
-            request.setAttribute(RequestAttributes.KEY_ERROR_MESSAGE, MESSAGE_USERNAME_EXISTS);
-            request.getRequestDispatcher(PageParameters.PAGE_SIGNUP).forward(request, response);
+            session.setAttribute(SessionAttributes.KEY_ERROR_MESSAGE, MESSAGE_USERNAME_EXISTS);
         } catch (EmailAlreadyExistsException e) {
-            request.setAttribute(RequestAttributes.KEY_ERROR_MESSAGE, MESSAGE_EMAIL_EXISTS);
-            request.getRequestDispatcher(PageParameters.PAGE_SIGNUP).forward(request, response);
+            session.setAttribute(SessionAttributes.KEY_ERROR_MESSAGE, MESSAGE_EMAIL_EXISTS);
         } catch (InvalidInputDataException e) {
-            request.setAttribute(RequestAttributes.KEY_ERROR_MESSAGE, "Check the data you entered!");
-            request.getRequestDispatcher(PageParameters.PAGE_SIGNUP).forward(request, response);
+            session.setAttribute(SessionAttributes.KEY_ERROR_MESSAGE, MESSAGE_INVALID_DATA);
         } catch (PasswordsNotEqualException e) {
-            request.setAttribute(RequestAttributes.KEY_ERROR_MESSAGE, "Passwords are not equal!");
-            request.getRequestDispatcher(PageParameters.PAGE_SIGNUP).forward(request, response);
+            session.setAttribute(SessionAttributes.KEY_ERROR_MESSAGE, MESSAGE_PASSWORDS_NOT_EQUAL);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Signup failed!", e);
-            response.sendRedirect(PageParameters.PAGE_ERROR);
+            destPage = PageParameters.PAGE_ERROR;
         }
+
+        response.sendRedirect(destPage);
 
     }
 

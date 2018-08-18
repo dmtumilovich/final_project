@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    public boolean editProfile(User user) throws ServiceException {
+    public void editProfile(User user) throws ServiceException {
 
         if (!Validator.isEditProfileDataValid(user)) {
             throw new InvalidInputDataException("Invalid edit profile data!");
@@ -148,7 +148,6 @@ public class UserServiceImpl implements UserService {
             transactionHelper.endTransaction();
         }
 
-        return true;
     }
 
     @Override

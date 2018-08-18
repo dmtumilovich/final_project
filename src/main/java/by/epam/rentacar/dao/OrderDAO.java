@@ -23,5 +23,6 @@ public abstract class OrderDAO extends AbstractDAO<Order> {
     public abstract void updateStatus(int orderID, int statusID) throws DAOException;
 
     public abstract boolean isCarAvailable(int carID, Date dateStart, Date dateEnd) throws DAOException;
+    public abstract void rejectOrdersIntersectingDateRange(int orderID, int carID, Date dateStart, Date dateEnd) throws DAOException;
 
 }

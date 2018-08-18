@@ -155,7 +155,7 @@
                 </div>
                 <div class="card-footer">
                   <div class="row float-right">
-                    <a href="/controller?command=get_car_info&car_id=${order_info.carID}" class="btn btn-md btn-light border">See more info</a>
+                    <a href="/controller?command=get_car_info&car_id=${order_info.car.id}" class="btn btn-md btn-light border">See more info</a>
                   </div>
                 </div>
               </div>
@@ -205,6 +205,7 @@
 
               <div class="modal-body">
                 Are you sure you want to reject this order?
+                <p>This will reject all other pending requests for this car, which intersect the given time interval.</p>
               </div>
 
               <div class="modal-footer">

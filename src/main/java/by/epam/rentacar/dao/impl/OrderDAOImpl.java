@@ -54,10 +54,33 @@ public class OrderDAOImpl extends OrderDAO {
         throw new UnsupportedOperationException("Invalid operation for orderDAO!");
     }
 
-    //сделать и использовать вместо getUserOrder этот метод и другие
     @Override
     public Order getByID(int id) throws DAOException {
-        throw new UnsupportedOperationException("Invalid operation for orderDAO!");
+
+        Order order = null;
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = connection.prepareStatement("SELECT order_list.*, order_status.status\n" +
+                                                        "FROM order_list\n" +
+                                                        "INNER JOIN order_status\n" +
+                                                        "ON order_list.id_status = order_status.id_status\n" +
+                                                        "WHERE id_order = ?");
+            statement.setInt(1, id);
+
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                order = ResultSetParser.createOrder(resultSet);
+            }
+
+        } catch (SQLException e) {
+            throw new DAOException("Error while getting order by id!", e);
+        }
+
+        return order;
+
     }
 
     @Override
@@ -354,6 +377,35 @@ public class OrderDAOImpl extends OrderDAO {
         }
 
         return false;
+
+    }
+
+    @Override
+    public void rejectOrdersIntersectingDateRange(int orderID, int carID, Date dateStart, Date dateEnd) throws DAOException {
+
+        PreparedStatement statement = null;
+
+        try {
+
+            statement = connection.prepareStatement("UPDATE order_list\n" +
+                                                        "SET id_status = '2'\n" +
+                                                        "WHERE id_order IN (SELECT id_order FROM (SELECT * FROM order_list) AS ol\n" +
+                                                        "WHERE ol.id_car = ? AND ol.id_order != ? AND id_status = '3'\n" +
+                                                        "AND (? BETWEEN ol.date_start AND ol.date_end\n" +
+                                                        "OR ol.date_end BETWEEN ? AND ?)\n" +
+                                                        ")");
+            statement.setInt(1, carID);
+            statement.setInt(2, orderID);
+            Timestamp dateStartTS = new Timestamp(dateStart.getTime());
+            Timestamp dateEndTS = new Timestamp(dateEnd.getTime());
+            statement.setTimestamp(3, dateEndTS);
+            statement.setTimestamp(4, dateStartTS);
+            statement.setTimestamp(5, dateEndTS);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DAOException("Error while rejecting orders intersecting given date range!", e);
+        }
 
     }
 

@@ -164,13 +164,15 @@ public class DBQueries {
 
     public static final String GET_ORDER_INFO_FOR_ADMIN = "SELECT order_list.id_order, order_list.id_user, order_list.id_car, order_list.date_start, order_list.date_end, order_list.total_price,\n" +
                                                         "order_status.status,\n" +
-                                                        "user_list.username, user_list.name, user_list.surname, user_list.phone_number, user_list.email\n" +
-                                                        "car_list.brand, car_list.model, car_list.class, car_list.price\n" +
+                                                        "user_list.*, role,\n" +
+                                                        "car_list.*\n" +
                                                         "FROM order_list\n" +
                                                         "INNER JOIN order_status\n" +
                                                         "ON order_list.id_status = order_status.id_status\n" +
                                                         "INNER JOIN user_list\n" +
                                                         "ON order_list.id_user = user_list.id_user\n" +
+                                                        "INNER JOIN user_role\n" +
+                                                        "ON user_list.id_role = user_role.id_role\n" +
                                                         "INNER JOIN car_list\n" +
                                                         "ON order_list.id_car = car_list.id_car\n" +
                                                         "WHERE id_order = ?";

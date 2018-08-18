@@ -145,7 +145,6 @@ public class ResultSetParser {
         double price = rs.getDouble(OrderListTable.TOTAL_PRICE);
         String statusStr= rs.getString(OrderStatusTable.STATUS);
         Order.Status status = Order.Status.valueOf(statusStr.toUpperCase());
-        System.out.println("status - " + status);
 
         Order order = new Order();
         order.setId(id);

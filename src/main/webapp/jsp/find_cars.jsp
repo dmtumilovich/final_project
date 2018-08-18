@@ -10,6 +10,7 @@
 <fmt:message bundle="${loc}" key="local.find.text.label-pickup" var="label_pickup" />
 <fmt:message bundle="${loc}" key="local.find.text.label-dropoff" var="label_dropoff" />
 <fmt:message bundle="${loc}" key="local.find.button.search" var="button_search" />
+<fmt:message bundle="${loc}" key="local.text.error" var = "error" />
 
 <!DOCTYPE html>
 <html>
@@ -69,6 +70,12 @@
                   </div>
                 </div>
               </div>
+              <c:if test = "${not empty error_message}">
+                <div class="alert alert-danger alert-dismissible fade show mt-2">
+                  <strong>${error}</strong> <fmt:message bundle = "${loc}" key = "${error_message}" />
+                </div>
+                <c:remove var = "error_message" scope = "session" />
+              </c:if>
             </form>
 
           </div>

@@ -5,6 +5,7 @@ public class PageParameters {
     public static final String PAGE_MAIN = "/main";
     public static final String PAGE_SIGNIN = "/signin";
     public static final String PAGE_SIGNUP = "/signup";
+    public static final String PAGE_FIND_CARS = "/find";
     public static final String PAGE_CARS = "/cars";
     public static final String PAGE_CAR = "/car";
     public static final String PAGE_ERROR = "/error";

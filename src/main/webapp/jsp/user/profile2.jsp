@@ -11,6 +11,8 @@
 <fmt:message bundle="${loc}" key = "local.profile.button.edit" var = "button_edit" />
 <fmt:message bundle="${loc}" key = "local.profile.button.browse" var = "button_browse" />
 <fmt:message bundle="${loc}" key = "local.profile.button.upload" var = "button_upload" />
+<fmt:message bundle="${loc}" key = "local.text.success" var = "success" />
+
 
 <!DOCTYPE html>
 <html>
@@ -82,6 +84,13 @@
                 </div>
               </div>
             </div>
+            <c:if test = "${not empty success_message}">
+              <div class="alert alert-success alert-dismissible show fade mt-2">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>${success}</strong> <fmt:message bundle = "${loc}" key = "${success_message}" />
+              </div>
+              <c:remove var = "success_message" scope = "session" />
+            </c:if>
           </div>
         </div>
       </main>

@@ -18,7 +18,7 @@
     <fmt:message bundle = "${loc}" key = "local.signup.text.confirm-password" var = "hint_confirm_password" />
     <fmt:message bundle = "${loc}" key = "local.signup.text.email" var = "hint_email" />
     <fmt:message bundle = "${loc}" key = "local.signup.button.signup" var = "button_signup" />
-    <fmt:message bundle = "${loc}" key = "local.signin.text.error" var = "message_error" />
+    <fmt:message bundle="${loc}" key="local.text.error" var = "error" />
 
     <title>Sign Up</title>
 
@@ -54,7 +54,8 @@
 
           <c:if test = "${not empty error_message}">
             <div class="alert alert-danger text-center mt-1">
-              ${error_message}
+              <strong>${error}</strong> <fmt:message bundle = "${loc}" key = "${error_message}" />
+              <c:remove var = "error_message" scope = "session" />
             </div>
           </c:if>
         </form>

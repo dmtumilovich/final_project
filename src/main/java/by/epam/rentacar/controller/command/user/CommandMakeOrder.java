@@ -1,6 +1,7 @@
 package by.epam.rentacar.controller.command.user;
 
 import by.epam.rentacar.controller.command.Command;
+import by.epam.rentacar.controller.util.PathHelper;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestHeader;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
@@ -28,6 +29,8 @@ public class CommandMakeOrder extends UserCommand {
     private static final Logger logger = LogManager.getLogger(CommandMakeOrder.class);
 
     private static final String PAGE_ORDERS = "/controller?command=orders";
+    private static final String MESSAGE_INVALID_DATE_RANGE = "local.ordering.error.invalid-date-range";
+    private static final String MESSAGE_ORDER_WAS_MADE = "local.user-orders.success.order-was-made";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -40,16 +43,21 @@ public class CommandMakeOrder extends UserCommand {
         MakeOrderDTO makeOrderDTO = parseRequest(request);
         OrderService orderService = ServiceFactory.getInstance().getOrderService();
 
+        String destPage = PAGE_ORDERS;
+        HttpSession session = request.getSession();
+
         try {
             orderService.makeOrder(makeOrderDTO);
-            response.sendRedirect(PAGE_ORDERS);
+            session.setAttribute(SessionAttributes.KEY_SUCCESS_MESSAGE, MESSAGE_ORDER_WAS_MADE);
         } catch (InvalidDateRangeException e) {
-            logger.log(Level.ERROR, "Invalid date range!", e);
-            String page = request.getHeader(RequestHeader.KEY_REFERER);
-            response.sendRedirect(page);
+            session.setAttribute(SessionAttributes.KEY_ERROR_MESSAGE, MESSAGE_INVALID_DATE_RANGE);
+            destPage = PathHelper.getRefererPage(request);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to make order!", e);
+            destPage = PageParameters.PAGE_ERROR;
         }
+
+        response.sendRedirect(destPage);
 
     }
 

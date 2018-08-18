@@ -10,6 +10,7 @@
 <fmt:message bundle="${loc}" key = "local.edit-profile.text.card-passport" var = "card_passport" />
 <fmt:message bundle="${loc}" key = "local.edit-profile.button.save" var = "button_save" />
 <fmt:message bundle="${loc}" key = "local.edit-profile.button.reset" var = "button_reset" />
+<fmt:message bundle="${loc}" key = "local.text.error" var = "error" />
 
 <!DOCTYPE html>
 <html>
@@ -85,6 +86,13 @@
                   </div>
                 </div>
               </div>
+              <c:if test = "${not empty error_message}">
+                <div class="alert alert-danger alert-dismissible show fade mt-2">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <strong>${error}</strong> <fmt:message bundle = "${loc}" key = "${error_message}" />
+                </div>
+                <c:remove var = "error_message" scope = "session" />
+              </c:if>
             </form>
 
           </div>

@@ -1,13 +1,12 @@
 package by.epam.rentacar.controller.command;
 
-import by.epam.rentacar.controller.util.constant.RequestHeader;
+import by.epam.rentacar.controller.util.constant.*;
 import by.epam.rentacar.domain.dto.FindCarsDTO;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.ServiceFactory;
+import by.epam.rentacar.service.exception.InvalidDateRangeException;
 import by.epam.rentacar.service.exception.ServiceException;
-import by.epam.rentacar.controller.util.constant.PageParameters;
-import by.epam.rentacar.controller.util.constant.RequestAttributes;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,41 +22,57 @@ public class CommandGetCars implements Command {
 
     private static final Logger logger = LogManager.getLogger(CommandGetCars.class);
 
+    private static final String MESSAGE_INVALID_DATE_RANGE = "local.find.error.invalid-date-range";
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        String pageStr = request.getParameter("page");
+        String pageStr = request.getParameter(RequestParameters.KEY_PAGE);
         int page = (pageStr == null || pageStr.isEmpty()) ? 1 : Integer.parseInt(pageStr);
-        String dateStart = request.getParameter("date_start");
-        String dateEnd = request.getParameter("date_end");
-        String carClass = request.getParameter("car_class");
+
+        CarService carService = ServiceFactory.getInstance().getCarService();
+        FindCarsDTO findCarsDTO = parseRequest(request);
+
+        String destPage = PageParameters.PAGE_FIND_CARS;
+        HttpSession session = request.getSession();
+
+        try {
+
+            List<Car> carList = carService.getCarsByDateRangeAndClass(findCarsDTO, page, 10);
+            int pageCount = carService.getCarsPagesCount(findCarsDTO, 10);
+
+            session.setAttribute(SessionAttributes.KEY_DATE_START, findCarsDTO.getDateStart());
+            session.setAttribute(SessionAttributes.KEY_DATE_END, findCarsDTO.getDateEnd());
+
+            request.setAttribute(RequestAttributes.KEY_CAR_CLASS, findCarsDTO.getCarClass());
+            request.setAttribute(RequestAttributes.KEY_CAR_LIST, carList);
+            request.setAttribute(RequestAttributes.KEY_PAGE, page);
+            request.setAttribute(RequestAttributes.KEY_PAGE_COUNT, pageCount);
+            request.getRequestDispatcher(PageParameters.PAGE_CARS).forward(request, response);
+
+        } catch (InvalidDateRangeException e) {
+            session.setAttribute(SessionAttributes.KEY_ERROR_MESSAGE, MESSAGE_INVALID_DATE_RANGE);
+        } catch (ServiceException e) {
+            logger.log(Level.ERROR, "Failed to get all cars!", e);
+            destPage = PageParameters.PAGE_ERROR;
+        }
+
+        response.sendRedirect(destPage);
+
+    }
+
+    private FindCarsDTO parseRequest(HttpServletRequest request) {
+
+        String dateStart = request.getParameter(RequestParameters.KEY_DATE_START);
+        String dateEnd = request.getParameter(RequestParameters.KEY_DATE_END);
+        String carClass = request.getParameter(RequestParameters.KEY_CAR_CLASS);
 
         FindCarsDTO findCarsDTO = new FindCarsDTO();
         findCarsDTO.setCarClass(carClass);
         findCarsDTO.setDateStart(dateStart);
         findCarsDTO.setDateEnd(dateEnd);
 
-        CarService carService = ServiceFactory.getInstance().getCarService();
-
-        List<Car> carList = null;
-        try {
-
-            carList = carService.getCarsByDateRangeAndClass(findCarsDTO, page, 10);
-            int pageCount = carService.getCarsPagesCount(findCarsDTO, 10);
-
-            HttpSession session = request.getSession();
-            session.setAttribute("date_start", dateStart);
-            session.setAttribute("date_end", dateEnd);
-
-            request.setAttribute("car_class", carClass);
-            request.setAttribute(RequestAttributes.KEY_CAR_LIST, carList);
-            request.setAttribute("page", page);
-            request.setAttribute("pageCount", pageCount);
-            request.getRequestDispatcher(PageParameters.PAGE_CARS).forward(request, response);
-
-        } catch (ServiceException e) {
-            logger.log(Level.ERROR, "Failed to get all cars!", e);
-        }
+        return findCarsDTO;
 
     }
 }

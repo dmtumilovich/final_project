@@ -1,5 +1,6 @@
 package by.epam.rentacar.controller.command;
 
+import by.epam.rentacar.controller.util.PathHelper;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.ServiceFactory;

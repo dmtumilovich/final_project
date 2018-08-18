@@ -11,8 +11,7 @@ public interface UserService {
     User login(SigninDTO signinDTO) throws ServiceException;
     User signup(SignupDTO signupDTO) throws ServiceException;
     User getUser(int userID) throws ServiceException;
-    //переделать
-    boolean editProfile(User user) throws ServiceException;
+    void editProfile(User user) throws ServiceException;
     void changePassword(ChangePasswordDTO changePasswordDTO) throws ServiceException;
     void setPhoto(int userID, String filename) throws ServiceException;
 
