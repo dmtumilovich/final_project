@@ -17,6 +17,8 @@ import java.util.List;
 
 public class CarDAOImpl extends CarDAO {
 
+    private static final String COLUMN_CARS_COUNT = "cars_count";
+
     @Override
     public void add(Car car) throws DAOException {
 
@@ -155,10 +157,13 @@ public class CarDAOImpl extends CarDAO {
 
         try {
             statement = connection.prepareStatement(DBQueries.FIND_ALL_NOT_DELETED_CARS_BY_DATE_RANGE);
-            statement.setTimestamp(1, new Timestamp(dateStart.getTime()));
-            statement.setTimestamp(2, new Timestamp(dateEnd.getTime()));
-            statement.setInt(3, itemsPerPage);
-            statement.setInt(4, calculateOffset(page, itemsPerPage));
+            Timestamp dateStartTS = new Timestamp(dateStart.getTime());
+            Timestamp dateEndTS = new Timestamp(dateEnd.getTime());
+            statement.setTimestamp(1, dateEndTS);
+            statement.setTimestamp(2, dateStartTS);
+            statement.setTimestamp(3, dateEndTS);
+            statement.setInt(4, itemsPerPage);
+            statement.setInt(5, calculateOffset(page, itemsPerPage));
 
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -183,11 +188,14 @@ public class CarDAOImpl extends CarDAO {
 
         try {
             statement = connection.prepareStatement(DBQueries.FIND_ALL_NOT_DELETED_CARS_BY_DATE_RANGE_AND_CLASS);
+            Timestamp dateStartTS = new Timestamp(dateStart.getTime());
+            Timestamp dateEndTS = new Timestamp(dateEnd.getTime());
             statement.setString(1, carClass);
-            statement.setTimestamp(2, new Timestamp(dateStart.getTime()));
-            statement.setTimestamp(3, new Timestamp(dateEnd.getTime()));
-            statement.setInt(4, itemsPerPage);
-            statement.setInt(5, calculateOffset(page, itemsPerPage));
+            statement.setTimestamp(2, dateEndTS);
+            statement.setTimestamp(3, dateStartTS);
+            statement.setTimestamp(4, dateEndTS);
+            statement.setInt(5, itemsPerPage);
+            statement.setInt(6, calculateOffset(page, itemsPerPage));
 
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -221,7 +229,7 @@ public class CarDAOImpl extends CarDAO {
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                carsCount = resultSet.getInt("total_count");
+                carsCount = resultSet.getInt(COLUMN_CARS_COUNT);
             }
 
         } catch (SQLException e) {
@@ -242,12 +250,15 @@ public class CarDAOImpl extends CarDAO {
 
         try {
             statement = connection.prepareStatement(DBQueries.GET_COUNT_OF_NOT_DELETED_CARS_BY_DATE_RANGE);
-            statement.setTimestamp(1, new Timestamp(dateStart.getTime()));
-            statement.setTimestamp(2, new Timestamp(dateEnd.getTime()));
+            Timestamp dateStartTS = new Timestamp(dateStart.getTime());
+            Timestamp dateEndTS = new Timestamp(dateEnd.getTime());
+            statement.setTimestamp(1, dateEndTS);
+            statement.setTimestamp(2, dateStartTS);
+            statement.setTimestamp(3, dateEndTS);
 
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                carsCount = resultSet.getInt("cars_count");
+                carsCount = resultSet.getInt(COLUMN_CARS_COUNT);
             }
         } catch (SQLException e) {
             throw new DAOException("Error while counting cars by date range", e);
@@ -267,13 +278,16 @@ public class CarDAOImpl extends CarDAO {
 
         try {
             statement = connection.prepareStatement(DBQueries.GET_COUNT_OF_NOT_DELETED_CARS_BY_DATE_RANGE_AND_CLASS);
+            Timestamp dateStartTS = new Timestamp(dateStart.getTime());
+            Timestamp dateEndTS = new Timestamp(dateEnd.getTime());
             statement.setString(1, carClass);
-            statement.setTimestamp(2, new Timestamp(dateStart.getTime()));
-            statement.setTimestamp(3, new Timestamp(dateEnd.getTime()));
+            statement.setTimestamp(2, dateEndTS);
+            statement.setTimestamp(3, dateStartTS);
+            statement.setTimestamp(4, dateEndTS);
 
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                carsCount = resultSet.getInt("cars_count");
+                carsCount = resultSet.getInt(COLUMN_CARS_COUNT);
             }
         } catch (SQLException e) {
             throw new DAOException("Error while counting cars by date range", e);

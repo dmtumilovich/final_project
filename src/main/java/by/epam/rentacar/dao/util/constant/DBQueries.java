@@ -41,27 +41,29 @@ public class DBQueries {
                                                                         "WHERE is_deleted = '0' AND car_list.id_car NOT IN (SELECT DISTINCT order_list.id_car \n" +
                                                                                                                             "FROM order_list\n" +
                                                                                                                             "WHERE ((? BETWEEN date_start AND date_end) \n" +
-                                                                                                                            "OR (? BETWEEN date_start AND date_end)) AND (id_status = '1' or id_status = '4')\n" +
+                                                                                                                            "OR (date_end BETWEEN ? AND ?))\n" +
+                                                                                                                            "AND (id_status = '1' or id_status = '4')\n" +
                                                                                                                             ")\n" +
                                                                         "GROUP BY car_list.id_car, photos.id_photo LIMIT ? OFFSET ?";
 
     public static final String FIND_ALL_NOT_DELETED_CARS_BY_DATE_RANGE_AND_CLASS = "SELECT car_list.id_car, brand, model , class, year_of_issue, number_of_seats, color, engine_volume, is_deleted, price, photos.id_photo, photos.photo_url\n" +
                                                                                     "FROM car_list\n" +
                                                                                     "LEFT JOIN (SELECT id_photo, id_car, photo_url\n" +
-                                                                                                "FROM car_photos\n" +
-                                                                                                "WHERE id_photo IN (SELECT MIN(id_photo)\n" +
-                                                                                                                    "FROM car_photos\n" +
-                                                                                                                    "GROUP BY id_car)\n" +
-                                                                                                                    ") photos\n" +
+                                                                                    "FROM car_photos\n" +
+                                                                                    "WHERE id_photo IN (SELECT MIN(id_photo)\n" +
+                                                                                                        "FROM car_photos\n" +
+                                                                                                        "GROUP BY id_car)\n" +
+                                                                                                        ") photos\n" +
                                                                                     "ON car_list.id_car = photos.id_car\n" +
                                                                                     "WHERE is_deleted = '0' AND class = ? AND car_list.id_car NOT IN (SELECT DISTINCT order_list.id_car \n" +
-                                                                                                                                                    "FROM order_list\n" +
-                                                                                                                                                    "WHERE ((? BETWEEN date_start AND date_end) \n" +
-                                                                                                                                                    "OR (? BETWEEN date_start AND date_end)) AND (id_status = '1' or id_status = '4')\n" +
-                                                                                                                                                    ")\n" +
+                                                                                                                                                            "FROM order_list\n" +
+                                                                                                                                                            "WHERE ((? BETWEEN date_start AND date_end) \n" +
+                                                                                                                                                            "OR (date_end BETWEEN ? AND ?))\n" +
+                                                                                                                                                            "AND (id_status = '1' or id_status = '4')\n" +
+                                                                                                                                                            ")\n" +
                                                                                     "GROUP BY car_list.id_car, photos.id_photo LIMIT ? OFFSET ?";
 
-    public static final String GET_COUNT_OF_NOT_DELETED_CARS = "SELECT COUNT(id_car) AS total_count\n" +
+    public static final String GET_COUNT_OF_NOT_DELETED_CARS = "SELECT COUNT(id_car) AS cars_count\n" +
                                                                 "FROM car_list\n" +
                                                                 "WHERE is_deleted = '0'";
 
@@ -70,15 +72,16 @@ public class DBQueries {
                                                                             "WHERE is_deleted = '0' AND car_list.id_car NOT IN (SELECT DISTINCT order_list.id_car \n" +
                                                                             "FROM order_list\n" +
                                                                             "WHERE ((? BETWEEN date_start AND date_end) \n" +
-                                                                            "OR (? BETWEEN date_start AND date_end)) AND (id_status = '1' or id_status = '4')\n" +
+                                                                            "OR (date_end BETWEEN ? AND ?))\n" +
+                                                                            "AND (id_status = '1' or id_status = '4')\n" +
                                                                             ")";
 
     public static final String GET_COUNT_OF_NOT_DELETED_CARS_BY_DATE_RANGE_AND_CLASS = "SELECT COUNT(car_list.id_car) AS cars_count\n" +
                                                                                         "FROM car_list\n" +
                                                                                         "WHERE is_deleted = '0' AND class = ? AND car_list.id_car NOT IN (SELECT DISTINCT order_list.id_car \n" +
                                                                                         "FROM order_list\n" +
-                                                                                        "WHERE ((? BETWEEN date_start AND date_end)\n" +
-                                                                                        "OR (? BETWEEN date_start AND date_end))\n" +
+                                                                                        "WHERE ((? BETWEEN date_start AND date_end) \n" +
+                                                                                        "OR (date_end BETWEEN ? AND ?))\n" +
                                                                                         "AND (id_status = '1' or id_status = '4')\n" +
                                                                                         ");";
 
