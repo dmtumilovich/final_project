@@ -87,7 +87,7 @@
               </c:otherwise>
             </c:choose>
 
-            <paginator:display maxLinks="10" currentPage="${page}" totalPages="${pageCount}" url="${url}" />
+            <paginator:display maxLinks="10" currentPage="${page}" totalPages="${page_count}" url="${url}" />
 
           </div>
         </div>

@@ -19,15 +19,32 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * The command for signing up the user.
+ */
 public class CommandSignup implements Command {
 
     private static final Logger logger = LogManager.getLogger(CommandSignup.class);
 
+    /**
+     * The result messages of the command execution.
+     */
     private static final String MESSAGE_USERNAME_EXISTS = "local.signup.error.username-exists";
     private static final String MESSAGE_EMAIL_EXISTS = "local.signup.error.email-exists";
     private static final String MESSAGE_INVALID_DATA = "local.signup.error.invalid-data";
     private static final String MESSAGE_PASSWORDS_NOT_EQUAL = "local.signup.error.passwords-not-equal";
 
+    /**
+     * Gets sign up input data from the request. Then processing this data by service layer.
+     * If data is valid and sign up is successful, redirects to the main page.
+     * If not, redirects to the sign up page with appropriate error message.
+     * @param request
+     *          an {@link HttpServletRequest} object that contains client request
+     * @param response
+     *          an {@link HttpServletResponse} object that contains the response the servlet sends to the client
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 

@@ -108,6 +108,7 @@ public class UserDAOImpl extends UserDAO {
 
     ///////////////////////////////////////////////////////////////
 
+    @Override
     public User findUserByUsernameAndPassword(String username, String password) throws DAOException {
 
         User user = null;

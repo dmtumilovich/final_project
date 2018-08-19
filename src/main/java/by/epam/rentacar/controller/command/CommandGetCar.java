@@ -1,6 +1,5 @@
 package by.epam.rentacar.controller.command;
 
-import by.epam.rentacar.controller.util.PathHelper;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.ServiceFactory;
@@ -17,21 +16,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The command to get selected car.
+ */
 public class CommandGetCar implements Command {
 
     private static final Logger logger = LogManager.getLogger(CommandGetCar.class);
 
+    /**
+     * Gets id of the the car from the request. Then receives car data from the service layer and puts
+     * it as an attribute with name {@link RequestAttributes#KEY_CAR} to request attributes.
+     *
+     * @param request
+     *          an {@link HttpServletRequest} object that contains client request
+     * @param response
+     *          an {@link HttpServletResponse} object that contains the response the servlet sends to the client
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         int carID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_CAR));
 
         CarService carService = ServiceFactory.getInstance().getCarService();
-        Car car = null;
 
         try {
 
-            car = carService.getCar(carID);
+            Car car = carService.getCar(carID);
             request.setAttribute(RequestAttributes.KEY_CAR, car);
             request.getRequestDispatcher(PageParameters.PAGE_CAR).forward(request, response);
 

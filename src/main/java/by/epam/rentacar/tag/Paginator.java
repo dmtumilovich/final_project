@@ -6,11 +6,46 @@ import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.io.Writer;
 
+/**
+ * Defines tag for the pagination.
+ */
 public class Paginator extends SimpleTagSupport {
 
+    /**
+     * Constant variables to display pagination.
+     */
+    private static final String NEXT_PAGE = "&raquo";
+    private static final String PREVIOUS_PAGE = "&laquo";
+    private static final String PAGINATION_START_TAG = "<ul class = \"pagination pagination-sm justify-content-center\">";
+    private static final String PAGINATION_END_TAG = "</ul>";
+    private static final String PAGINATION_ITEM_START_TAG = "<li class=\"page-item";
+    private static final String PAGINATION_ITEM_END_TAG = "</li>";
+    private static final String PAGE_LINK_START_TAG = "<a class=\"page-link\" href=\"";
+    private static final String PAGE_LINK_END_TAG = "</a>";
+    private static final String ACTIVE_CLASS = "active";
+    private static final String START_OF_TAG = "<";
+    private static final String END_OF_TAG = ">";
+    private static final String QUOTE = "\"";
+    private static final String WHITESPACE = " ";
+
+    /**
+     * The url of the page to go after clicking.
+     */
     private String url;
+
+    /**
+     * The index of the current page.
+     */
     private int currentPage;
+
+    /**
+     * The number of all pages.
+     */
     private int totalPages;
+
+    /**
+     * The max number of page links to choose.
+     */
     private int maxLinks;
 
     @Override
@@ -37,10 +72,10 @@ public class Paginator extends SimpleTagSupport {
 
         try {
 
-            out.write("<ul class = \"pagination pagination-sm justify-content-center\">");
+            out.write(PAGINATION_START_TAG);
 
             if (currentPage > 1) {
-                out.write(makeLink(currentPage - 1, "Previous", false));
+                out.write(makeLink(currentPage - 1, PREVIOUS_PAGE, false));
             }
 
             for (int i = pgStart; i < pgEnd; i++) {
@@ -52,10 +87,10 @@ public class Paginator extends SimpleTagSupport {
             }
 
             if (!isLastPage) {
-                out.write(makeLink(currentPage + 1, "Next", false));
+                out.write(makeLink(currentPage + 1, NEXT_PAGE, false));
             }
 
-            out.write("</ul>");
+            out.write(PAGINATION_END_TAG);
 
         } catch (IOException e) {
             throw new JspException("Error while making pagination", e);
@@ -90,17 +125,17 @@ public class Paginator extends SimpleTagSupport {
     }
 
     private String makeLink(int page, String text, boolean isActive) {
-        StringBuilder builder = new StringBuilder("<li class=\"page-item");
+        StringBuilder builder = new StringBuilder(PAGINATION_ITEM_START_TAG);
         if (isActive) {
-            builder.append(" active");
+            builder.append(WHITESPACE).append(ACTIVE_CLASS);
         }
-        builder.append("\">");
-        builder.append("<a class=\"page-link\" href=\"")
+        builder.append(QUOTE).append(END_OF_TAG)
+                .append(PAGE_LINK_START_TAG)
                 .append(url.replace("##", String.valueOf(page)))
-                .append("\">")
+                .append(QUOTE).append(END_OF_TAG)
                 .append(text)
-                .append("</a>");
-        builder.append("</li>");
+                .append(PAGE_LINK_END_TAG)
+                .append(PAGINATION_ITEM_END_TAG);
 
         return builder.toString();
     }

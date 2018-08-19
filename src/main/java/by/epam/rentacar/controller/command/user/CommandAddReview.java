@@ -46,6 +46,7 @@ public class CommandAddReview extends UserCommand {
         int userID = (int) request.getSession().getAttribute(SessionAttributes.KEY_ID_USER);
         int carID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_CAR));
         String reviewText = request.getParameter(RequestParameters.KEY_REVIEW_TEXT);
+        System.out.println(reviewText);
 
         Review review = new Review();
         review.setCarID(carID);

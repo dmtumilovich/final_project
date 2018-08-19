@@ -6,6 +6,11 @@ import by.epam.rentacar.dao.connection.pool.ConnectionPoolException;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+/**
+ * The class to track servlet context lifecycle.
+ * Instantiates and initializes connection pool when context initialized and
+ * disposes pool when context destroyed.
+ */
 public class ContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -19,7 +24,6 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        System.out.println("context destroyed!");
-        ConnectionPool.getInstance().dispose(); //эксепшены?
+        ConnectionPool.getInstance().dispose();
     }
 }

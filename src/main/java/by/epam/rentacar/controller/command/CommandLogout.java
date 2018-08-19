@@ -10,7 +10,22 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Command for logging out the user from the system.
+ */
 public class CommandLogout implements Command {
+
+    /**
+     * Removes id and role attributes from the session.
+     * If the user's role was {@link User.Role#ADMIN} redirects to the main page.
+     * If not, redirects to the referer.
+     *
+     * @param request
+     *          an {@link HttpServletRequest} object that contains client request
+     * @param response
+     *          an {@link HttpServletResponse} object that contains the response the servlet sends to the client
+     * @throws IOException
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 

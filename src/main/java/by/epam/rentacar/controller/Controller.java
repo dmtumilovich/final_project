@@ -23,10 +23,19 @@ public class Controller extends HttpServlet {
         processRequest(request, response);
     }
 
+    /**
+     * Processes the request by obtaining a command from the {@link HttpServletRequest} object and executes this command.
+     *
+     * @param request
+     *          an {@link HttpServletRequest} object that contains client request
+     * @param response
+     *          an {@link HttpServletResponse} object that contains the response the servlet sends to the client
+     * @throws ServletException
+     * @throws IOException
+     */
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String commandStr = request.getParameter(RequestParameters.KEY_COMMAND);
-        System.out.println("COMMAND: " + commandStr);
         Command command = CommandContainer.get(commandStr);
         command.execute(request, response);
 

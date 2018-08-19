@@ -18,12 +18,31 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The command to get all available cars in the selected date range.
+ */
 public class CommandGetCars implements Command {
 
     private static final Logger logger = LogManager.getLogger(CommandGetCars.class);
 
+    /**
+     * The result messages of the command execution.
+     */
     private static final String MESSAGE_INVALID_DATE_RANGE = "local.find.error.invalid-date-range";
 
+    /**
+     * Gets search parameters from the request, such as start date, end date and car class.
+     * Then processing this data by the service layer and receives list of the cars from it, puts
+     * list as an attribute with name {@link RequestAttributes#KEY_CAR_LIST} to the request attributes and
+     * redirects to the cars page.
+     *
+     * @param request
+     *          an {@link HttpServletRequest} object that contains client request
+     * @param response
+     *          an {@link HttpServletResponse} object that contains the response the servlet sends to the client
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
@@ -49,6 +68,7 @@ public class CommandGetCars implements Command {
             request.setAttribute(RequestAttributes.KEY_PAGE, page);
             request.setAttribute(RequestAttributes.KEY_PAGE_COUNT, pageCount);
             request.getRequestDispatcher(PageParameters.PAGE_CARS).forward(request, response);
+            return;
 
         } catch (InvalidDateRangeException e) {
             session.setAttribute(SessionAttributes.KEY_ERROR_MESSAGE, MESSAGE_INVALID_DATE_RANGE);
