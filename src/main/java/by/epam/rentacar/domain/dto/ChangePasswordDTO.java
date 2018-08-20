@@ -1,6 +1,10 @@
 package by.epam.rentacar.domain.dto;
 
-public class ChangePasswordDTO {
+import java.io.Serializable;
+
+public class ChangePasswordDTO implements Serializable {
+
+    private static final long serialVersionUID = -931780285371925052L;
 
     private int userID;
     private String previousPassword;

@@ -1,5 +1,7 @@
 package by.epam.rentacar.controller.command;
 
+import by.epam.rentacar.controller.util.PathHelper;
+import by.epam.rentacar.controller.util.constant.SessionAttributes;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.CarService;
 import by.epam.rentacar.service.ServiceFactory;
@@ -14,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -39,16 +42,31 @@ public class CommandGetCar implements Command {
 
         int carID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_CAR));
 
+        HttpSession session = request.getSession();
+        String dateStart = (String) session.getAttribute(SessionAttributes.KEY_DATE_START);
+        String dateEnd = (String) session.getAttribute(SessionAttributes.KEY_DATE_END);
+
         CarService carService = ServiceFactory.getInstance().getCarService();
+        String destPage;
 
         try {
 
             Car car = carService.getCar(carID);
-            request.setAttribute(RequestAttributes.KEY_CAR, car);
-            request.getRequestDispatcher(PageParameters.PAGE_CAR).forward(request, response);
+            boolean isAvailableToRent = carService.isAvailableToRent(carID, dateStart, dateEnd);
+            if (car != null) {
+                request.setAttribute(RequestAttributes.KEY_CAR, car);
+                request.setAttribute(RequestAttributes.KEY_IS_AVAILABLE, isAvailableToRent);
+                request.getRequestDispatcher(PageParameters.PAGE_CAR).forward(request, response);
+                return;
+            } else {
+                destPage = PageParameters.PAGE_ERROR;
+            }
 
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to get selected car!", e);
+            destPage = PageParameters.PAGE_ERROR;
         }
+
+        response.sendRedirect(destPage);
     }
 }

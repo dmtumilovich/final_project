@@ -32,15 +32,18 @@ public class CommandGetEditProfile extends UserCommand {
         int userID = (int) request.getSession().getAttribute(SessionAttributes.KEY_ID_USER);
 
         UserService userService = ServiceFactory.getInstance().getUserService();
-        User user = null;
 
         try {
-            user = userService.getUser(userID);
+
+            User user = userService.getUser(userID);
 
             request.setAttribute(RequestAttributes.KEY_USER_DATA, user);
             request.getRequestDispatcher(PageParameters.PAGE_EDIT_PROFILE).forward(request, response);
+            return;
+
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to get edit profile page!", e);
+            response.sendRedirect(PageParameters.PAGE_ERROR);
         }
     }
 }

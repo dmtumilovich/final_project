@@ -1,5 +1,6 @@
 package by.epam.rentacar.controller.command.admin;
 
+import by.epam.rentacar.controller.util.PathHelper;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestHeader;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
@@ -29,17 +30,18 @@ public class CommandEditCar extends AdminCommand {
             return;
         }
 
-        CarService carService = ServiceFactory.getInstance().getCarService();
         CarDTO car = parseRequest(request);
+        CarService carService = ServiceFactory.getInstance().getCarService();
+        String destPage = PathHelper.getPreviousPage(request);
 
         try {
             carService.editCar(car);
-
-            String destPage = request.getHeader(RequestHeader.KEY_REFERER);
-            response.sendRedirect(destPage);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to edit car info!", e);
+            destPage = PageParameters.PAGE_ERROR;
         }
+
+        response.sendRedirect(destPage);
 
     }
 

@@ -1,5 +1,6 @@
 package by.epam.rentacar.controller.command.admin;
 
+import by.epam.rentacar.controller.util.PathHelper;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestHeader;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CommandConfirmOrder extends AdminCommand {
+public class    CommandConfirmOrder extends AdminCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandConfirmOrder.class);
 
@@ -30,16 +31,16 @@ public class CommandConfirmOrder extends AdminCommand {
         int orderID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_ORDER));
 
         OrderService orderService = ServiceFactory.getInstance().getOrderService();
+        String destPage = PathHelper.getPreviousPage(request);
 
         try {
-
             orderService.confirmOrder(orderID);
-
-            String destPage = request.getHeader(RequestHeader.KEY_REFERER);
-            response.sendRedirect(destPage);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to confirm order!", e);
+            destPage = PageParameters.PAGE_ERROR;
         }
+
+        response.sendRedirect(destPage);
 
     }
 

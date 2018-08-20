@@ -92,17 +92,6 @@ public abstract class OrderDAO extends AbstractDAO<Order> {
     public abstract void updateStatus(int orderID, int statusID) throws DAOException;
 
     /**
-     * Checks if car busy or not is the selected date range.
-     *
-     * @param carID is the id of the car.
-     * @param dateStart is the start date.
-     * @param dateEnd is the end date.
-     * @return true if car is available in the selected date range or false if not.
-     * @throws DAOException if {@link SQLException} happens.
-     */
-    public abstract boolean isCarAvailable(int carID, Date dateStart, Date dateEnd) throws DAOException;
-
-    /**
      * Updates order's status to {@link by.epam.rentacar.domain.entity.Order.Status#REJECTED} of orders, thad intersecting selected date range.
      *
      * @param orderID is the id of the order.

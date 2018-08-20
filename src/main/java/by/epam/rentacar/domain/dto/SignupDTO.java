@@ -1,6 +1,10 @@
 package by.epam.rentacar.domain.dto;
 
-public class SignupDTO {
+import java.io.Serializable;
+
+public class SignupDTO implements Serializable {
+
+    private static final long serialVersionUID = 8391897363930348939L;
 
     private String username;
     private String password;

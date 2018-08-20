@@ -1,7 +1,7 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="paginator" uri="/WEB-INF/tlds/Paginator" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/jsp/parts/bundle.jsp" %>
+
+<fmt:message bundle = "${loc}" key = "local.text.empty-order-list" var = "empty_order_list" />
 
 <!DOCTYPE html>
 <html>
@@ -36,6 +36,13 @@
             </thead>
 
             <tbody>
+              <c:if test = "${requestScope.order_list.isEmpty()}">
+                <tr>
+                  <td colspan="8">
+                    <h5 class="text-center">${empty_order_list}</h5>
+                  </td>
+                </tr>
+              </c:if>
               <c:forEach items = "${requestScope.order_list}" var = "order" varStatus = "loop">
                 <tr>
                   <td>${(loop.index+1) + (page-1) * 10}</td>

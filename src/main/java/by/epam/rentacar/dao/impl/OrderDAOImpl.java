@@ -352,35 +352,6 @@ public class OrderDAOImpl extends OrderDAO {
     }
 
     @Override
-    public boolean isCarAvailable(int carID, Date dateStart, Date dateEnd) throws DAOException {
-
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-
-        try {
-            statement = connection.prepareStatement("SELECT id_order\n" +
-                    "FROM order_list\n" +
-                    "WHERE id_car = ?\n" +
-                        "AND (? BETWEEN date_start AND date_end) AND (? BETWEEN date_start AND date_end)\n" +
-                        "AND (id_status =  '1' OR id_status = '4')");
-            statement.setInt(1, carID);
-            statement.setTimestamp(2, new Timestamp(dateStart.getTime()));
-            statement.setTimestamp(3, new Timestamp(dateEnd.getTime()));
-
-            resultSet = statement.executeQuery();
-            if (!resultSet.next()) {
-                return true;
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return false;
-
-    }
-
-    @Override
     public void rejectOrdersIntersectingDateRange(int orderID, int carID, Date dateStart, Date dateEnd) throws DAOException {
 
         PreparedStatement statement = null;

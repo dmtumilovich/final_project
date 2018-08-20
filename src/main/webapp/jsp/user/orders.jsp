@@ -18,6 +18,7 @@
 <fmt:message bundle="${loc}" key = "local.user-orders.text.status-unknown" var = "status_unknown" />
 <fmt:message bundle="${loc}" key = "local.user-orders.button.check" var = "button_check" />
 <fmt:message bundle="${loc}" key = "local.text.success" var = "success" />
+<fmt:message bundle="${loc}" key = "local.text.empty-order-list" var = "empty_order_list" />
 
 <!DOCTYPE html>
 <html>
@@ -60,6 +61,13 @@
                     <th></th>
                   </thead>
                   <tbody>
+                    <c:if test = "${requestScope.order_list.isEmpty()}">
+                      <tr>
+                        <td colspan="7">
+                          <h5 class="text-center">${empty_order_list}</h5>
+                        </td>
+                      </tr>
+                    </c:if>
                     <c:forEach items="${requestScope.order_list}" var = "order_item" varStatus = "loop">
                       <tr>
                         <td>${(loop.index + 1) + (page - 1) * 10}</td>

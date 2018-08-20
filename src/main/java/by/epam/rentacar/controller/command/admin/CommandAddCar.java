@@ -1,5 +1,6 @@
 package by.epam.rentacar.controller.command.admin;
 
+import by.epam.rentacar.controller.util.PathHelper;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestAttributes;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
@@ -21,7 +22,7 @@ public class CommandAddCar extends AdminCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandAddCar.class);
 
-    private static final String PAGE_CARS = "/controller?command=show_car_table";//rename
+    private static final String PAGE_CARS = "/controller?command=show_car_table";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -31,15 +32,19 @@ public class CommandAddCar extends AdminCommand {
             return;
         }
 
-        CarService carService = ServiceFactory.getInstance().getCarService();
         CarDTO car = parseRequest(request);
+        CarService carService = ServiceFactory.getInstance().getCarService();
+        String destPage;
 
         try {
             carService.addCar(car);
-            response.sendRedirect(PAGE_CARS);
+            destPage = PAGE_CARS;
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to add car!", e);
+            destPage = PageParameters.PAGE_ERROR;
         }
+
+        response.sendRedirect(destPage);
 
     }
 

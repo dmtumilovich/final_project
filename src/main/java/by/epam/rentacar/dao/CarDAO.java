@@ -82,6 +82,18 @@ public abstract class CarDAO extends AbstractDAO<Car> {
      * @param filename is the photo's url.
      * @throws DAOException if {@link SQLException} happens.
      */
+
+    /**
+     * Checks if car busy or not is the selected date range.
+     *
+     * @param carID is the id of the car.
+     * @param dateStart is the start date.
+     * @param dateEnd is the end date.
+     * @return true if car is available in the selected date range or false if not.
+     * @throws DAOException if {@link SQLException} happens.
+     */
+    public abstract boolean isCarAvailable(int carID, Date dateStart, Date dateEnd) throws DAOException;
+
     public abstract void addPhoto(int carID, String filename) throws DAOException;
 
     /**

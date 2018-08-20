@@ -1,6 +1,10 @@
 package by.epam.rentacar.domain.dto;
 
-public class FindCarsDTO {
+import java.io.Serializable;
+
+public class FindCarsDTO implements Serializable {
+
+    private static final long serialVersionUID = -4467637074332697509L;
 
     private String carClass;
     private String dateStart;

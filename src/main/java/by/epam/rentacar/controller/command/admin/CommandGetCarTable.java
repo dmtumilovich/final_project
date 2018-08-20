@@ -46,6 +46,7 @@ public class CommandGetCarTable extends AdminCommand {
             request.getRequestDispatcher(PageParameters.PAGE_ADMIN_CARS).forward(request, response);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to get cars!", e);
+            response.sendRedirect(PageParameters.PAGE_ERROR);
         }
 
     }

@@ -1,13 +1,8 @@
 package by.epam.rentacar.controller.command.user;
 
-import by.epam.rentacar.controller.command.Command;
 import by.epam.rentacar.controller.util.PathHelper;
-import by.epam.rentacar.controller.util.constant.PageParameters;
-import by.epam.rentacar.controller.util.constant.RequestHeader;
-import by.epam.rentacar.controller.util.constant.RequestParameters;
-import by.epam.rentacar.controller.util.constant.SessionAttributes;
+import by.epam.rentacar.controller.util.constant.*;
 import by.epam.rentacar.domain.dto.MakeOrderDTO;
-import by.epam.rentacar.domain.entity.User;
 import by.epam.rentacar.service.OrderService;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.exception.InvalidDateRangeException;
@@ -21,8 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.text.*;
-import java.util.Date;
 
 public class CommandMakeOrder extends UserCommand {
 
@@ -66,12 +59,9 @@ public class CommandMakeOrder extends UserCommand {
         HttpSession session = request.getSession();
 
         int userID = (int) session.getAttribute(SessionAttributes.KEY_ID_USER);
-        String dateStart = (String) session.getAttribute("date_start");
-        String dateEnd = (String) session.getAttribute("date_end");
+        String dateStart = (String) session.getAttribute(SessionAttributes.KEY_DATE_START);
+        String dateEnd = (String) session.getAttribute(SessionAttributes.KEY_DATE_END);
         int carID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_CAR));
-
-        logger.log(Level.DEBUG, "Date start: " + dateStart);
-        logger.log(Level.DEBUG, "Date end: " + dateEnd);
 
         MakeOrderDTO makeOrderDTO = new MakeOrderDTO();
         makeOrderDTO.setUserID(userID);

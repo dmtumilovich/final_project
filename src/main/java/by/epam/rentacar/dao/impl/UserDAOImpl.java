@@ -40,6 +40,32 @@ public class UserDAOImpl extends UserDAO {
     }
 
     @Override
+    public boolean isCorrectPassword(int userID, String password) throws DAOException {
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = connection.prepareStatement("SELECT id_user\n" +
+                                                        "FROM user_list\n" +
+                                                        "WHERE id_user = ? AND password = ?");
+            statement.setInt(1, userID);
+            statement.setString(2, password);
+
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            throw new DAOException("Error while checking password!", e);
+        }
+
+        return false;
+
+    }
+
+    @Override
     public void update(User user) throws DAOException {
 
         PreparedStatement statement = null;

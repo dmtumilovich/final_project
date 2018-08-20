@@ -32,15 +32,15 @@ public class CommandGetOrderInfo extends AdminCommand {
 
         OrderService orderService = ServiceFactory.getInstance().getOrderService();
 
-        OrderInfoDTO orderInfo = null;
 
         try {
-            orderInfo = orderService.getOrderInfo(orderID);
+            OrderInfoDTO orderInfo = orderService.getOrderInfo(orderID);
 
             request.setAttribute(RequestAttributes.KEY_ORDER_INFO, orderInfo);
             request.getRequestDispatcher(PageParameters.PAGE_ADMIN_ORDER).forward(request, response);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to get order info!", e);
+            response.sendRedirect(PageParameters.PAGE_ERROR);
         }
 
     }

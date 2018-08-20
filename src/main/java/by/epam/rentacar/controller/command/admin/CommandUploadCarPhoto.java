@@ -1,6 +1,7 @@
 package by.epam.rentacar.controller.command.admin;
 
 import by.epam.rentacar.controller.command.Command;
+import by.epam.rentacar.controller.util.UploadHelper;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestHeader;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
@@ -17,9 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 
 public class CommandUploadCarPhoto extends AdminCommand {
 
@@ -36,66 +34,25 @@ public class CommandUploadCarPhoto extends AdminCommand {
         }
 
         int carID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_CAR));
-        Part part = request.getPart("car_photo");
+        Part part = request.getPart(RequestParameters.KEY_CAR_PHOTO);
 
         String appPath = request.getServletContext().getRealPath("");
         String savePath = appPath + File.separator + CARS_PHOTOS_DIRECTORY;
 
-        String filename = writeFile(part, savePath);
-
-        logger.log(Level.DEBUG, "car file name: " + filename);
-
         CarService carService = ServiceFactory.getInstance().getCarService();
+        String destPage = request.getHeader(RequestHeader.KEY_REFERER);
 
         try {
-            carService.addPhoto(carID, filename);
-            logger.log(Level.DEBUG, "Photo has been added to the car with id=" + carID);
-            String destPage = request.getHeader(RequestHeader.KEY_REFERER);
-            response.sendRedirect(destPage);
+            String filename = UploadHelper.writeFile(part, savePath);
+            if (UploadHelper.checkFileFormat(filename)) {
+                carService.addPhoto(carID, filename);
+            }
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to add car photo!", e);
+            destPage = PageParameters.PAGE_ERROR;
         }
 
-    }
+        response.sendRedirect(destPage);
 
-    private String writeFile(Part filePart, String directory) throws IOException {
-
-        File fileDir = new File(directory);
-        if (!fileDir.exists()) {
-            fileDir.mkdirs();
-        }
-
-        String format = getFileFormat(filePart);
-        File file = File.createTempFile("photo", format, fileDir);
-
-        try (InputStream inputStream = filePart.getInputStream()) {
-            Files.copy(inputStream, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        }
-
-        return file.getName();
-
-    }
-
-    private String getFileFormat(Part filePart) {
-
-        String filename = getFileName(filePart);
-
-        if (filename == null) {
-            //exception
-        }
-
-        return filename.substring(filename.lastIndexOf("."));
-
-    }
-
-    private String getFileName(Part filePart) {
-
-        for (String content : filePart.getHeader("content-disposition").split(";")) {
-            if (content.trim().startsWith("filename")) {
-                return content.substring(content.indexOf("=") +1).trim().replace("\"", "");
-            }
-        }
-
-        return null;
     }
 }

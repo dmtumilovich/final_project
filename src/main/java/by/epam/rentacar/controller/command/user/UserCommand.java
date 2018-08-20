@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public abstract class UserCommand implements Command {
 
-    protected boolean identifyUser(HttpServletRequest request) throws IOException {
+    protected boolean identifyUser(HttpServletRequest request) {
 
         HttpSession session = request.getSession();
         User.Role role = (User.Role) session.getAttribute(SessionAttributes.KEY_ROLE);
@@ -21,7 +21,6 @@ public abstract class UserCommand implements Command {
 
     }
 
-    //or only user???
     private boolean isUserOrAdmin(User.Role role) {
 
         return (role != null && (role == User.Role.USER || role == User.Role.ADMIN));

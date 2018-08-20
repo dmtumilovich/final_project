@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Car extends Entity {
+
+    private static final long serialVersionUID = 584464800269885522L;
+
     private int id;
     private String brand;
     private String model;
@@ -131,6 +134,48 @@ public class Car extends Entity {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Car)) return false;
+
+        Car car = (Car) o;
+
+        if (id != car.id) return false;
+        if (yearOfIssue != car.yearOfIssue) return false;
+        if (numberOfSeats != car.numberOfSeats) return false;
+        if (Double.compare(car.engineVolume, engineVolume) != 0) return false;
+        if (isDeleted != car.isDeleted) return false;
+        if (Double.compare(car.price, price) != 0) return false;
+        if (brand != null ? !brand.equals(car.brand) : car.brand != null) return false;
+        if (model != null ? !model.equals(car.model) : car.model != null) return false;
+        if (carClass != null ? !carClass.equals(car.carClass) : car.carClass != null) return false;
+        if (color != null ? !color.equals(car.color) : car.color != null) return false;
+        if (reviewList != null ? !reviewList.equals(car.reviewList) : car.reviewList != null) return false;
+        return photos != null ? photos.equals(car.photos) : car.photos == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = id;
+        result = 31 * result + (brand != null ? brand.hashCode() : 0);
+        result = 31 * result + (model != null ? model.hashCode() : 0);
+        result = 31 * result + (carClass != null ? carClass.hashCode() : 0);
+        result = 31 * result + yearOfIssue;
+        result = 31 * result + numberOfSeats;
+        result = 31 * result + (color != null ? color.hashCode() : 0);
+        temp = Double.doubleToLongBits(engineVolume);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (isDeleted ? 1 : 0);
+        temp = Double.doubleToLongBits(price);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (reviewList != null ? reviewList.hashCode() : 0);
+        result = 31 * result + (photos != null ? photos.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Car{" +
                 "id=" + id +
@@ -144,6 +189,7 @@ public class Car extends Entity {
                 ", isDeleted=" + isDeleted +
                 ", price=" + price +
                 ", reviewList=" + reviewList +
+                ", photos=" + photos +
                 '}';
     }
 }

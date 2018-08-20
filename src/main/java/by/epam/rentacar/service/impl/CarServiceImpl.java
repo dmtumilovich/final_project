@@ -193,7 +193,9 @@ public class CarServiceImpl implements CarService {
             transactionHelper.beginTransaction(carDAO, reviewDAO);
 
             car = carDAO.getByID(carID);
-            car.setReviewList(reviewDAO.getAllByCarID(carID));
+            if (car != null) {
+                car.setReviewList(reviewDAO.getAllByCarID(carID));
+            }
 
             transactionHelper.commit();
         } catch (DAOException e) {
@@ -305,6 +307,10 @@ public class CarServiceImpl implements CarService {
     @Override
     public void addPhoto(int carID, String filename) throws ServiceException {
 
+        if(!Validator.isNotEmpty(filename)) {
+            throw new InvalidInputDataException("Filename is empty!");
+        }
+
         TransactionHelper transactionHelper = null;
 
         try {
@@ -343,6 +349,38 @@ public class CarServiceImpl implements CarService {
         } finally {
             transactionHelper.endTransaction();
         }
+
+    }
+
+    @Override
+    public boolean isAvailableToRent(int carID, String dateStartStr, String dateEndStr) throws ServiceException {
+
+        TransactionHelper transactionHelper = null;
+        boolean isAvailable;
+
+        if (!Validator.isNotEmpty(dateStartStr) && !Validator.isNotEmpty(dateEndStr)) {
+            return false;
+        }
+
+        Date dateStart = DateParser.parse(dateStartStr);
+        Date dateEnd = DateParser.parse(dateEndStr);
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(carDAO);
+
+            isAvailable = carDAO.isCarAvailable(carID, dateStart, dateEnd);
+
+            transactionHelper.commit();
+
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            throw new ServiceException("Error while checking is car available or not", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
+        return isAvailable;
 
     }
 

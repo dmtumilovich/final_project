@@ -5,6 +5,7 @@ import by.epam.rentacar.domain.dto.FindCarsDTO;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.service.exception.ServiceException;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -112,5 +113,15 @@ public interface CarService {
      * @throws ServiceException
      */
     void deletePhoto(int photoID) throws ServiceException;
+
+    /**
+     * Checks if car available to rent or not.
+     *
+     * @param carID is the id of the car.
+     * @param dateStart is the beginning of date range.
+     * @param dateEnd is the end of date range.
+     * @return {@code true} if car is available to rent or {@code false} if not.
+     */
+    boolean isAvailableToRent(int carID, String dateStart, String dateEnd) throws ServiceException;
 
 }

@@ -36,10 +36,7 @@ public class Validator {
         String username = signinDTO.getUsername();
         String password = signinDTO.getPassword();
 
-        return !GenericValidator.isBlankOrNull(username)
-                && !GenericValidator.isBlankOrNull(password)
-                && username.matches(REGEX_USERNAME)
-                && username.matches(REGEX_PASSWORD);
+        return isUsernameValid(username) && isPasswordValid(password);
     }
 
     public static boolean isSignupDataValid(SignupDTO signupDTO) {
@@ -49,20 +46,15 @@ public class Validator {
         String password = signupDTO.getPassword();
         String confirmPassword = signupDTO.getConfirmPassword();
 
-        return !GenericValidator.isBlankOrNull(username)
-                && !GenericValidator.isBlankOrNull(email)
-                && !GenericValidator.isBlankOrNull(password)
-                && !GenericValidator.isBlankOrNull(confirmPassword)
-                && username.matches(REGEX_USERNAME)
-                && GenericValidator.isEmail(email)
-                && password.matches(REGEX_PASSWORD);
+        return isUsernameValid(username)
+                && isEmailValid(email)
+                && isPasswordValid(password)
+                && isPasswordValid(confirmPassword);
 
     }
 
     public static boolean isPasswordsEqual(String password, String confirmPassword) {
-
         return password.equals(confirmPassword);
-
     }
 
     public static boolean isEditProfileDataValid(User user) {
@@ -113,6 +105,22 @@ public class Validator {
                 && GenericValidator.isDouble(engineVolume) && GenericValidator.isInRange(Double.parseDouble(engineVolume), MIN_ENGINE_VOLUME, MAX_ENGINE_VOLUME)
                 && GenericValidator.isDouble(price) && GenericValidator.isInRange(Double.parseDouble(price), MIN_PRICE, MAX_PRICE);
 
+    }
+
+    public static boolean isUsernameValid(String username) {
+        return !GenericValidator.isBlankOrNull(username) && username.matches(REGEX_USERNAME);
+    }
+
+    public static boolean isEmailValid(String email) {
+        return !GenericValidator.isBlankOrNull(email) && GenericValidator.isEmail(email);
+    }
+
+    public static boolean isPasswordValid(String password) {
+        return !GenericValidator.isBlankOrNull(password) && password.matches(REGEX_PASSWORD);
+    }
+
+    public static boolean isNotEmpty(String value) {
+        return !GenericValidator.isBlankOrNull(value);
     }
 
 }

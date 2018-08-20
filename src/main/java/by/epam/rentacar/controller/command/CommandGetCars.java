@@ -49,11 +49,11 @@ public class CommandGetCars implements Command {
         String pageStr = request.getParameter(RequestParameters.KEY_PAGE);
         int page = (pageStr == null || pageStr.isEmpty()) ? 1 : Integer.parseInt(pageStr);
 
-        CarService carService = ServiceFactory.getInstance().getCarService();
         FindCarsDTO findCarsDTO = parseRequest(request);
 
-        String destPage = PageParameters.PAGE_FIND_CARS;
+        CarService carService = ServiceFactory.getInstance().getCarService();
         HttpSession session = request.getSession();
+        String destPage = PageParameters.PAGE_FIND_CARS;
 
         try {
 

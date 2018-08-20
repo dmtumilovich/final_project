@@ -1,6 +1,7 @@
 package by.epam.rentacar.controller.command.user;
 
 import by.epam.rentacar.controller.command.Command;
+import by.epam.rentacar.controller.util.PathHelper;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestHeader;
 import by.epam.rentacar.service.ServiceFactory;
@@ -28,14 +29,15 @@ public class CommandDeleteReview extends UserCommand {
         }
 
         int reviewID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_REVIEW));
+        String destPage = PathHelper.getPreviousPage(request);
 
         try {
             ServiceFactory.getInstance().getReviewService().deleteReview(reviewID);
-
-            String page = request.getHeader(RequestHeader.KEY_REFERER);
-            response.sendRedirect(page);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to delete review by user!", e);
+            destPage = PageParameters.PAGE_ERROR;
         }
+
+        response.sendRedirect(destPage);
     }
 }

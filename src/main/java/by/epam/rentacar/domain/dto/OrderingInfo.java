@@ -3,11 +3,14 @@ package by.epam.rentacar.domain.dto;
 import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.domain.entity.User;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class OrderingInfo {
+public class OrderingInfo implements Serializable {
+
+    private static final long serialVersionUID = 6030192088597367050L;
 
     private User user;
     private Car car;

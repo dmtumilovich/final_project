@@ -1,6 +1,5 @@
 package by.epam.rentacar.controller.command.user;
 
-import by.epam.rentacar.controller.command.Command;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestAttributes;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
@@ -34,11 +33,14 @@ public class CommandGetOrder extends UserCommand {
         OrderService orderService = ServiceFactory.getInstance().getOrderService();
 
         try {
+
             UserOrderDTO userOrderDTO = orderService.getUserOrder(orderID);
             request.setAttribute(RequestAttributes.KEY_ORDER_INFO, userOrderDTO);
             request.getRequestDispatcher(PageParameters.PAGE_ORDER).forward(request, response);
+
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to get user order!", e);
+            response.sendRedirect(PageParameters.PAGE_ERROR);
         }
 
     }

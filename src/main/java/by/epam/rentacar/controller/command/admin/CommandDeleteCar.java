@@ -18,7 +18,7 @@ public class CommandDeleteCar extends AdminCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandDeleteCar.class);
 
-    private static final String PAGE_CARS = "/controller?command=show_car_table"; //rename
+    private static final String PAGE_CARS = "/controller?command=show_car_table";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -31,13 +31,17 @@ public class CommandDeleteCar extends AdminCommand {
         int carID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_CAR));
 
         CarService carService = ServiceFactory.getInstance().getCarService();
+        String destPage;
 
         try {
             carService.deleteCar(carID);
-            response.sendRedirect(PAGE_CARS);
+            destPage = PAGE_CARS;
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to delete car!", e);
+            destPage = PageParameters.PAGE_ERROR;
         }
+
+        response.sendRedirect(destPage);
 
     }
 

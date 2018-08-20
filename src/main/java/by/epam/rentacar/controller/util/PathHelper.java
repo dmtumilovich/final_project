@@ -19,20 +19,8 @@ public class PathHelper {
         return request.getHeader(RequestHeader.KEY_REFERER);
     }
 
-    public static URI addParamToURI(String uri, String name, String value) {
-        URI uriWithParam;
+    private PathHelper() {
 
-        try {
-            uriWithParam = new URIBuilder(uri).addParameter(name, value).build();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("Error while building uri with params!", e);
-        }
-
-        return uriWithParam;
-    }
-
-    public static URI addParamToReferer(HttpServletRequest request, String name, String value) {
-        return addParamToURI(getRefererPage(request), name, value);
     }
 
 }

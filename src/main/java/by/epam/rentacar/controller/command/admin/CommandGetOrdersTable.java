@@ -33,12 +33,10 @@ public class CommandGetOrdersTable extends AdminCommand {
         int page = (pageStr == null) ? 1 : Integer.parseInt(pageStr);
         String status = request.getParameter(RequestParameters.KEY_ORDER_STATUS);
 
-        List<Order> orderList = null;
-
         OrderService orderService = ServiceFactory.getInstance().getOrderService();
 
         try {
-            orderList = (status == null) ? orderService.getAllOrders(page, 10) : orderService.getOrdersByStatus(status, page, 10);
+            List<Order> orderList = (status == null) ? orderService.getAllOrders(page, 10) : orderService.getOrdersByStatus(status, page, 10);
             int pagesCount = orderService.getOrdersPagesCountByStatus(10, status);
 
             request.setAttribute(RequestAttributes.KEY_PAGE, page);
@@ -48,6 +46,7 @@ public class CommandGetOrdersTable extends AdminCommand {
             request.getRequestDispatcher(PageParameters.PAGE_ADMIN_ORDERS).forward(request, response);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to get orders!", e);
+            response.sendRedirect(PageParameters.PAGE_ERROR);
         }
 
     }

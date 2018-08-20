@@ -10,16 +10,19 @@ public class RequestParameters {
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_CONFIRM_PASSWORD = "confirm_password";
     public static final String KEY_EMAIL = "email";
+    public static final String KEY_ID_PHOTO = "photo_id";
+    public static final String KEY_USER_PHOTO = "user_photo";
 
     public static final String KEY_EDIT_NAME = "edit_name";
     public static final String KEY_EDIT_SURNAME = "edit_surname";
     public static final String KEY_EDIT_PHONE = "edit_phone";
     public static final String KEY_EDIT_PASSPORT = "edit_passport";
 
-    public static final String KEY_EDIT_PREVIOUS_PASSWORD = "edit_previous_password";
-    public static final String KEY_EDIT_NEW_PASSWORD = "edit_new_password";
-    public static final String KEY_EDIT_CONFIRM_PASSWORD = "edit_confirm_password";
+    public static final String KEY_PREVIOUS_PASSWORD = "previous_password";
+    public static final String KEY_NEW_PASSWORD = "new_password";
+    public static final String KEY_CONFIRM_NEW_PASSWORD = "confirm_new_password";
 
+    public static final String KEY_CAR_PHOTO = "car_photo";
     public static final String KEY_ID_CAR = "car_id";
     public static final String KEY_CAR_BRAND = "brand";
     public static final String KEY_CAR_MODEL = "model";

@@ -61,6 +61,16 @@ public abstract class UserDAO extends AbstractDAO<User> {
     public abstract void add(String username, String email, String password) throws DAOException;
 
     /**
+     * Checks if password belongs to the user with id {@code userID}.
+     *
+     * @param userID is the id of the user.
+     * @param password is the password to check.
+     * @return {@code true} if password is correct for this user or {@code false} if not.
+     * @throws DAOException if {@link SQLException} happens.
+     */
+    public abstract boolean isCorrectPassword(int userID, String password) throws DAOException;
+
+    /**
      * Changes user password in the database table according to it's id and new password.
      *
      * @param id the user's id.

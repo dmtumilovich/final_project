@@ -63,6 +63,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>ChangePasswordPage</servlet-name>
+    <jsp-file>/jsp/user/password.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ChangePasswordPage</servlet-name>
+    <url-pattern>/user/password</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>UserOrdersPage</servlet-name>
     <jsp-file>/jsp/user/orders.jsp</jsp-file>
   </servlet>

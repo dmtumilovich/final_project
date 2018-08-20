@@ -80,7 +80,7 @@ public class CarDAOImpl extends CarDAO {
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DAOException("Error while setting car_list.is_deleted to 1", e); //?????
+            throw new DAOException("Error while setting deleted status as true", e);
         }
 
     }
@@ -117,7 +117,7 @@ public class CarDAOImpl extends CarDAO {
     //сделать
     @Override
     public List<Car> getAll(int page, int itemsPerPage) throws DAOException {
-        return null;
+        throw new UnsupportedOperationException("Invalid operation for carDAO");
     }
 
     @Override
@@ -319,6 +319,35 @@ public class CarDAOImpl extends CarDAO {
         }
 
         return price;
+
+    }
+
+    @Override
+    public boolean isCarAvailable(int carID, Date dateStart, Date dateEnd) throws DAOException {
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = connection.prepareStatement("SELECT id_order\n" +
+                    "FROM order_list\n" +
+                    "WHERE id_car = ?\n" +
+                    "AND (? BETWEEN date_start AND date_end) AND (? BETWEEN date_start AND date_end)\n" +
+                    "AND (id_status =  '1' OR id_status = '4')");
+            statement.setInt(1, carID);
+            statement.setTimestamp(2, new Timestamp(dateStart.getTime()));
+            statement.setTimestamp(3, new Timestamp(dateEnd.getTime()));
+
+            resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            throw new DAOException("Error while checking is car available", e);
+        }
+
+        return false;
 
     }
 

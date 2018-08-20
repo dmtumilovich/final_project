@@ -153,18 +153,31 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changePassword(ChangePasswordDTO changePasswordDTO) throws ServiceException {
 
+        String previousPassword = changePasswordDTO.getPreviousPassword();
+        String newPassword = changePasswordDTO.getNewPassword();
+        if (!Validator.isPasswordValid(previousPassword) || !Validator.isPasswordValid(newPassword)) {
+            throw new InvalidInputDataException("Password is invalid");
+        }
+
+        String confirmNewPassword = changePasswordDTO.getConfirmPassword();
+        if (!Validator.isPasswordsEqual(newPassword, confirmNewPassword)) {
+            throw new PasswordsNotEqualException("Passwords are not equal!");
+        }
+
         TransactionHelper transactionHelper = null;
 
         try {
             transactionHelper = new TransactionHelper();
             transactionHelper.beginTransaction(userDAO);
 
-            //проверка новых паролей на совпадение
-            //хеширование старого пароля и проверка на совпадение
-
             int userID = changePasswordDTO.getUserID();
-            String hashedNewPassword = hashPassword(changePasswordDTO.getNewPassword());
+            String hashedPreviousPassword = hashPassword(previousPassword);
 
+            if (!userDAO.isCorrectPassword(userID, hashedPreviousPassword)) {
+                throw new InvalidInputDataException("Password isn't correct for this user!");
+            }
+
+            String hashedNewPassword = hashPassword(newPassword);
             userDAO.changePassword(userID, hashedNewPassword);
 
             transactionHelper.commit();
@@ -179,6 +192,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void setPhoto(int userID, String filename) throws ServiceException {
+
+        if(!Validator.isNotEmpty(filename)) {
+            throw new InvalidInputDataException("Filename is empty!");
+        }
 
         TransactionHelper transactionHelper = null;
 

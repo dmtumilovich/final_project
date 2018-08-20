@@ -4,7 +4,11 @@ import by.epam.rentacar.domain.entity.Car;
 import by.epam.rentacar.domain.entity.Order;
 import by.epam.rentacar.domain.entity.User;
 
-public class OrderInfoDTO {
+import java.io.Serializable;
+
+public class OrderInfoDTO implements Serializable {
+
+    private static final long serialVersionUID = -1150104540536773084L;
 
     private Order order;
     private User user;

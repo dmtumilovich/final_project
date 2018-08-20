@@ -1,11 +1,12 @@
 package by.epam.rentacar.controller.command.user;
 
-import by.epam.rentacar.controller.command.Command;
+import by.epam.rentacar.controller.util.PathHelper;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
 import by.epam.rentacar.domain.dto.ChangePasswordDTO;
-import by.epam.rentacar.domain.entity.User;
 import by.epam.rentacar.service.ServiceFactory;
+import by.epam.rentacar.service.exception.InvalidInputDataException;
+import by.epam.rentacar.service.exception.PasswordsNotEqualException;
 import by.epam.rentacar.service.exception.ServiceException;
 import by.epam.rentacar.controller.util.constant.SessionAttributes;
 import org.apache.logging.log4j.Level;
@@ -15,11 +16,18 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class CommandChangePassword extends UserCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandChangePassword.class);
+
+    private static final String PAGE_PROFILE = "/controller?command=profile";
+
+    private static final String MESSAGE_PASSWORD_CHANGED = "local.profile.success.password-changed";
+    private static final String MESSAGE_INVALID_DATA = "local.change-password.error.invalid-data";
+    private static final String MESSAGE_PASSWORDS_NOT_EQUAL = "local.change-password.error.passwords-not-equal";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -30,21 +38,31 @@ public class CommandChangePassword extends UserCommand {
         }
 
         ChangePasswordDTO changePasswordDTO = parseRequest(request);
+        HttpSession session = request.getSession();
+        String destPage = PathHelper.getPreviousPage(request);
 
         try {
             ServiceFactory.getInstance().getUserService().changePassword(changePasswordDTO);
-            response.sendRedirect(PageParameters.PAGE_PROFILE);
+            session.setAttribute(SessionAttributes.KEY_SUCCESS_MESSAGE, MESSAGE_PASSWORD_CHANGED);
+            destPage = PAGE_PROFILE;
+        } catch (InvalidInputDataException e) {
+            session.setAttribute(SessionAttributes.KEY_ERROR_MESSAGE, MESSAGE_INVALID_DATA);
+        } catch (PasswordsNotEqualException e) {
+            session.setAttribute(SessionAttributes.KEY_ERROR_MESSAGE, MESSAGE_PASSWORDS_NOT_EQUAL);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to change password!", e);
+            destPage = PageParameters.PAGE_ERROR;
         }
+
+        response.sendRedirect(destPage);
     }
 
     private ChangePasswordDTO parseRequest(HttpServletRequest request) {
 
         int userID = (int) request.getSession().getAttribute(SessionAttributes.KEY_ID_USER);
-        String previousPassword = request.getParameter(RequestParameters.KEY_EDIT_PREVIOUS_PASSWORD);
-        String newPassword = request.getParameter(RequestParameters.KEY_EDIT_NEW_PASSWORD);
-        String confirmPassword = request.getParameter(RequestParameters.KEY_EDIT_CONFIRM_PASSWORD);
+        String previousPassword = request.getParameter(RequestParameters.KEY_PREVIOUS_PASSWORD);
+        String newPassword = request.getParameter(RequestParameters.KEY_NEW_PASSWORD);
+        String confirmPassword = request.getParameter(RequestParameters.KEY_CONFIRM_NEW_PASSWORD);
 
         ChangePasswordDTO changePasswordDTO = new ChangePasswordDTO();
         changePasswordDTO.setUserID(userID);

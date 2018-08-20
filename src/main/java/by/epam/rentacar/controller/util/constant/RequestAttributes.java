@@ -6,12 +6,11 @@ public class RequestAttributes {
 
     public static final String KEY_CAR = "car";
     public static final String KEY_CAR_LIST = "car_list";
-    public static final String KEY_CAR_INFO = "car_info";
     public static final String KEY_CAR_CLASS = "car_class";
+    public static final String KEY_IS_AVAILABLE = "is_available";
 
     public static final String KEY_ORDER_LIST = "order_list";
     public static final String KEY_ORDER_INFO = "order_info";
-    public static final String KEY_ORDERS_INFO = "orders_info";
     public static final String KEY_ORDER_STATUS = "status";
     public static final String KEY_BOOKING_INFO = "booking_info";
 

@@ -8,10 +8,10 @@
   <span class="navbar-brand float-right">${nav_edit}</span>
   <ul class="navbar-nav">
     <li class="nav-item">
-      <a href="#" class="nav-link">${nav_main}</a>
+      <a href="/controller?command=edit_profile" class="nav-link">${nav_main}</a>
     </li>
     <li class="nav-item">
-      <a href="#" class="nav-link">${nav_password}</a>
+      <a href="/user/password" class="nav-link">${nav_password}</a>
     </li>
   </ul>
 </div>

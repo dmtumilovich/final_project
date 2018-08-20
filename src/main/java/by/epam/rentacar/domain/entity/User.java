@@ -2,6 +2,8 @@ package by.epam.rentacar.domain.entity;
 
 public class User extends Entity {
 
+    private static final long serialVersionUID = 8138438124844791941L;
+
     private int id;
     private String username;
     private String email;
@@ -88,6 +90,42 @@ public class User extends Entity {
         this.photoUrl = photoUrl;
     }
 
+    public enum Role {
+        ADMIN, USER
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+
+        User user = (User) o;
+
+        if (id != user.id) return false;
+        if (username != null ? !username.equals(user.username) : user.username != null) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (name != null ? !name.equals(user.name) : user.name != null) return false;
+        if (surname != null ? !surname.equals(user.surname) : user.surname != null) return false;
+        if (phone != null ? !phone.equals(user.phone) : user.phone != null) return false;
+        if (passport != null ? !passport.equals(user.passport) : user.passport != null) return false;
+        if (role != user.role) return false;
+        return photoUrl != null ? photoUrl.equals(user.photoUrl) : user.photoUrl == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (surname != null ? surname.hashCode() : 0);
+        result = 31 * result + (phone != null ? phone.hashCode() : 0);
+        result = 31 * result + (passport != null ? passport.hashCode() : 0);
+        result = 31 * result + (role != null ? role.hashCode() : 0);
+        result = 31 * result + (photoUrl != null ? photoUrl.hashCode() : 0);
+        return result;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -102,9 +140,4 @@ public class User extends Entity {
                 ", photoUrl='" + photoUrl + '\'' +
                 '}';
     }
-
-    public enum Role {
-        ADMIN, USER
-    }
-
 }

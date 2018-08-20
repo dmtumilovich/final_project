@@ -1,5 +1,6 @@
 package by.epam.rentacar.controller.command;
 
+import by.epam.rentacar.controller.util.PathHelper;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestHeader;
 import by.epam.rentacar.controller.util.constant.SessionAttributes;
@@ -35,8 +36,7 @@ public class CommandLogout implements Command {
         session.removeAttribute(SessionAttributes.KEY_ID_USER);
         session.removeAttribute(SessionAttributes.KEY_ROLE);
 
-        String referer = request.getHeader(RequestHeader.KEY_REFERER); //переделать то что снизу
-        String destPage = (role == User.Role.ADMIN || role == User.Role.USER) ? PageParameters.PAGE_MAIN : referer;
-        response.sendRedirect(destPage);
+        String previous = PathHelper.getPreviousPage(request);
+        response.sendRedirect(previous);
     }
 }

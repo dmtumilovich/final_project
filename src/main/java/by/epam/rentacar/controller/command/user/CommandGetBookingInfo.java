@@ -2,6 +2,7 @@ package by.epam.rentacar.controller.command.user;
 
 
 import by.epam.rentacar.controller.command.Command;
+import by.epam.rentacar.controller.util.PathHelper;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestAttributes;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
@@ -36,20 +37,26 @@ public class CommandGetBookingInfo extends UserCommand {
         int carID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_CAR));
 
         HttpSession session = request.getSession();
-        String dateStart = (String) session.getAttribute("date_start");
-        String dateEnd = (String) session.getAttribute("date_end");
+        String dateStart = (String) session.getAttribute(SessionAttributes.KEY_DATE_START);
+        String dateEnd = (String) session.getAttribute(SessionAttributes.KEY_DATE_END);
 
-        OrderingInfo orderingInfo = null;
         OrderService orderService = ServiceFactory.getInstance().getOrderService();
 
+        String destPage = PathHelper.getPreviousPage(request);
+
         try {
-            orderingInfo = orderService.getBookingInfo(carID, userID, dateStart, dateEnd);
+            OrderingInfo orderingInfo = orderService.getBookingInfo(carID, userID, dateStart, dateEnd);
 
             request.setAttribute(RequestAttributes.KEY_BOOKING_INFO, orderingInfo);
             request.getRequestDispatcher(PageParameters.PAGE_ORDERING).forward(request, response);
+            return;
+
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to get booking info!", e);
+            destPage = PageParameters.PAGE_ERROR;
         }
+
+        response.sendRedirect(destPage);
 
     }
 }

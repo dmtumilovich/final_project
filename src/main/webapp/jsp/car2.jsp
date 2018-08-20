@@ -86,7 +86,7 @@
               <div class="card-footer">
                 <div class="row float-right">
                   <c:choose>
-                    <c:when test = "${not empty user_id}">
+                    <c:when test = "${(not empty user_id) and requestScope.is_available eq true}">
                       <a href="/controller?command=get_booking_info&car_id=${car.id}" class="btn btn-md btn-success">${button_rent}</a>
                     </c:when>
                     <c:when test = "${empty user_id}">

@@ -46,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
             transactionHelper.beginTransaction(carDAO, orderDAO);
 
             int carID = makeOrderDTO.getCarID();
-            if(!orderDAO.isCarAvailable(carID, dateStart, dateEnd)) {
+            if(!carDAO.isCarAvailable(carID, dateStart, dateEnd)) {
                 throw new CarNotAvailableException("Car is busy for this date range");
             }
 

@@ -1,8 +1,10 @@
 package by.epam.rentacar.domain.dto;
 
-import java.util.Date;
+import java.io.Serializable;
 
-public class MakeOrderDTO {
+public class MakeOrderDTO implements Serializable {
+
+    private static final long serialVersionUID = 5590873329310882349L;
 
     private int userID;
     private int carID;

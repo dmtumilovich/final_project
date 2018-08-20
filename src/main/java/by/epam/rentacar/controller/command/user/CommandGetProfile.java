@@ -1,6 +1,5 @@
 package by.epam.rentacar.controller.command.user;
 
-import by.epam.rentacar.controller.command.Command;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestAttributes;
 import by.epam.rentacar.controller.util.constant.SessionAttributes;
@@ -32,15 +31,15 @@ public class CommandGetProfile extends UserCommand {
         int userID = (int) request.getSession().getAttribute(SessionAttributes.KEY_ID_USER);
 
         UserService userService = ServiceFactory.getInstance().getUserService();
-        User user = null;
 
         try {
-            user = userService.getUser(userID);
+            User user = userService.getUser(userID);
 
             request.setAttribute(RequestAttributes.KEY_USER_DATA, user);
             request.getRequestDispatcher(PageParameters.PAGE_PROFILE).forward(request, response);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to get user profile!", e);
+            response.sendRedirect(PageParameters.PAGE_ERROR);
         }
     }
 }
