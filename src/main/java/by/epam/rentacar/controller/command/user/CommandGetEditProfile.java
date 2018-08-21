@@ -17,10 +17,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The command for getting edit profile page.
+ */
 public class CommandGetEditProfile extends UserCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandGetEditProfile.class);
 
+    /**
+     * Gets {@code userID} from the session and then gets user data from the
+     * service layer. If some error occurs, redirects to the error page.
+     *
+     * @param request
+     *          an {@link HttpServletRequest} object that contains client request
+     * @param response
+     *          an {@link HttpServletResponse} object that contains the response the servlet sends to the client
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 

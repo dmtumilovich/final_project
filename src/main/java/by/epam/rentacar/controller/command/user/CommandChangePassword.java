@@ -4,6 +4,7 @@ import by.epam.rentacar.controller.util.PathHelper;
 import by.epam.rentacar.controller.util.constant.PageParameters;
 import by.epam.rentacar.controller.util.constant.RequestParameters;
 import by.epam.rentacar.domain.dto.ChangePasswordDTO;
+import by.epam.rentacar.domain.entity.Review;
 import by.epam.rentacar.service.ServiceFactory;
 import by.epam.rentacar.service.exception.InvalidInputDataException;
 import by.epam.rentacar.service.exception.PasswordsNotEqualException;
@@ -19,16 +20,37 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * The command for changing password.
+ */
 public class CommandChangePassword extends UserCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandChangePassword.class);
 
     private static final String PAGE_PROFILE = "/controller?command=profile";
 
+    /**
+     * The result messages of the command execution.
+     */
     private static final String MESSAGE_PASSWORD_CHANGED = "local.profile.success.password-changed";
     private static final String MESSAGE_INVALID_DATA = "local.change-password.error.invalid-data";
     private static final String MESSAGE_PASSWORDS_NOT_EQUAL = "local.change-password.error.passwords-not-equal";
 
+    /**
+     * Gets previous password, new password and confirmed new password from the request.
+     * Then processing this data by service layer.
+     * If data is valid redirects to the profile page with success message.
+     * If {@link InvalidInputDataException} or {@link PasswordsNotEqualException} has happened
+     * redirects to the previous page with appropriate error message.
+     * If {@link ServiceException} has happened redirects to the error page.
+     *
+     * @param request
+     *          an {@link HttpServletRequest} object that contains client request
+     * @param response
+     *          an {@link HttpServletResponse} object that contains the response the servlet sends to the client
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
@@ -57,6 +79,11 @@ public class CommandChangePassword extends UserCommand {
         response.sendRedirect(destPage);
     }
 
+    /**
+     * Parses the request to get an {@link ChangePasswordDTO} object.
+     *
+     * @return an {@link ChangePasswordDTO} object.
+     */
     private ChangePasswordDTO parseRequest(HttpServletRequest request) {
 
         int userID = (int) request.getSession().getAttribute(SessionAttributes.KEY_ID_USER);

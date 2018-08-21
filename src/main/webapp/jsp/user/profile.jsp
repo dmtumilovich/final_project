@@ -1,166 +1,104 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/jsp/parts/bundle.jsp" %>
+
+<fmt:message bundle="${loc}" key = "local.profile.text.title" var = "title" />
+<fmt:message bundle="${loc}" key = "local.profile.text.card-title" var = "card_title" />
+<fmt:message bundle="${loc}" key = "local.profile.text.card-username" var = "card_username" />
+<fmt:message bundle="${loc}" key = "local.profile.text.card-email" var = "card_email" />
+<fmt:message bundle="${loc}" key = "local.profile.text.card-name" var = "card_name" />
+<fmt:message bundle="${loc}" key = "local.profile.text.card-surname" var = "card_surname" />
+<fmt:message bundle="${loc}" key = "local.profile.text.card-phone" var = "card_phone" />
+<fmt:message bundle="${loc}" key = "local.profile.text.card-passport" var = "card_passport" />
+<fmt:message bundle="${loc}" key = "local.profile.button.edit" var = "button_edit" />
+<fmt:message bundle="${loc}" key = "local.profile.button.browse" var = "button_browse" />
+<fmt:message bundle="${loc}" key = "local.profile.button.upload" var = "button_upload" />
+<fmt:message bundle="${loc}" key = "local.text.success" var = "success" />
+
 
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <title>${title} | ${user_data.username}</title>
 
-    <%-- <c:if test="${empty user}">
-      <c:redirect url = "main" />
-    </c:if> --%>
-
-    <!-- <fmt:setLocale value = "${sessionScope.local}" />
-    <fmt:setBundle basename = "local" var = "loc" />
-    <fmt:message bundle = "${loc}" key = "local.header.button.en" var = "en_button" />
-    <fmt:message bundle = "${loc}" key = "local.header.button.ru" var = "ru_button" />
-    <fmt:message bundle = "${loc}" key = "local.header.text.title" var = "title" />
-    <fmt:message bundle = "${loc}" key = "local.header.text.nav-home" var = "nav_home" />
-    <fmt:message bundle = "${loc}" key = "local.header.text.nav-cars" var = "nav_cars" />
-    <fmt:message bundle = "${loc}" key = "local.header.text.nav-contact" var = "nav_contact" />
-    <fmt:message bundle = "${loc}" key = "local.header.text.nav-signin" var = "nav_signin" />
-    <fmt:message bundle = "${loc}" key = "local.header.text.nav-signup" var = "nav_signup" />
-    <fmt:message bundle = "${loc}" key = "local.header.text.nav-profile" var = "nav_profile" />
-    <fmt:message bundle = "${loc}" key = "local.header.text.nav-logout" var = "nav_logout" /> -->
-
-    <fmt:message bundle = "${loc}" key = "local.profile.text.title" var = "page_title" />
-    <fmt:message bundle = "${loc}" key = "local.profile.text.panel-title" var = "panel_title" />
-    <fmt:message bundle = "${loc}" key = "local.profile.text.panel-username" var = "panel_username" />
-    <fmt:message bundle = "${loc}" key = "local.profile.text.panel-email" var = "panel_email" />
-    <fmt:message bundle = "${loc}" key = "local.profile.text.panel-name" var = "panel_name" />
-    <fmt:message bundle = "${loc}" key = "local.profile.text.panel-surname" var = "panel_surname" />
-    <fmt:message bundle = "${loc}" key = "local.profile.text.panel-phone" var = "panel_phone" />
-    <fmt:message bundle = "${loc}" key = "local.profile.text.panel-passport" var = "panel_passport" />
-    <fmt:message bundle = "${loc}" key = "local.profile.button.edit" var = "button_edit" />
-
-    <title>${page_title}</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="../css/cover.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/style.css">
   </head>
-
   <body>
-    <div class="cover-container w-100 h-100 p-3 mx-auto flex-column">
-      <header class="masthead mb-auto">
-        <div class="inner">
-          <h3 class="masthead-brand">${title}</h3>
-          <nav class="nav nav-masthead justify-content-center">
-            <a class="nav-link" href="../main">${nav_home}</a>
-            <a class="nav-link" href="/controller?command=show_cars">${nav_cars}</a>
-            <a class="nav-link" href="#">${nav_contact}</a>
 
-            <c:if test = "${empty user}">
-              <a class="nav-link" href="signin">${nav_signin}</a>
-              <a class="nav-link" href="signup">${nav_signup}</a>
-            </c:if>
-
-            <c:if test = "${not empty user}">
-              <a class="nav-link active" href="/user/profile">${nav_profile}</a>
-              <a class="nav-link" href="/controller?command=logout">${nav_logout}</a>
-            </c:if>
-
-            <a class="nav-link" href="/controller?command=change_lang&local=en">${en_button}</a>
-            <a class="nav-link" href="/controller?command=change_lang&local=ru">${ru_button}</a>
-
-          </nav>
-        </div>
-      </header>
-
-      <jsp:include page = "/jsp/header.jsp"></jsp:include>
-
-
-      <main role="main" class="inner cover">
-
-
-        <ul class="nav nav-tabs justify-content-center">
-          <li>
-            <a href="#profile_main" class="nav-link active" data-toggle="tab">Main</a>
-          </li>
-          <li>
-            <a href="#" class="nav-link" data-toggle="tab">Other</a>
-          </li>
-        </ul>
-
-        <div class="tab-content">
-          <div class="tab-pane container active" id="profile_main">
-
-            <div class="panel panel-info">
-              <div class="panel-heading">
-                <h3 class="panel-title text-center">${panel_title}</h3>
+      <%@ include file="/jsp/parts/header.jsp" %>
+      <main role="main" class="container">
+        <div class="row">
+          <div class="col-2 float-left">
+            <jsp:include page = "/jsp/user/parts/profile_sidebar.jsp" />
+          </div>
+          <div class="col-10 float-left">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title">${card_title}</h4>
               </div>
-              <div class="panel-body">
-                <div class="row">
-
-                  <div class="col-md-3 col-lg-3" align="center">
-                    <img src="../img/no_avatar.png" alt="Photo" class="img-circle" width="150px" height="150px">
-                  </div>
-
-                  <div class="col-md-9 col-lg-9">
-                    <table class="table table-striped table-user-information">
-                      <tbody>
-                        <tr>
-                          <td>${panel_username}:</td>
-                          <td>@${user.username}</td>
-                        </tr>
-                        <tr>
-                          <td>${panel_email}:</td>
-                          <td>${user.email}</td>
-                        </tr>
-                        <tr>
-                          <td>${panel_name}:</td>
-                          <td>${user.name}</td>
-                        </tr>
-                        <tr>
-                          <td>${panel_surname}:</td>
-                          <td>${user.surname}</td>
-                        </tr>
-                        <tr>
-                          <td>${panel_phone}:</td>
-                          <td>${user.phone}</td>
-                        </tr>
-                        <tr>
-                          <td>${panel_passport}:</td>
-                          <td>${user.passport}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-
-                  </div>
-
+              <div class="card-body">
+                <div class="col-2 float-left text-center">
+                  <img src="../../img/uploads/user/${user_data.photoUrl}" alt="User photo" width="150px" height="187px" class="img-thumbnail">
+                    <form action="/upload" method="post" enctype="multipart/form-data">
+                      <input type="hidden" name="command" value="upload_user_photo">
+                      <label class="btn btn-sm btn-light btn-block border mt-1">
+                        ${button_browse}<input type="file" name="user_photo" style="display: none;" id="file_picker" required/>
+                      </label>
+                      <button type="submit" class="btn btn-sm btn-block btn-secondary" id="button_upload" >${button_upload}</button>
+                    </form>
                 </div>
-
-                <div class="panel-footer">
-                  <div class = "text-center">
-                    <a href="/user/edit_profile" class="btn btn-lg btn-secondary btn-block">${button_edit}</a>
-                  </div>
+                <div class="col-10 float-left">
+                  <table class="table">
+                    <tbody>
+                      <tr>
+                        <td>${card_username}:</td>
+                        <td>@${user_data.username}</td>
+                      </tr>
+                      <tr>
+                        <td>${card_email}:</td>
+                        <td>${user_data.email}</td>
+                      </tr>
+                      <tr>
+                        <td>${card_name}:</td>
+                        <td>${user_data.name}</td>
+                      </tr>
+                      <tr>
+                        <td>${card_surname}:</td>
+                        <td>${user_data.surname}</td>
+                      </tr>
+                      <tr>
+                        <td>${card_phone}:</td>
+                        <td>${user_data.phone}</td>
+                      </tr>
+                      <tr>
+                        <td>${card_passport}:</td>
+                        <td>${user_data.passport}</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-
+              </div>
+              <div class="card-footer">
+                <div class="float-right">
+                  <a href="/controller?command=edit_profile" class="btn btn-md btn-light border">${button_edit}</a>
+                </div>
               </div>
             </div>
+            <c:if test = "${not empty success_message}">
+              <div class="alert alert-success alert-dismissible show fade mt-2">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>${success}</strong> <fmt:message bundle = "${loc}" key = "${success_message}" />
+              </div>
+              <c:remove var = "success_message" scope = "session" />
+            </c:if>
           </div>
         </div>
-
-
       </main>
 
-
-      <footer class="mastfoot mt-auto text-center">
-        <div class="inner">
-          <p>&copy;einott lab</p>
-        </div>
-      </footer>
-    </div>
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="../js/vendor/popper.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script>window.jQuery || document.write('<script src="../../js/vendor/jquery-slim.min.js"><\/script>')</script>
+      <script src="../../js/vendor/popper.min.js"></script>
+      <script src="../../js/bootstrap.min.js"></script>
+      <script src="../../js/script.js"></script>
   </body>
 </html>

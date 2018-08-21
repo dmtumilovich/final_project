@@ -16,6 +16,9 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * The class for instantiation of connection pool.
+ */
 public class ConnectionPool {
 
     private static final Logger logger = LogManager.getLogger(ConnectionPool.class);
@@ -25,7 +28,13 @@ public class ConnectionPool {
     private static ReentrantLock lock = new ReentrantLock();
     private static AtomicBoolean instanceCreated = new AtomicBoolean(false);
 
+    /**
+     * The queue for free connections.
+     */
     private BlockingQueue<Connection> connectionQueue;
+    /**
+     * The queue for busy connections.
+     */
     private BlockingQueue<Connection> givenAwayConnectionQueue;
 
     private String driver;
@@ -98,8 +107,6 @@ public class ConnectionPool {
             connection = connectionQueue.take();
             givenAwayConnectionQueue.add(connection);
             logger.log(Level.DEBUG, "Connection has been taken!");
-//            logger.log(Level.DEBUG, "The number of connections is " + connectionQueue.size()); //а надо ли?
-//            logger.log(Level.DEBUG, "The number of given away connections is " + givenAwayConnectionQueue.size());
         } catch (InterruptedException e) {
             throw new ConnectionPoolException("Error connecting to the data source." , e);
         }
@@ -107,45 +114,24 @@ public class ConnectionPool {
         return connection;
     }
 
-    public void releaseConnection(Connection connection) {
-
-//        if (connection == null) {
-//            return false;
-//        }
-//
-//        givenAwayConnectionQueue.remove(connection);
-//        connectionQueue.add(connection);
-//
-//        return true;
-
-        try {
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            //logger
-        }
-
-    }
 
     public void closeConnection(Connection connection, Statement st, ResultSet rs) {
 
         try {
             rs.close();
         } catch (SQLException e) {
-            //logger
+            logger.log(Level.ERROR, e);
         }
         try {
             st.close();
         } catch (SQLException e) {
-            //logger
+            logger.log(Level.ERROR, e);
         }
 
         try {
             connection.close();
         } catch (SQLException e) {
-            //logger
+            logger.log(Level.ERROR, e);
         }
     }
 
@@ -154,12 +140,12 @@ public class ConnectionPool {
         try {
             st.close();
         } catch (SQLException e) {
-            //logger
+            logger.log(Level.ERROR, e);
         }
         try {
             connection.close();
         } catch (SQLException e) {
-            //logger
+            logger.log(Level.ERROR, e);
         }
     }
 
@@ -172,7 +158,7 @@ public class ConnectionPool {
             closeConnectionsQueue(givenAwayConnectionQueue);
             closeConnectionsQueue(connectionQueue);
         } catch (SQLException e) {
-            //logger;
+            logger.log(Level.ERROR, e);
         }
     }
 
@@ -221,8 +207,6 @@ public class ConnectionPool {
             }
 
             logger.log(Level.DEBUG, "Connection has been released!");
-//            logger.log(Level.DEBUG, "The number of connections is " + connectionQueue.size());
-//            logger.log(Level.DEBUG, "The number of given away connections is " + givenAwayConnectionQueue.size());
         }
 
         @Override

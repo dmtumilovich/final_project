@@ -332,11 +332,14 @@ public class CarDAOImpl extends CarDAO {
             statement = connection.prepareStatement("SELECT id_order\n" +
                     "FROM order_list\n" +
                     "WHERE id_car = ?\n" +
-                    "AND (? BETWEEN date_start AND date_end) AND (? BETWEEN date_start AND date_end)\n" +
+                    "AND ((date_end BETWEEN ? AND ?) OR (? BETWEEN date_start AND date_end))\n" +
                     "AND (id_status =  '1' OR id_status = '4')");
+            Timestamp dateStartTS = new Timestamp(dateStart.getTime());
+            Timestamp dateEndTS = new Timestamp(dateEnd.getTime());
             statement.setInt(1, carID);
-            statement.setTimestamp(2, new Timestamp(dateStart.getTime()));
-            statement.setTimestamp(3, new Timestamp(dateEnd.getTime()));
+            statement.setTimestamp(2, dateStartTS);
+            statement.setTimestamp(3, dateEndTS);
+            statement.setTimestamp(4, dateEndTS);
 
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -378,7 +381,6 @@ public class CarDAOImpl extends CarDAO {
             statement.setInt(1, photoID);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new DAOException("Error while deleting car photo", e);
         }
 

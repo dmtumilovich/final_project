@@ -9,8 +9,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
+/**
+ * The class for parsing an {@link ResultSet} object. Defines static methods for it.
+ */
 public class ResultSetParser {
 
+    /**
+     * Parses an {@link ResultSet} object and creates {@link User} object.
+     *
+     * @param rs is an {@link ResultSet} object to parse.
+     * @return an {@link User} object.
+     * @throws SQLException
+     */
     public static User createUser(ResultSet rs) throws SQLException {
         User user = null;
 
@@ -24,7 +34,6 @@ public class ResultSetParser {
         String role = rs.getString(UserRoleTable.ROLE_NAME);
         String photoUrl = rs.getString(UserListTable.PHOTO);
 
-        //builder???
         user = new User();
         user.setId(id);
         user.setUsername(username);
@@ -39,6 +48,13 @@ public class ResultSetParser {
         return user;
     }
 
+    /**
+     * Parses an {@link ResultSet} object and creates {@link Car} object.
+     *
+     * @param rs is an {@link ResultSet} object to parse.
+     * @return an {@link Car} object.
+     * @throws SQLException
+     */
     public static Car createCar(ResultSet rs) throws SQLException {
 
         int id = rs.getInt(CarListTable.ID_CAR);
@@ -51,20 +67,7 @@ public class ResultSetParser {
         double engineVolume = rs.getDouble(CarListTable.ENGINE_VOLUME);
         boolean isAvailable = rs.getBoolean(CarListTable.IS_DELETED);
         double price = rs.getDouble(CarListTable.PRICE);
-//        List<String> photos = new ArrayList<>();
-//
-//
-//        do {
-//
-//            String photoUrl = rs.getString(CarPhotosTable.PHOTO_URL);
-//            if (photoUrl != null) {
-//                photos.add(photoUrl);
-//            }
-//
-//        } while (rs.getInt(CarListTable.ID_CAR) == id && rs.next());
-//        rs.previous();
 
-        //builder???
         Car car = new Car();
         car.setId(id);
         car.setBrand(brand);
@@ -76,11 +79,17 @@ public class ResultSetParser {
         car.setEngineVolume(engineVolume);
         car.setDeleted(isAvailable);
         car.setPrice(price);
-//        car.setPhotos(photos);
 
         return car;
     }
 
+    /**
+     * Parses an {@link ResultSet} object and creates {@link CarPhoto} object.
+     *
+     * @param rs is an {@link ResultSet} object to parse.
+     * @return an {@link CarPhoto} object.
+     * @throws SQLException
+     */
     public static CarPhoto createCarPhoto(ResultSet rs) throws SQLException {
 
         int id = rs.getInt(CarPhotosTable.ID_PHOTO);
@@ -96,6 +105,14 @@ public class ResultSetParser {
 
     }
 
+    /**
+     * Parses an {@link ResultSet} object and creates {@link Car} object
+     * with list of {@link CarPhoto} objects.
+     *
+     * @param rs is an {@link ResultSet} object to parse.
+     * @return an {@link Car} object.
+     * @throws SQLException
+     */
     public static Car createCarWithPhotos(ResultSet rs) throws SQLException {
 
         Car car = createCar(rs);
@@ -112,13 +129,15 @@ public class ResultSetParser {
 
     }
 
-    //?????
+    /**
+     * Parses an {@link ResultSet} object and creates {@link Review} object.
+     *
+     * @param rs is an {@link ResultSet} object to parse.
+     * @return an {@link Review} object.
+     * @throws SQLException
+     */
     public static Review createReview(ResultSet rs) throws SQLException {
         int reviewID = rs.getInt(CarReviewTable.ID_REVIEW);
-        if (reviewID == 0) {
-            return null;
-        }
-
         int userID = rs.getInt(CarReviewTable.ID_USER);
         String username = rs.getString(UserListTable.USERNAME);
         String userPhotoUrl = rs.getString(UserListTable.PHOTO);
@@ -136,6 +155,13 @@ public class ResultSetParser {
         return review;
     }
 
+    /**
+     * Parses an {@link ResultSet} object and creates {@link Order} object.
+     *
+     * @param rs is an {@link ResultSet} object to parse.
+     * @return an {@link Order} object.
+     * @throws SQLException
+     */
     public static Order createOrder(ResultSet rs) throws SQLException {
         int id = rs.getInt(OrderListTable.ID_ORDER);
         int userID = rs.getInt(OrderListTable.ID_USER);
@@ -158,6 +184,13 @@ public class ResultSetParser {
         return order;
     }
 
+    /**
+     * Parses an {@link ResultSet} object and creates {@link OrderInfoDTO} object.
+     *
+     * @param rs is an {@link ResultSet} object to parse.
+     * @return an {@link OrderInfoDTO} object.
+     * @throws SQLException
+     */
     public static OrderInfoDTO createOrderInfoDTO(ResultSet rs) throws SQLException {
 
         Order order = createOrder(rs);

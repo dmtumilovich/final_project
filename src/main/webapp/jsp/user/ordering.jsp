@@ -172,7 +172,7 @@
               <div class="mt-2 col-6 float-right row">
                 <c:choose>
                   <c:when test="${booking_info.allUserData eq false}">
-                    <button type="submit" class="btn btn-lg btn-success btn-block disabled">${button_book}</button>
+                    <button type="submit" class="btn btn-lg btn-success btn-block disabled" disabled>${button_book}</button>
                   </c:when>
                   <c:otherwise>
                     <button type="submit" class="btn btn-lg btn-success btn-block">${button_book}</button>

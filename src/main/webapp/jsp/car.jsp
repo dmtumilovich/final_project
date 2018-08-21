@@ -1,200 +1,160 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/jsp/parts/bundle.jsp" %>
 
+<fmt:message bundle="${loc}" key="local.car.text.title" var="title" />
+<fmt:message bundle="${loc}" key="local.car.text.card-characteristics" var="card_charactirectics" />
+<fmt:message bundle="${loc}" key="local.car.text.card-class" var="card_class" />
+<fmt:message bundle="${loc}" key="local.car.text.card-color" var="card_color" />
+<fmt:message bundle="${loc}" key="local.car.text.card-year" var="card_year" />
+<fmt:message bundle="${loc}" key="local.car.text.card-seats" var="card_seats" />
+<fmt:message bundle="${loc}" key="local.car.text.card-volume" var="card_volume" />
+<fmt:message bundle="${loc}" key="local.car.text.card-price" var="card_price" />
+<fmt:message bundle="${loc}" key="local.car.button.rent" var="button_rent" />
+<fmt:message bundle="${loc}" key="local.car.button.login" var="button_login_to_rent" />
+<fmt:message bundle="${loc}" key="local.car.text.comments-header" var="comments_header" />
+<fmt:message bundle="${loc}" key="local.car.text.comments-count" var="comments_count" />
+<fmt:message bundle="${loc}" key="local.car.button.comments-reset" var="button_reset" />
+<fmt:message bundle="${loc}" key="local.car.button.comments-send" var="button_send" />
+<fmt:message bundle="${loc}" key="local.car.button.comments-share" var="button_share" />
+<fmt:message bundle="${loc}" key="local.car.button.comments-delete" var="button_delete" />
 
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Car</title>
+    <meta charset="utf-8">
+    <title>${car.brand} ${car.model}</title>
 
-    <fmt:setLocale value = "${sessionScope.local}" />
-    <fmt:setBundle basename = "local" var = "loc" />
-    <fmt:message bundle = "${loc}" key = "local.header.button.en" var = "en_button" />
-    <fmt:message bundle = "${loc}" key = "local.header.button.ru" var = "ru_button" />
-    <fmt:message bundle = "${loc}" key = "local.header.text.title" var = "title" />
-    <fmt:message bundle = "${loc}" key = "local.header.text.nav-home" var = "nav_home" />
-    <fmt:message bundle = "${loc}" key = "local.header.text.nav-cars" var = "nav_cars" />
-    <fmt:message bundle = "${loc}" key = "local.header.text.nav-contact" var = "nav_contact" />
-    <fmt:message bundle = "${loc}" key = "local.header.text.nav-signin" var = "nav_signin" />
-    <fmt:message bundle = "${loc}" key = "local.header.text.nav-signup" var = "nav_signup" />
-    <fmt:message bundle = "${loc}" key = "local.header.text.nav-profile" var = "nav_profile" />
-    <fmt:message bundle = "${loc}" key = "local.header.text.nav-logout" var = "nav_logout" />
-
-    <fmt:message bundle = "${loc}" key = "local.car.text.title" var = "page_title" />
-    <fmt:message bundle = "${loc}" key = "local.car.text.panel-class" var = "panel_class" />
-    <fmt:message bundle = "${loc}" key = "local.car.text.panel-color" var = "panel_color" />
-    <fmt:message bundle = "${loc}" key = "local.car.text.panel-year" var = "panel_year" />
-    <fmt:message bundle = "${loc}" key = "local.car.text.panel-seats" var = "panel_seats" />
-    <fmt:message bundle = "${loc}" key = "local.car.text.panel_volume" var = "panel_volume" />
-    <fmt:message bundle = "${loc}" key = "local.car.text.panel-daily-price" var = "panel_daily_price" />
-    <fmt:message bundle = "${loc}" key = "local.car.button.order" var = "button_order" />
-
-    <!-- Bootstrap core CSS -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="../css/cover.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
   </head>
-
   <body>
+      <jsp:include page = "/jsp/parts/header.jsp" />
 
-    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-      <header class="masthead mb-auto">
-        <div class="inner">
-          <h3 class="masthead-brand">${title}</h3>
-          <nav class="nav nav-masthead justify-content-center">
-            <a class="nav-link" href="main">${nav_home}</a>
-            <a class="nav-link active" href="/controller?command=show_cars">${nav_cars}</a>
-            <a class="nav-link" href="#">${nav_contact}</a>
-
-            <c:if test = "${empty user}">
-              <a class="nav-link" href="signin">${nav_signin}</a>
-              <a class="nav-link" href="signup">${nav_signup}</a>
-            </c:if>
-
-            <c:if test = "${not empty user}">
-              <a class="nav-link" href="/user/profile">${nav_profile}</a>
-              <a class="nav-link" href="/controller?command=logout">${nav_logout}</a>
-            </c:if>
-
-            <a class="nav-link" href="/controller?command=change_lang&local=en">${en_button}</a>
-            <a class="nav-link" href="/controller?command=change_lang&local=ru">${ru_button}</a>
-
-          </nav>
-        </div>
-      </header>
-
-      <jsp:include page = "/jsp/header.jsp"></jsp:include>
-
-      <main role="main" class="inner cover">
-        <div class="panel panel-info">
-          <div class="panel-heading">
-            <h3 class="panel-title text-center">${car.brand} ${car.model}</h3>
+      <main role="main" class="container">
+        <div class="row">
+          <div class="col-2 float-left">
+            <jsp:include page = "/jsp/parts/cars_sidebar.jsp" />
           </div>
-          <div class="panel-body">
-            <div class="row">
-
-              <div class="col-md-3 col-lg-3" align="center">
-                <img src="../img/no_avatar_car.png" alt="Photo" class="img-circle" width="150px" height="150px">
+          <div class="col-10 float-left">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title">${car.brand} ${car.model}</h4>
               </div>
-
-              <div class="col-md-9 col-lg-9">
-                <table class="table table-striped table-user-information">
+              <div class="card-body">
+                <table class="table">
+                  <thead class="table-head">
+                    <h5>${card_charactirectics}</h5>
+                  </thead>
                   <tbody>
                     <tr>
-                      <td>Class:</td>
+                      <td>${card_class}:</td>
                       <td>${car.carClass}</td>
                     </tr>
                     <tr>
-                      <td>Сolor:</td>
+                      <td>${card_color}:</td>
                       <td>${car.color}</td>
                     </tr>
                     <tr>
-                      <td>Year:</td>
+                      <td>${card_year}:</td>
                       <td>${car.yearOfIssue}</td>
                     </tr>
-                      <td>Seats:</td>
+                    <tr>
+                      <td>${card_seats}:</td>
                       <td>${car.numberOfSeats}</td>
                     </tr>
                     <tr>
-                      <td>Engine volume:</td>
+                      <td>${card_volume}:</td>
                       <td>${car.engineVolume}</td>
                     </tr>
                     <tr>
-                      <td>Price per day:</td>
-                      <td>${car.price}</td>
+                      <td>${card_price}:</td>
+                      <td>${car.price}$</td>
                     </tr>
                   </tbody>
+                  <tfoot>
+                    <td colspan="2">
+                      <div class="row mx-auto">
+                        <c:forEach items="${car.photos}" var = "photo">
+                          <div class="col-4">
+                            <img src="../img/uploads/cars/${photo.url}" alt="" height="145px" width="260px" class="img-thumbnail">
+                          </div>
+                        </c:forEach>
+                      </div>
+                    </td>
+                  </tfoot>
                 </table>
+              </div>
+              <div class="card-footer">
+                <div class="row float-right">
+                  <c:choose>
+                    <c:when test = "${(not empty user_id) and requestScope.is_available eq true}">
+                      <a href="/controller?command=get_booking_info&car_id=${car.id}" class="btn btn-md btn-success">${button_rent}</a>
+                    </c:when>
+                    <c:when test = "${empty user_id}">
+                      <a href="/signin" class="btn btn-md btn-success">${button_login_to_rent}</a>
+                    </c:when>
+                  </c:choose>
+                </div>
+              </div>
+            </div>
+
+            <%-- comments --%>
+            <div class="row mt-5">
+              <div class="col-12">
+                <div class="page-header border-bottom">
+                  <h2><small class="float-right">${comments_count}: ${requestScope.car.numberOfReviews}</small> ${comments_header} </h2>
+                </div>
+
+                <div class="mb-5 px-3">
+                  <c:if test = "${not empty user_id}">
+                    <form action="/controller" method="post">
+                      <input type="hidden" name="command" value="add_review">
+                      <input type="hidden" name="car_id" value="${car.id}">
+                      <input type="hidden" name="user_id" value="${user.id}">
+
+                      <div class="row my-2">
+                        <textarea name="review_text" rows="3" placeholder="Your comment..." class="form-control"></textarea>
+                      </div>
+                      <div class="row float-right">
+                        <button type="reset" class="btn btn-md btn-light border mr-1">${button_reset}</button>
+                        <button type="submit" class="btn btn-md btn-primary">${button_send}</button>
+                      </div>
+                    </form>
+                  </c:if>
+                </div>
+
+
+                <c:forEach items="${requestScope.car.reviewList}" var="review">
+                  <div class="media border-bottom p-2">
+                    <img src="../img/uploads/user/${review.userPhotoUrl}" alt="User photo" class="mr-3 mt-3 rounded-circle" style="width:50px;height:50px">
+                    <div class="media-body">
+                      <h6 class="font-weight-bold">@${review.username}</h6>
+                      ${review.reviewText}
+                      <p>
+                        <small>
+                          <a href="#" class="text-dark">${button_share}</a>
+                          <c:if test="${review.userID eq sessionScope.user_id}">
+                             - <a href="/controller?command=delete_review&review_id=${review.id}" class="text-dark">${button_delete}</a>
+                          </c:if>
+                        </small>
+                      </p>
+                    </div>
+                    <div class="media-right font-weith-light">
+                      <fmt:formatDate value = "${review.reviewDate}" pattern = "dd.MM.yyyy HH:mm" />
+                    </div>
+                  </div>
+                </c:forEach>
+
 
               </div>
 
             </div>
-
-            <div class="panel-footer">
-              <div class = "text-center">
-                <a href="#" class="btn btn-lg btn-secondary btn-block">Order</a>
-              </div>
-            </div>
-
           </div>
         </div>
-
-
-        <div class="container">
-          <div class="row comments-container">
-            <div class="col-md-12 col-lg-12">
-              <div class="page-header">
-                <h2><small class="float-right">${requestScope.car.numberOfReviews} comments</small> Comments </h2>
-              </div>
-              <c:if test = "${not empty user}">
-                <div class="">
-                  <form action="/controller" method="get">
-                    <input type="hidden" name="command" value="add_review">
-                    <input type="hidden" name="car_id" value="${car.id}">
-                    <input type="hidden" name="user_id" value="${user.id}">
-
-                    <div class="row">
-                      <%-- <input type="text" name="review_text" class="form-control" placeholder="Your comment..."  required> --%>
-                      <textarea name="review_text" rows="3" placeholder="Your comment..." class="form-control"></textarea>
-                      <div class="col row">
-                        <button type="reset" class="btn btn-sm btn-secondary btn-block btn-reset">Reset</button>
-                      </div>
-                      <div class="col row">
-                        <button type="submit" class="btn btm-sm btn-secondary btn-block btn-send">Send</button>
-                      </div>
-
-                    </div>
-                  </form>
-                </div>
-              </c:if>
-              <div class="comments-list">
-                <c:forEach items="${requestScope.car.reviewList}" var = "review">
-                  <div class="media">
-                    <a class="media-left" href="#">
-                      <img src="../img/no_avatar.png" width="50px" height="50px">
-                      </a>
-                      <div class="media-body">
-                        <h4 class="media-heading user_name">${review.username}</h4>
-                        ${review.reviewText}
-                        <p>
-                          <small>
-                            <c:if test = "${review.userID eq user.id}">
-                              <a href="/controller?command=delete_review&review_id=${review.id}">Delete</a> -
-                            </c:if>
-                            <c:if test = "${review.userID != user.id}">
-                              <a href="">Like</a> -
-                            </c:if>
-                            <a href=""> Share</a>
-                          </small>
-                        </p>
-                      </div>
-                      <div class="media-right">
-                        ${review.reviewDate}
-                      </div>
-                    </div>
-                  </c:forEach>
-                </div>
-              </div>
-            </div>
-        </div>
-
       </main>
 
-      <footer class="mastfoot mt-auto text-center">
-        <div class="inner">
-          <p>&copy;einott lab</p>
-        </div>
-      </footer>
-    </div>
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="../js/vendor/popper.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script>window.jQuery || document.write('<script src="../js/vendor/jquery-slim.min.js"><\/script>')</script>
+      <script src="../js/vendor/popper.min.js"></script>
+      <script src="../js/bootstrap.min.js"></script>
   </body>
 </html>

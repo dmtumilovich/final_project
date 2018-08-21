@@ -1,8 +1,3 @@
-<%-- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="paginator" uri="/WEB-INF/tlds/Paginator" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %> --%>
-
 <%@ include file="/jsp/parts/bundle.jsp" %>
 
 <fmt:message bundle="${loc}" key="local.find.text.title" var="title" />

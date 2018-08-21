@@ -1,7 +1,13 @@
 package by.epam.rentacar.dao.util.constant;
 
+/**
+ * The class defines nested classes which means databases tables.
+ */
 public class DBSchema {
 
+    /**
+     * The class defines {@link String} constants containing column names of user_list table.
+     */
     public static final class UserListTable {
         public static final String TABLE_NAME = "user_list";
 
@@ -16,6 +22,9 @@ public class DBSchema {
         public static final String PHOTO = "photo";
     }
 
+    /**
+     * The class defines {@link String} constants containing column names of user_role table.
+     */
     public static final class UserRoleTable {
         public static final String TABLE_NAME = "user_role";
 
@@ -23,6 +32,9 @@ public class DBSchema {
         public static final String ROLE_NAME = "role";
     }
 
+    /**
+     * The class defines {@link String} constants containing column names of car_list table.
+     */
     public static final class CarListTable {
         public static final String TABLE_NAME = "car_list";
 
@@ -38,6 +50,9 @@ public class DBSchema {
         public static final String PRICE = "price";
     }
 
+    /**
+     * The class defines {@link String} constants containing column names of car_review table.
+     */
     public static final class CarReviewTable {
         public static final String TABLE_NAME = "car_review";
 
@@ -48,6 +63,9 @@ public class DBSchema {
         public static final String DATE = "time";
     }
 
+    /**
+     * The class defines {@link String} constants containing column names of car_photos table.
+     */
     public static final class CarPhotosTable {
         public static final String TABLE_NAME = "car_photos";
 
@@ -56,6 +74,9 @@ public class DBSchema {
         public static final String PHOTO_URL = "photo_url";
     }
 
+    /**
+     * The class defines {@link String} constants containing column names of order_list table.
+     */
     public static final class OrderListTable {
         public static final String TABLE_NAME = "order_list";
 
@@ -68,6 +89,9 @@ public class DBSchema {
         public static final String ID_STATUS = "id_status";
     }
 
+    /**
+     * The class defines {@link String} constants containing column names of order_status table.
+     */
     public static final class OrderStatusTable {
         public static final String TABLE_NAME = "order_status";
 

@@ -23,8 +23,18 @@
           <a href="/find" class="nav-link">${nav_cars}</a>
         </li>
         <c:if test="${not empty user_id}">
-          <li class="nav-item">
+          <%-- <li class="nav-item">
             <a href="/controller?command=profile" class="nav-link">${nav_profile}</a>
+          </li> --%>
+          <li class="nav-item">
+            <c:choose>
+              <c:when test = "${role eq 'USER'}">
+                <a class="nav-link" href="/controller?command=profile">${nav_profile}</a>
+              </c:when>
+              <c:when test = "${role eq 'ADMIN'}">
+                <a class="nav-link" href="/admin/panel">Panel</a>
+              </c:when>
+            </c:choose>
           </li>
         </c:if>
         <li class="nav-item">

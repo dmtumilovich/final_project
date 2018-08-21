@@ -10,8 +10,17 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * An abstract for all user's command.
+ */
 public abstract class UserCommand implements Command {
 
+    /**
+     * Gets {@code role} from session and checks it.
+     *
+     * @param request is the request.
+     * @return {@code true} if role is {@link User.Role#USER} or {@link User.Role#ADMIN} or {@code false} if not.
+     */
     protected boolean identifyUser(HttpServletRequest request) {
 
         HttpSession session = request.getSession();
@@ -21,6 +30,12 @@ public abstract class UserCommand implements Command {
 
     }
 
+    /**
+     * Checks if role is {@link User.Role#USER} or {@link User.Role#ADMIN}.
+     *
+     * @param role is the role to check.
+     * @return {@code true} if role is {@link User.Role#USER} or {@link User.Role#ADMIN} or {@code false} if not.
+     */
     private boolean isUserOrAdmin(User.Role role) {
 
         return (role != null && (role == User.Role.USER || role == User.Role.ADMIN));

@@ -92,11 +92,28 @@
                 </tr>
                 <tr>
                   <td>Class:</td>
-                  <td><input type="text" name="add_class" class = "form-control form-control-sm" required /></td>
+                  <td>
+                    <select class="custom-select custom-select-md" name="add_class" required>
+                      <option value="premium">premium</option>
+                      <option value="standart">standart</option>
+                      <option value="economy">economy</option>
+                    </select>
+                  </td>
                 </tr>
                 <tr>
                   <td>Color:</td>
-                  <td><input type="text" name="add_color" class = "form-control form-control-sm" required /></td>
+                  <td>
+                    <select class="custom-select custom-select-md" name="add_color" required>
+                      <option value="aqua">aqua</option>
+                      <option value="black">beige</option>
+                      <option value="black">black</option>
+                      <option value="black">blue</option>
+                      <option value="black">gray</option>
+                      <option value="red">red</option>
+                      <option value="silver">silver</option>
+                      <option value="white">white</option>
+                    </select>
+                  </td>
                 </tr>
                 <tr>
                   <td>Year:</td>

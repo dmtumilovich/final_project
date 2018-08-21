@@ -17,10 +17,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The command for adding new review.
+ */
 public class CommandAddReview extends UserCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandAddReview.class);
 
+    /**
+     * Gets review content from the request. Then processing this data by service layer.
+     * If data is valid redirects to the previous page. Otherwise redirects to the error page.
+     *
+     * @param request
+     *          an {@link HttpServletRequest} object that contains client request
+     * @param response
+     *          an {@link HttpServletResponse} object that contains the response the servlet sends to the client
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
@@ -43,6 +57,11 @@ public class CommandAddReview extends UserCommand {
 
     }
 
+    /**
+     * Parses the request to get an {@link Review} object.
+     *
+     * @return an {@link Review} object.
+     */
     private Review parseRequest(HttpServletRequest request) {
 
         int userID = (int) request.getSession().getAttribute(SessionAttributes.KEY_ID_USER);

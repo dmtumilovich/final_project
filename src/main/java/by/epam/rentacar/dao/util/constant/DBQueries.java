@@ -1,5 +1,8 @@
 package by.epam.rentacar.dao.util.constant;
 
+/**
+ * The class defines {@link String} constants containing SQL queries.
+ */
 public class DBQueries {
 
     //user queries

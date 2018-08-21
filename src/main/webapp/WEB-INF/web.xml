@@ -46,7 +46,7 @@
   
     <servlet>
       <servlet-name>ProfilePage</servlet-name>
-      <jsp-file>/jsp/user/profile2.jsp</jsp-file>
+      <jsp-file>/jsp/user/profile.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
       <servlet-name>ProfilePage</servlet-name>
@@ -55,7 +55,7 @@
 
   <servlet>
     <servlet-name>EditProfilePage</servlet-name>
-    <jsp-file>/jsp/user/edit_profile2.jsp</jsp-file>
+    <jsp-file>/jsp/user/edit_profile.jsp</jsp-file>
   </servlet>
   <servlet-mapping>
     <servlet-name>EditProfilePage</servlet-name>
@@ -91,7 +91,7 @@
 
   <servlet>
     <servlet-name>CarsPage</servlet-name>
-    <jsp-file>/jsp/cars2.jsp</jsp-file>
+    <jsp-file>/jsp/cars.jsp</jsp-file>
   </servlet>
   <servlet-mapping>
     <servlet-name>CarsPage</servlet-name>
@@ -100,7 +100,7 @@
 
   <servlet>
     <servlet-name>CarPage</servlet-name>
-    <jsp-file>/jsp/car2.jsp</jsp-file>
+    <jsp-file>/jsp/car.jsp</jsp-file>
   </servlet>
   <servlet-mapping>
     <servlet-name>CarPage</servlet-name>

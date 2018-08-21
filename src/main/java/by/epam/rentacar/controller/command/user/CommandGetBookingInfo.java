@@ -21,10 +21,27 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * The class for getting booking info for the user.
+ */
 public class CommandGetBookingInfo extends UserCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandGetBookingInfo.class);
 
+    /**
+     * Gets {@code userID}, {@code dateStart} and {@code dateEnd} from the session
+     * and {@code carID} from the request, then processes them by service layer.
+     * If data is valid puts {@link OrderingInfo} object as an attribute to the request
+     * and redirects to the ordering page.
+     * Otherwise redirects to the error page.
+     *
+     * @param request
+     *          an {@link HttpServletRequest} object that contains client request
+     * @param response
+     *          an {@link HttpServletResponse} object that contains the response the servlet sends to the client
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
@@ -42,8 +59,6 @@ public class CommandGetBookingInfo extends UserCommand {
 
         OrderService orderService = ServiceFactory.getInstance().getOrderService();
 
-        String destPage = PathHelper.getPreviousPage(request);
-
         try {
             OrderingInfo orderingInfo = orderService.getBookingInfo(carID, userID, dateStart, dateEnd);
 
@@ -53,10 +68,8 @@ public class CommandGetBookingInfo extends UserCommand {
 
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to get booking info!", e);
-            destPage = PageParameters.PAGE_ERROR;
+            response.sendRedirect(PageParameters.PAGE_ERROR);
         }
-
-        response.sendRedirect(destPage);
 
     }
 }

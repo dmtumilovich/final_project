@@ -16,6 +16,13 @@ var dropoffDateMax = new Date();
 dropoffDateMax.setMonth(currentDate.getMonth() + 6);
 
 $(function () {
+  $('#button_upload').hide();
+  $('#file_picker').on('change', function() {
+    if($('#file_picker').val()) {
+      $('#button_upload').show();
+    }
+  });
+
   $('#pickup').datetimepicker({
     format: 'DD.MM.YYYY HH:mm',
     defaultDate: pickupDateDefault,
@@ -35,4 +42,5 @@ $(function () {
   $('#pickup').on('dp.change', function(e){
     $('#dropoff').data("DateTimePicker").minDate(e.date);
   });
+
 });
