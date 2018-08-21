@@ -14,12 +14,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The command for deleting car.
+ */
 public class CommandDeleteCar extends AdminCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandDeleteCar.class);
 
     private static final String PAGE_CARS = "/controller?command=show_car_table";
 
+    /**
+     * Gets the id of the car which administrator wants to delete. Then processing it by
+     * the service layer.
+     * If data is valid redirects to the cars page.
+     * If not redirect to the error page.
+     *
+     * @param request
+     *          an {@link HttpServletRequest} object that contains client request
+     * @param response
+     *          an {@link HttpServletResponse} object that contains the response the servlet sends to the client
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 

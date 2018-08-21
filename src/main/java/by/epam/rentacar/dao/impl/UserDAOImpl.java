@@ -46,9 +46,7 @@ public class UserDAOImpl extends UserDAO {
         ResultSet resultSet = null;
 
         try {
-            statement = connection.prepareStatement("SELECT id_user\n" +
-                                                        "FROM user_list\n" +
-                                                        "WHERE id_user = ? AND password = ?");
+            statement = connection.prepareStatement(DBQueries.IS_CORRECT_PASSWORD);
             statement.setInt(1, userID);
             statement.setString(2, password);
 
@@ -244,7 +242,7 @@ public class UserDAOImpl extends UserDAO {
 
         try {
 
-            statement = connection.prepareStatement("SELECT id_user FROM user_list WHERE username = ?");
+            statement = connection.prepareStatement(DBQueries.GET_ID_BY_USERNAME);
             statement.setString(1, username);
 
             resultSet = statement.executeQuery();
@@ -267,7 +265,7 @@ public class UserDAOImpl extends UserDAO {
 
         try {
 
-            statement = connection.prepareStatement("SELECT id_user FROM user_list WHERE email = ?");
+            statement = connection.prepareStatement(DBQueries.GET_ID_BY_EMAIL);
             statement.setString(1, email);
 
             resultSet = statement.executeQuery();

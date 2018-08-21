@@ -92,6 +92,16 @@ public abstract class OrderDAO extends AbstractDAO<Order> {
     public abstract void updateStatus(int orderID, int statusID) throws DAOException;
 
     /**
+     * Updates order's status and adds comment to order in the database table.
+     *
+     * @param orderID is the id of the order.
+     * @param statusID is the id of the new status.
+     * @param comment is the new comment.
+     * @throws DAOException
+     */
+    public abstract void updateStatus(int orderID, int statusID, String comment) throws DAOException;
+
+    /**
      * Updates order's status to {@link by.epam.rentacar.domain.entity.Order.Status#REJECTED} of orders, thad intersecting selected date range.
      *
      * @param orderID is the id of the order.

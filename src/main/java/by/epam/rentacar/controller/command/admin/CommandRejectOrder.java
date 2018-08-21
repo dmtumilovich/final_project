@@ -30,12 +30,13 @@ public class CommandRejectOrder extends AdminCommand {
         }
 
         int orderID = Integer.parseInt(request.getParameter(RequestParameters.KEY_ID_ORDER));
+        String comment = request.getParameter(RequestParameters.KEY_ORDER_COMMENT);
 
         OrderService orderService = ServiceFactory.getInstance().getOrderService();
         String destPage = PathHelper.getPreviousPage(request);
 
         try {
-            orderService.updateStatus(orderID, Order.Status.REJECTED);
+            orderService.updateStatus(orderID, Order.Status.REJECTED, comment);
         } catch (ServiceException e) {
             logger.log(Level.ERROR, "Failed to reject order!", e);
             destPage = PageParameters.PAGE_ERROR;

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * An abstract for all user's command.
+ * An abstract command for all user's commands.
  */
 public abstract class UserCommand implements Command {
 

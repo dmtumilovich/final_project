@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class    CommandConfirmOrder extends AdminCommand {
+public class CommandConfirmOrder extends AdminCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandConfirmOrder.class);
 

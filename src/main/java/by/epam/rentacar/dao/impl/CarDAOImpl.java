@@ -329,11 +329,7 @@ public class CarDAOImpl extends CarDAO {
         ResultSet resultSet = null;
 
         try {
-            statement = connection.prepareStatement("SELECT id_order\n" +
-                    "FROM order_list\n" +
-                    "WHERE id_car = ?\n" +
-                    "AND ((date_end BETWEEN ? AND ?) OR (? BETWEEN date_start AND date_end))\n" +
-                    "AND (id_status =  '1' OR id_status = '4')");
+            statement = connection.prepareStatement(DBQueries.IS_CAR_AVAILABLE);
             Timestamp dateStartTS = new Timestamp(dateStart.getTime());
             Timestamp dateEndTS = new Timestamp(dateEnd.getTime());
             statement.setInt(1, carID);

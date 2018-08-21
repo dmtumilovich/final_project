@@ -18,12 +18,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The command for adding car.
+ */
 public class CommandAddCar extends AdminCommand {
 
     private static final Logger logger = LogManager.getLogger(CommandAddCar.class);
 
     private static final String PAGE_CARS = "/controller?command=show_car_table";
 
+    /**
+     * Gets car data from the request and processing it by the service layer.
+     * If data is valid redirects to the cars page.
+     * If not redirects to the error page.
+     *
+     * @param request
+     *          an {@link HttpServletRequest} object that contains client request
+     * @param response
+     *          an {@link HttpServletResponse} object that contains the response the servlet sends to the client
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
@@ -48,6 +63,11 @@ public class CommandAddCar extends AdminCommand {
 
     }
 
+    /**
+     * Parses the request to get an {@link CarDTO} object.
+     *
+     * @return and {@link CarDTO} object.
+     */
     private CarDTO parseRequest(HttpServletRequest request) {
 
         String id = request.getParameter(RequestParameters.KEY_ID_CAR);

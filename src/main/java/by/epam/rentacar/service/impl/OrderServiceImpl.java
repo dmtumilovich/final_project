@@ -393,6 +393,29 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public void updateStatus(int orderID, Order.Status status, String comment) throws ServiceException {
+
+        TransactionHelper transactionHelper = null;
+
+        try {
+            transactionHelper = new TransactionHelper();
+            transactionHelper.beginTransaction(orderDAO);
+
+            int statusID = orderDAO.getStatusIdByName(status);
+            orderDAO.updateStatus(orderID, statusID, comment);
+
+            transactionHelper.commit();
+
+        } catch (DAOException e) {
+            transactionHelper.rollback();
+            throw new ServiceException("Error while updating status with comment", e);
+        } finally {
+            transactionHelper.endTransaction();
+        }
+
+    }
+
+    @Override
     public void confirmOrder(int orderID) throws ServiceException {
 
         //добавить валидацию(если есть другие заказы на эту дату)

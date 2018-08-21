@@ -171,6 +171,7 @@ public class ResultSetParser {
         double price = rs.getDouble(OrderListTable.TOTAL_PRICE);
         String statusStr= rs.getString(OrderStatusTable.STATUS);
         Order.Status status = Order.Status.valueOf(statusStr.toUpperCase());
+        String comment = rs.getString(OrderListTable.COMMENT);
 
         Order order = new Order();
         order.setId(id);
@@ -180,6 +181,7 @@ public class ResultSetParser {
         order.setDateEnd(dateEnd);
         order.setTotalPrice(price);
         order.setStatus(status);
+        order.setComment(comment);
 
         return order;
     }

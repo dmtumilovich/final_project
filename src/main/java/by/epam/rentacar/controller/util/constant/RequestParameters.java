@@ -24,16 +24,7 @@ public class RequestParameters {
 
     public static final String KEY_CAR_PHOTO = "car_photo";
     public static final String KEY_ID_CAR = "car_id";
-    public static final String KEY_CAR_BRAND = "brand";
-    public static final String KEY_CAR_MODEL = "model";
     public static final String KEY_CAR_CLASS = "car_class";
-    public static final String KEY_CAR_COLOR = "color";
-    public static final String KEY_YEAR_FROM = "year_from";
-    public static final String KEY_YEAR_TO = "year_to";
-    public static final String KEY_VOLUME_FROM = "volume_from";
-    public static final String KEY_VOLUME_TO = "volume_to";
-    public static final String KEY_PRICE_FROM = "price_from";
-    public static final String KEY_PRICE_TO = "price_to";
 
     public static final String KEY_ADD_BRAND = "add_brand";
     public static final String KEY_ADD_MODEL = "add_model";
@@ -55,6 +46,7 @@ public class RequestParameters {
 
     public static final String KEY_ID_ORDER = "order_id";
     public static final String KEY_ORDER_STATUS = "status";
+    public static final String KEY_ORDER_COMMENT = "order_comment";
     public static final String KEY_DATE_START = "date_start";
     public static final String KEY_DATE_END = "date_end";
 

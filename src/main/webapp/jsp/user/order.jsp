@@ -25,7 +25,7 @@
 <fmt:message bundle="${loc}" key = "local.status.confirmed" var = "status_confirmed" />
 <fmt:message bundle="${loc}" key = "local.status.rejected" var = "status_rejected" />
 <fmt:message bundle="${loc}" key = "local.status.awaits" var = "status_awaits" />
-<fmt:message bundle="${loc}" key = "local.status.over" var = "status_overt" />
+<fmt:message bundle="${loc}" key = "local.status.over" var = "status_over" />
 <fmt:message bundle="${loc}" key = "local.status.returned" var = "status_returned" />
 <fmt:message bundle="${loc}" key = "local.status.canceled" var = "status_canceled" />
 <fmt:message bundle="${loc}" key = "local.status.unknown" var = "status_unknown" />
@@ -140,12 +140,17 @@
                               <span class="text-danger">${status_canceled}</span>
                             </c:when>
                             <c:otherwise>
-                              <%-- ??? --%>
                               <span>${status_unknown}</span>
                             </c:otherwise>
                           </c:choose>
                         </td>
                       </tr>
+                      <c:if test = "${not empty order_info.order.comment}">
+                        <tr>
+                          <td>Comment:</td>
+                          <td>${order_info.order.comment}</td>
+                        </tr>
+                      </c:if>
                     </tbody>
                   </table>
                 </div>

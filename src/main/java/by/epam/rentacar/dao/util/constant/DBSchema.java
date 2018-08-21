@@ -87,6 +87,7 @@ public class DBSchema {
         public static final String DATE_END = "date_end";
         public static final String TOTAL_PRICE = "total_price";
         public static final String ID_STATUS = "id_status";
+        public static final String COMMENT = "comment";
     }
 
     /**

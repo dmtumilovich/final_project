@@ -75,6 +75,12 @@
                       </c:choose>
                     </td>
                   </tr>
+                  <c:if test = "${not empty order_info.order.comment}">
+                    <tr>
+                      <td>Comment:</td>
+                      <td>${order_info.order.comment}</td>
+                    </tr>
+                  </c:if>
                 </tbody>
               </table>
             </div>
@@ -174,7 +180,7 @@
             <input type="hidden" name="command" value="confirm_order">
             <input type="hidden" name="order_id" value="${order_info.order.id}">
               <div class="modal-header">
-                <h4 class="modal-title">Confirm order</h4>
+                <h4 class="modal-title">Reject order</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
               </div>
 
@@ -204,8 +210,12 @@
               </div>
 
               <div class="modal-body">
-                Are you sure you want to reject this order?
+                <div class="col-12">
+
+                </div>
                 <p>This will reject all other pending requests for this car, which intersect the given time interval.</p>
+                <p>Please, enter the comment why you want to reject the order: </p>
+                <textarea name="order_comment" rows="3" placeholder="Comment..." class="form-control"></textarea>
               </div>
 
               <div class="modal-footer">

@@ -18,7 +18,7 @@
 
     <main role="main" class="container">
       <div class="jumbotron">
-        <h2>This is an empty page</h2>
+        <h2>This is an admin page</h2>
         <p class="lead">You can see other admin functions in users and cars sections</p>
         <div class="row">
           <div class="col">

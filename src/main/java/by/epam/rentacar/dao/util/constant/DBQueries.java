@@ -17,6 +17,12 @@ public class DBQueries {
     public static final String SET_USER_PHOTO = "UPDATE user_list\n" +
                                                 "SET photo = ?\n" +
                                                 "WHERE id_user = ?";
+    public static final String GET_ID_BY_USERNAME = "SELECT id_user FROM user_list WHERE username = ?";
+    public static final String GET_ID_BY_EMAIL = "SELECT id_user FROM user_list WHERE email = ?";
+
+    public static final String IS_CORRECT_PASSWORD = "SELECT id_user\n" +
+                                                    "FROM user_list\n" +
+                                                    "WHERE id_user = ? AND password = ?";
 
     //car queries
 
@@ -94,19 +100,6 @@ public class DBQueries {
                                                 "ON car_list.id_car = car_photos.id_car\n" +
                                                 "WHERE car_list.id_car = ?";
 
-    public static final String FIND_CAR_WITH_REVIEWS_BY_ID = "SELECT car_list.*, car_review.id_review, car_review.id_user, user_list.username, user_list.photo, car_review.review, car_review.time\n" +
-                                                            "FROM car_list\n" +
-                                                            "LEFT JOIN car_review ON car_list.id_car = car_review.id_car\n" +
-                                                            "LEFT JOIN user_list ON car_review.id_user = user_list.id_user\n" +
-                                                            "WHERE car_list.id_car = ?\n" +
-                                                            "ORDER BY time DESC";
-
-    public static final String FIND_ALL_CARS_FOR_ADMIN = "SELECT car_list.id_car, car_list.brand, car_list.model, car_list.class, car_list.price, car_list.is_deleted, COUNT(car_review.id_car) AS comments_count\n" +
-                                                        "FROM car_list\n" +
-                                                        "LEFT JOIN car_review ON car_list.id_car = car_review.id_car\n" +
-                                                        "WHERE car_list.is_deleted = '0'\n" +
-                                                        "GROUP BY car_list.id_car"; // rename?
-
     public static final String INSERT_CAR = "INSERT INTO car_list (brand, model, class, color, year_of_issue, number_of_seats, engine_volume, is_deleted, price) VALUES (?, ? ,?, ?, ?, ?, ?, '0', ?)"; //убрать единичку
     public static final String UPDATE_CAR = "UPDATE car_list\n" +
                                             "SET brand = ?, model = ?, class = ?, year_of_issue = ?, number_of_seats = ?, color = ?, engine_volume = ?, price = ?\n" +
@@ -125,14 +118,27 @@ public class DBQueries {
 
     public static final String DELETE_CAR_PHOTO = "DELETE FROM car_photos WHERE id_photo = ?";
 
+    public static final String IS_CAR_AVAILABLE = "SELECT id_order\n" +
+                                                    "FROM order_list\n" +
+                                                    "WHERE id_car = ?\n" +
+                                                    "AND ((date_end BETWEEN ? AND ?) OR (? BETWEEN date_start AND date_end))\n" +
+                                                    "AND (id_status =  '1' OR id_status = '4')";
+
     //orders queries
-    public static final String GET_ALL_ORDERS = "SELECT order_list.id_order, id_user, id_car, date_start, date_end, total_price, order_status.status\n" +
+
+    public static final String GET_ORDER_BY_ID = "SELECT order_list.*, order_status.status\n" +
+                                                "FROM order_list\n" +
+                                                "INNER JOIN order_status\n" +
+                                                "ON order_list.id_status = order_status.id_status\n" +
+                                                "WHERE id_order = ?";
+
+    public static final String GET_ALL_ORDERS = "SELECT order_list.id_order, id_user, id_car, date_start, date_end, total_price, comment, order_status.status\n" +
                                                 "FROM order_list\n" +
                                                 "INNER JOIN order_status\n" +
                                                 "ON order_list.id_status = order_status.id_status\n" +
                                                 "ORDER BY date_start DESC LIMIT ? OFFSET ?";
 
-    public static final String GET_ORDERS_BY_STATUS_ID = "SELECT order_list.id_order, id_user, id_car, date_start, date_end, total_price, order_status.status\n" +
+    public static final String GET_ORDERS_BY_STATUS_ID = "SELECT order_list.id_order, id_user, id_car, date_start, date_end, total_price, comment, order_status.status\n" +
                                                         "FROM order_list\n" +
                                                         "INNER JOIN order_status\n" +
                                                         "ON order_list.id_status = order_status.id_status\n" +
@@ -168,7 +174,7 @@ public class DBQueries {
                                                             "FROM order_list\n" +
                                                             "WHERE id_user = ?";
 
-    public static final String GET_ORDER_INFO_FOR_ADMIN = "SELECT order_list.id_order, order_list.id_user, order_list.id_car, order_list.date_start, order_list.date_end, order_list.total_price,\n" +
+    public static final String GET_ORDER_INFO_FOR_ADMIN = "SELECT order_list.id_order, order_list.id_user, order_list.id_car, order_list.date_start, order_list.date_end, order_list.total_price, order_list.comment,\n" +
                                                         "order_status.status,\n" +
                                                         "user_list.*, role,\n" +
                                                         "car_list.*\n" +
@@ -183,14 +189,6 @@ public class DBQueries {
                                                         "ON order_list.id_car = car_list.id_car\n" +
                                                         "WHERE id_order = ?";
 
-    public static final String CONFIRM_ORDER = "UPDATE order_list\n" +
-                                                "SET id_status = ?\n" +
-                                                "WHERE id_order = ?";
-
-    public static final String REJECT_ORDER = "UPDATE order_list\n" +
-                                                "SET id_status = ?\n" +
-                                                "WHERE id_order = ?";
-
     public static final String INSERT_ORDER = "INSERT INTO order_list (id_user, id_car, date_start, date_end, total_price, id_status)\n" +
                                             "VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -199,6 +197,18 @@ public class DBQueries {
     public static final String UPDATE_ORDER_STATUS = "UPDATE order_list\n" +
                                                     "SET id_status = ?\n" +
                                                     "WHERE id_order = ?";
+
+    public static final String UPDATE_ORDER_STATUS_WITH_COMMENT = "UPDATE order_list\n" +
+                                                                    "SET id_status = ?, comment = ?\n" +
+                                                                    "WHERE id_order = ?";
+
+    public static final String REJECT_ORDERS_INTERSECTING_DATE_RANGE = "UPDATE order_list\n" +
+                                                                        "SET id_status = '2'\n" +
+                                                                        "WHERE id_order IN (SELECT id_order FROM (SELECT * FROM order_list) AS ol\n" +
+                                                                        "WHERE ol.id_car = ? AND ol.id_order != ? AND id_status = '3'\n" +
+                                                                        "AND (? BETWEEN ol.date_start AND ol.date_end\n" +
+                                                                        "OR ol.date_end BETWEEN ? AND ?)\n" +
+                                                                        ")";
 
     //review queries
 

@@ -150,6 +150,15 @@ public interface OrderService {
      */
     void updateStatus(int orderID, Order.Status status)  throws ServiceException;
 
+    /**
+     * Updates the status of the order with some comment.
+     *
+     * @param orderID is the order id.
+     * @param status is the new value of order's status.
+     * @param comment is the comment for order.
+     * @throws ServiceException
+     */
+    void updateStatus(int orderID, Order.Status status, String comment) throws ServiceException;
 
     /**
      * Confirms order. At first checks if there any other orders on this car, that intersecting

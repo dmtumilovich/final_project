@@ -14,6 +14,7 @@ public class Order extends Entity {
     private Date dateEnd;
     private double totalPrice;
     private Status status;
+    private String comment;
 
     public Order() {
 
@@ -75,6 +76,14 @@ public class Order extends Entity {
         this.status = status;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     public enum Status {
         CONFIRMED,
         REJECTED,
@@ -98,7 +107,8 @@ public class Order extends Entity {
         if (Double.compare(order.totalPrice, totalPrice) != 0) return false;
         if (dateStart != null ? !dateStart.equals(order.dateStart) : order.dateStart != null) return false;
         if (dateEnd != null ? !dateEnd.equals(order.dateEnd) : order.dateEnd != null) return false;
-        return status == order.status;
+        if (status != order.status) return false;
+        return comment != null ? comment.equals(order.comment) : order.comment == null;
     }
 
     @Override
@@ -113,6 +123,7 @@ public class Order extends Entity {
         temp = Double.doubleToLongBits(totalPrice);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (comment != null ? comment.hashCode() : 0);
         return result;
     }
 
@@ -126,6 +137,7 @@ public class Order extends Entity {
                 ", dateEnd=" + dateEnd +
                 ", totalPrice=" + totalPrice +
                 ", status=" + status +
+                ", comment='" + comment + '\'' +
                 '}';
     }
 }
